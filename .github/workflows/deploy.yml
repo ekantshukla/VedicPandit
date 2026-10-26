@@ -1,0 +1,62 @@
+# Builds the website and publishes it to GitHub Pages (https://<you>.github.io/<repo>/).
+# The site runs fully in the browser (panchang, muhurat, mantra, granth). PanditJi gives full
+# AI answers only when it can reach the .NET API (see README); on Pages it uses its built-in answers.
+#
+# One-time setup: repo Settings -> Pages -> Source: "GitHub Actions".
+name: Deploy website to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'vedic-pandit-client/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: vedic-pandit-client
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: vedic-pandit-client/package-lock.json
+      - run: npm ci
+
+      # So the website's "Get App" button points at this repo's releases.
+      - name: Point the site at this repo and its API
+        run: |
+          sed -i "s|^export const GITHUB_REPO = .*|export const GITHUB_REPO = '${{ github.repository }}';|" src/app/core/app-info.ts
+          # Where PanditJi's API is hosted (Settings -> Secrets and variables -> Actions -> Variables -> API_URL).
+          # Empty = the site/app runs in demo mode with built-in answers.
+          sed -i "s|^export const API_URL: string = .*|export const API_URL: string = '${{ vars.API_URL }}';|" src/app/core/app-info.ts
+
+      - run: npx ng build --base-href "/${{ github.event.repository.name }}/"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: vedic-pandit-client/dist/vedic-pandit-client/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

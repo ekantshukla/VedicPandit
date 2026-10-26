@@ -1,0 +1,9 @@
+**/bin/
+**/obj/
+**/node_modules/
+vedic-pandit-client/dist/
+vedic-pandit-client/.angular/
+vedic-pandit-client/android/
+src/VedicPandit.WebAPI/wwwroot/
+src/VedicPandit.WebAPI/data/
+.git/

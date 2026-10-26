@@ -1,0 +1,13 @@
+{
+	"appId": "com.vedicpandit.app",
+	"appName": "Vedic Pandit",
+	"webDir": "dist/vedic-pandit-client/browser",
+	"backgroundColor": "#1D1736",
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 900,
+			"backgroundColor": "#1D1736",
+			"showSpinner": false
+		}
+	}
+}

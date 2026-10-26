@@ -1,0 +1,111 @@
+# Builds the Android app (APK) and publishes it as a GitHub Release.
+# Runs when the app's code changes on main, and on demand (Actions tab -> "Build Android app" -> Run workflow).
+#
+# The newest app is always at:
+#   https://github.com/<you>/<repo>/releases/latest/download/VedicPandit.apk
+# The website's "Get App" button points there.
+#
+# One-time setup: add the 4 signing secrets (see ANDROID.md). Without them the workflow still
+# builds a test APK, but phones can't update it in place later.
+name: Build Android app
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'vedic-pandit-client/**'
+      - '.github/workflows/android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # to publish the release
+
+concurrency:
+  group: android
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: vedic-pandit-client
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      VERSION_CODE: ${{ github.run_number }}
+      VERSION_NAME: 1.${{ github.run_number }}.0
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: vedic-pandit-client/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - run: npm ci
+
+      - name: Point the app at this repo and version
+        run: |
+          sed -i "s|^export const GITHUB_REPO = .*|export const GITHUB_REPO = '${{ github.repository }}';|" src/app/core/app-info.ts
+          # Where PanditJi's API is hosted (Settings -> Secrets and variables -> Actions -> Variables -> API_URL).
+          # Empty = the site/app runs in demo mode with built-in answers.
+          sed -i "s|^export const API_URL: string = .*|export const API_URL: string = '${{ vars.API_URL }}';|" src/app/core/app-info.ts
+          sed -i "s|^export const APP_VERSION = .*|export const APP_VERSION = '${VERSION_NAME}';|" src/app/core/app-info.ts
+
+      - run: npx ng build
+      - run: npx cap sync android
+
+      - name: Signing key
+        id: key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            echo "file=$RUNNER_TEMP/release.jks" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::No signing secrets set: building a debug APK. See ANDROID.md."
+          fi
+
+      - name: Build APK
+        working-directory: vedic-pandit-client/android
+        env:
+          KEYSTORE_FILE: ${{ steps.key.outputs.file }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          chmod +x gradlew
+          if [ -n "$KEYSTORE_FILE" ]; then
+            ./gradlew assembleRelease --no-daemon
+            cp app/build/outputs/apk/release/app-release.apk ../../VedicPandit.apk
+          else
+            ./gradlew assembleDebug --no-daemon
+            cp app/build/outputs/apk/debug/app-debug.apk ../../VedicPandit.apk
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VedicPandit-${{ env.VERSION_NAME }}
+          path: VedicPandit.apk
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION_NAME }}
+          name: Vedic Pandit ${{ env.VERSION_NAME }}
+          make_latest: true
+          files: VedicPandit.apk
+          body: |
+            📱 **Install:** open this page on your Android phone, tap **VedicPandit.apk**, then **Install**.
+            If Android asks, allow installing apps from your browser ("Install unknown apps").
+
+            Already have the app? Installing this updates it, and your city and language stay.

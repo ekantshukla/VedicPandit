@@ -1,0 +1,46 @@
+# Requests for every endpoint. Open in Visual Studio / VS Code (REST Client) / Rider and click "Send".
+@api = http://localhost:5000
+
+### Health (ai = true when a Claude key is set)
+GET {{api}}/api/health
+
+### Today's panchang for New Delhi
+GET {{api}}/api/panchang?date=2026-10-26&lat=28.6139&lng=77.209&tz=Asia/Kolkata&system=Purnimanta
+
+### Month calendar
+GET {{api}}/api/panchang/month?year=2026&month=11&lat=28.6139&lng=77.209&tz=Asia/Kolkata
+
+### Muhurat occasions
+GET {{api}}/api/muhurat/events
+
+### Vivah muhurat, Nov 2026 – Jan 2027
+GET {{api}}/api/muhurat?event=Vivah&from=2026-11-01&to=2027-01-31&lat=28.6139&lng=77.209&tz=Asia/Kolkata
+
+### Mantras
+GET {{api}}/api/mantras
+
+### One mantra (with karaoke timings)
+GET {{api}}/api/mantras/gayatri
+
+### Scriptures
+GET {{api}}/api/scriptures
+
+### Gita chapter 2
+GET {{api}}/api/scriptures/gita/verses?chapter=2
+
+### Search verses
+GET {{api}}/api/scriptures/search?q=anger
+
+### Ask PanditJi (non-streaming)
+POST {{api}}/api/chat
+Content-Type: application/json
+
+{ "text": "What does the Gita say about anger?", "language": "hi", "latitude": 28.6139, "longitude": 77.209, "timeZone": "Asia/Kolkata" }
+
+### Import a text (needs Admin:ApiKey)
+POST {{api}}/api/scriptures/import
+X-Admin-Key: change-me
+Content-Type: application/json
+
+[{ "code": "yoga-sutra", "name": "Yoga Sutras", "nameDevanagari": "योगसूत्र",
+   "verses": [{ "chapter": 1, "verse": "2", "sanskrit": "योगश्चित्तवृत्तिनिरोधः", "translationEn": "Yoga is the stilling of the fluctuations of the mind." }] }]

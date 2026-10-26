@@ -1,0 +1,171 @@
+[
+ {
+  "code": "gita",
+  "name": "Bhagavad Gita",
+  "nameDevanagari": "श्रीमद्भगवद्गीता",
+  "category": "Itihasa (Mahabharata, Bhishma Parva)",
+  "description": "The dialogue between Shri Krishna and Arjuna on the battlefield of Kurukshetra - 18 chapters, 700 verses.",
+  "verses": [
+   {
+    "chapter": 2,
+    "verse": "14",
+    "sanskrit": "मात्रास्पर्शास्तु कौन्तेय शीतोष्णसुखदुःखदाः।\nआगमापायिनोऽनित्यास्तांस्तितिक्षस्व भारत॥",
+    "translationEn": "O son of Kunti, contacts of the senses with objects give rise to cold and heat, pleasure and pain. They come and go and are impermanent; endure them patiently, O Bharata.",
+    "translationHi": "हे कौन्तेय! इन्द्रियों और विषयों के संयोग से सर्दी-गर्मी, सुख-दुःख होते हैं। ये आने-जाने वाले और अनित्य हैं, इसलिए हे भारत! इन्हें सहन करो।",
+    "keywords": "endurance patience pleasure pain impermanence suffering stress titiksha"
+   },
+   {
+    "chapter": 2,
+    "verse": "20",
+    "sanskrit": "न जायते म्रियते वा कदाचिन्नायं भूत्वा भविता वा न भूयः।\nअजो नित्यः शाश्वतोऽयं पुराणो न हन्यते हन्यमाने शरीरे॥",
+    "translationEn": "The Self is never born, nor does it ever die. Having come into being, it does not cease to be. Unborn, eternal, everlasting and ancient, it is not slain when the body is slain.",
+    "translationHi": "आत्मा न कभी जन्म लेती है, न कभी मरती है। यह न उत्पन्न होकर फिर न होने वाली है। यह अजन्मा, नित्य, शाश्वत और पुरातन है; शरीर के मारे जाने पर भी यह नहीं मारी जाती।",
+    "keywords": "atma soul self eternal death immortality grief rebirth"
+   },
+   {
+    "chapter": 2,
+    "verse": "22",
+    "sanskrit": "वासांसि जीर्णानि यथा विहाय नवानि गृह्णाति नरोऽपराणि।\nतथा शरीराणि विहाय जीर्णान्यन्यानि संयाति नवानि देही॥",
+    "translationEn": "Just as a person discards worn-out clothes and puts on new ones, so the embodied Self casts off worn-out bodies and enters new ones.",
+    "translationHi": "जैसे मनुष्य पुराने वस्त्रों को त्यागकर नए वस्त्र धारण करता है, वैसे ही आत्मा पुराने शरीरों को त्यागकर नए शरीर धारण करती है।",
+    "keywords": "rebirth reincarnation death soul body clothes punarjanma grief"
+   },
+   {
+    "chapter": 2,
+    "verse": "47",
+    "sanskrit": "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।\nमा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥",
+    "translationEn": "You have a right to your actions alone, never to their fruits. Do not let the fruit of action be your motive, nor let yourself be attached to inaction.",
+    "translationHi": "तुम्हारा अधिकार केवल कर्म करने में है, उसके फलों में कभी नहीं। तुम कर्मफल के हेतु मत बनो और कर्म न करने में भी तुम्हारी आसक्ति न हो।",
+    "keywords": "karma action duty result fruit detachment nishkama work exam success failure anxiety"
+   },
+   {
+    "chapter": 2,
+    "verse": "48",
+    "sanskrit": "योगस्थः कुरु कर्माणि सङ्गं त्यक्त्वा धनञ्जय।\nसिद्ध्यसिद्ध्योः समो भूत्वा समत्वं योग उच्यते॥",
+    "translationEn": "Established in yoga, perform your actions, O Dhananjaya, abandoning attachment and remaining even-minded in success and failure. Such equanimity is called yoga.",
+    "translationHi": "हे धनञ्जय! आसक्ति त्यागकर, सफलता और असफलता में समान भाव रखते हुए योग में स्थित होकर कर्म करो। यह समता ही योग कहलाती है।",
+    "keywords": "yoga equanimity samatva success failure balance work attachment"
+   },
+   {
+    "chapter": 2,
+    "verse": "62",
+    "sanskrit": "ध्यायतो विषयान्पुंसः सङ्गस्तेषूपजायते।\nसङ्गात्सञ्जायते कामः कामात्क्रोधोऽभिजायते॥",
+    "translationEn": "When a person dwells on sense objects, attachment to them arises. From attachment comes desire, and from desire comes anger.",
+    "translationHi": "विषयों का चिंतन करने वाले मनुष्य की उनमें आसक्ति हो जाती है। आसक्ति से कामना उत्पन्न होती है और कामना से क्रोध उत्पन्न होता है।",
+    "keywords": "anger desire attachment mind senses kama krodha"
+   },
+   {
+    "chapter": 2,
+    "verse": "63",
+    "sanskrit": "क्रोधाद्भवति सम्मोहः सम्मोहात्स्मृतिविभ्रमः।\nस्मृतिभ्रंशाद् बुद्धिनाशो बुद्धिनाशात्प्रणश्यति॥",
+    "translationEn": "From anger arises delusion; from delusion, confusion of memory; from confusion of memory, the loss of reason; and from the loss of reason, one is ruined.",
+    "translationHi": "क्रोध से मोह उत्पन्न होता है, मोह से स्मृति भ्रमित होती है, स्मृति भ्रंश से बुद्धि का नाश होता है और बुद्धि नष्ट होने से मनुष्य का पतन हो जाता है।",
+    "keywords": "anger delusion memory intellect ruin krodha control"
+   },
+   {
+    "chapter": 3,
+    "verse": "21",
+    "sanskrit": "यद्यदाचरति श्रेष्ठस्तत्तदेवेतरो जनः।\nस यत्प्रमाणं कुरुते लोकस्तदनुवर्तते॥",
+    "translationEn": "Whatever a great person does, others follow. Whatever standard they set, the world follows.",
+    "translationHi": "श्रेष्ठ पुरुष जैसा आचरण करता है, अन्य लोग भी वैसा ही करते हैं। वह जो प्रमाण स्थापित करता है, संसार उसी का अनुसरण करता है।",
+    "keywords": "leadership example conduct role model parents teacher"
+   },
+   {
+    "chapter": 3,
+    "verse": "27",
+    "sanskrit": "प्रकृतेः क्रियमाणानि गुणैः कर्माणि सर्वशः।\nअहङ्कारविमूढात्मा कर्ताहमिति मन्यते॥",
+    "translationEn": "All actions are performed by the gunas of nature. But one deluded by ego thinks, 'I am the doer.'",
+    "translationHi": "सभी कर्म प्रकृति के गुणों द्वारा किए जाते हैं, परंतु अहंकार से मोहित व्यक्ति स्वयं को कर्ता मान लेता है।",
+    "keywords": "ego ahankara gunas prakriti doer humility"
+   },
+   {
+    "chapter": 3,
+    "verse": "35",
+    "sanskrit": "श्रेयान्स्वधर्मो विगुणः परधर्मात्स्वनुष्ठितात्।\nस्वधर्मे निधनं श्रेयः परधर्मो भयावहः॥",
+    "translationEn": "Better is one's own dharma, even if imperfectly performed, than the dharma of another well performed. Better is death in one's own dharma; the dharma of another is fraught with fear.",
+    "translationHi": "अच्छी प्रकार आचरण किए गए दूसरे के धर्म से अपना गुणरहित धर्म भी श्रेष्ठ है। अपने धर्म में मरना भी कल्याणकारी है, दूसरे का धर्म भय देने वाला है।",
+    "keywords": "svadharma duty career calling comparison purpose"
+   },
+   {
+    "chapter": 4,
+    "verse": "7",
+    "sanskrit": "यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।\nअभ्युत्थानमधर्मस्य तदात्मानं सृजाम्यहम्॥",
+    "translationEn": "Whenever there is a decline of dharma and a rise of adharma, O Bharata, then I manifest Myself.",
+    "translationHi": "हे भारत! जब-जब धर्म की हानि और अधर्म की वृद्धि होती है, तब-तब मैं स्वयं को प्रकट करता हूँ।",
+    "keywords": "avatar incarnation dharma adharma divine descent"
+   },
+   {
+    "chapter": 4,
+    "verse": "8",
+    "sanskrit": "परित्राणाय साधूनां विनाशाय च दुष्कृताम्।\nधर्मसंस्थापनार्थाय सम्भवामि युगे युगे॥",
+    "translationEn": "To protect the good, to destroy the wicked, and to firmly establish dharma, I appear age after age.",
+    "translationHi": "साधुओं की रक्षा, दुष्टों के विनाश और धर्म की स्थापना के लिए मैं युग-युग में प्रकट होता हूँ।",
+    "keywords": "avatar dharma protection yuga incarnation"
+   },
+   {
+    "chapter": 4,
+    "verse": "38",
+    "sanskrit": "न हि ज्ञानेन सदृशं पवित्रमिह विद्यते।\nतत्स्वयं योगसंसिद्धः कालेनात्मनि विन्दति॥",
+    "translationEn": "Truly, there is nothing in this world as purifying as knowledge. One perfected in yoga finds it within oneself in due course of time.",
+    "translationHi": "इस संसार में ज्ञान के समान पवित्र करने वाला कुछ भी नहीं है। योग में सिद्ध हुआ व्यक्ति समय आने पर उसे स्वयं अपने भीतर पा लेता है।",
+    "keywords": "knowledge jnana purity study learning wisdom"
+   },
+   {
+    "chapter": 6,
+    "verse": "5",
+    "sanskrit": "उद्धरेदात्मनात्मानं नात्मानमवसादयेत्।\nआत्मैव ह्यात्मनो बन्धुरात्मैव रिपुरात्मनः॥",
+    "translationEn": "One should lift oneself by one's own self and not let oneself sink. For the self alone is one's friend, and the self alone is one's enemy.",
+    "translationHi": "मनुष्य को स्वयं अपना उद्धार करना चाहिए, स्वयं को गिरने नहीं देना चाहिए। क्योंकि मनुष्य स्वयं ही अपना मित्र है और स्वयं ही अपना शत्रु।",
+    "keywords": "self help motivation discipline depression confidence friend enemy mind"
+   },
+   {
+    "chapter": 6,
+    "verse": "35",
+    "sanskrit": "असंशयं महाबाहो मनो दुर्निग्रहं चलम्।\nअभ्यासेन तु कौन्तेय वैराग्येण च गृह्यते॥",
+    "translationEn": "Undoubtedly, O mighty-armed one, the mind is restless and hard to restrain. But through practice and detachment, O son of Kunti, it can be controlled.",
+    "translationHi": "हे महाबाहो! निःसंदेह मन चंचल और कठिनता से वश में होने वाला है, परंतु हे कौन्तेय! अभ्यास और वैराग्य से यह वश में होता है।",
+    "keywords": "mind control meditation focus concentration abhyasa vairagya restless"
+   },
+   {
+    "chapter": 9,
+    "verse": "22",
+    "sanskrit": "अनन्याश्चिन्तयन्तो मां ये जनाः पर्युपासते।\nतेषां नित्याभियुक्तानां योगक्षेमं वहाम्यहम्॥",
+    "translationEn": "To those who worship Me with single-minded devotion, ever united with Me, I bring what they lack and preserve what they have.",
+    "translationHi": "जो भक्त अनन्य भाव से मेरा चिंतन करते हुए मेरी उपासना करते हैं, उन नित्य युक्त भक्तों का योगक्षेम मैं स्वयं वहन करता हूँ।",
+    "keywords": "devotion bhakti faith surrender protection yogakshema"
+   },
+   {
+    "chapter": 9,
+    "verse": "26",
+    "sanskrit": "पत्रं पुष्पं फलं तोयं यो मे भक्त्या प्रयच्छति।\nतदहं भक्त्युपहृतमश्नामि प्रयतात्मनः॥",
+    "translationEn": "Whoever offers Me with devotion a leaf, a flower, a fruit or water, that offering of love from a pure-hearted person I accept.",
+    "translationHi": "जो कोई भक्ति से मुझे पत्ता, फूल, फल या जल अर्पित करता है, उस शुद्ध मन वाले भक्त की प्रेमपूर्वक दी गई भेंट को मैं स्वीकार करता हूँ।",
+    "keywords": "offering puja devotion bhakti flower simple worship"
+   },
+   {
+    "chapter": 12,
+    "verse": "13",
+    "sanskrit": "अद्वेष्टा सर्वभूतानां मैत्रः करुण एव च।\nनिर्ममो निरहङ्कारः समदुःखसुखः क्षमी॥",
+    "translationEn": "One who bears no ill will toward any being, who is friendly and compassionate, free from possessiveness and ego, balanced in pain and pleasure, and forgiving.",
+    "translationHi": "जो किसी प्राणी से द्वेष नहीं करता, सबका मित्र और दयालु है, ममता और अहंकार से रहित है, सुख-दुःख में सम और क्षमाशील है।",
+    "keywords": "compassion forgiveness kindness devotee qualities friendship ego"
+   },
+   {
+    "chapter": 18,
+    "verse": "66",
+    "sanskrit": "सर्वधर्मान्परित्यज्य मामेकं शरणं व्रज।\nअहं त्वा सर्वपापेभ्यो मोक्षयिष्यामि मा शुचः॥",
+    "translationEn": "Setting aside all dharmas, take refuge in Me alone. I shall free you from all sins; do not grieve.",
+    "translationHi": "सब धर्मों को त्यागकर केवल मेरी शरण में आ जाओ। मैं तुम्हें सब पापों से मुक्त कर दूँगा, शोक मत करो।",
+    "keywords": "surrender sharanagati refuge sin liberation moksha grief"
+   },
+   {
+    "chapter": 18,
+    "verse": "78",
+    "sanskrit": "यत्र योगेश्वरः कृष्णो यत्र पार्थो धनुर्धरः।\nतत्र श्रीर्विजयो भूतिर्ध्रुवा नीतिर्मतिर्मम॥",
+    "translationEn": "Wherever there is Krishna, the Lord of yoga, and Arjuna, the archer, there will surely be prosperity, victory, well-being and righteousness. This is my conviction.",
+    "translationHi": "जहाँ योगेश्वर श्रीकृष्ण हैं और जहाँ धनुर्धारी अर्जुन हैं, वहीं श्री, विजय, विभूति और अचल नीति है - ऐसा मेरा मत है।",
+    "keywords": "victory prosperity sanjaya conclusion krishna arjuna"
+   }
+  ]
+ }
+]

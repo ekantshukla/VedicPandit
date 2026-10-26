@@ -1,0 +1,12 @@
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+.vs/
+*.user
+node_modules/
+vedic-pandit-client/dist/
+vedic-pandit-client/.angular/
+src/VedicPandit.WebAPI/wwwroot/
+src/VedicPandit.WebAPI/data/

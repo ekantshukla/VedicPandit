@@ -1,0 +1,19 @@
+# Render blueprint: https://render.com/docs/blueprint-spec
+# In Render: New -> Blueprint -> pick this repo. It builds the Dockerfile and asks for your Claude API key.
+services:
+  - type: web
+    name: vedic-pandit
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free            # sleeps after 15 min idle; first request then takes ~1 min. Starter plan stays awake.
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: Claude__ApiKey          # from console.anthropic.com -> API keys
+        sync: false
+      - key: Claude__Model
+        value: claude-sonnet-5-5
+      - key: CORS_ORIGINS            # the GitHub Pages site and anything else that calls this API
+        value: https://ekantshukla.github.io
+      - key: Admin__ApiKey           # protects POST /api/scriptures/import
+        generateValue: true

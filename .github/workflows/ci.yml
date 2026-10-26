@@ -1,0 +1,21 @@
+# Builds the .NET backend and runs its tests (panchang accuracy against Drik Panchang, content, PanditJi's tool loop).
+name: Build and test API
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'tests/**', 'VedicPandit.sln', '.github/workflows/ci.yml']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet build VedicPandit.sln -c Release
+      - name: Tests
+        run: dotnet run --project tests/VedicPandit.Tests -c Release --no-build

@@ -1,0 +1,67 @@
+[
+ {
+  "code": "upanishads",
+  "name": "Upanishads",
+  "nameDevanagari": "उपनिषद्",
+  "category": "Upanishad (Vedanta)",
+  "description": "Philosophical texts concluding the Vedas, exploring Atman and Brahman.",
+  "verses": [
+   {
+    "chapter": 0,
+    "verse": "Isha 1",
+    "sanskrit": "ईशा वास्यमिदं सर्वं यत्किञ्च जगत्यां जगत्।\nतेन त्यक्तेन भुञ्जीथा मा गृधः कस्यस्विद्धनम्॥",
+    "translationEn": "All this, whatever moves in this moving world, is pervaded by the Lord. Enjoy through renunciation; do not covet anyone's wealth.",
+    "translationHi": "इस जगत में जो कुछ भी है, वह सब ईश्वर से व्याप्त है। त्यागपूर्वक भोग करो, किसी के धन का लोभ मत करो।",
+    "keywords": "isha god everywhere renunciation greed wealth contentment"
+   },
+   {
+    "chapter": 0,
+    "verse": "Brihadaranyaka 1.3.28",
+    "sanskrit": "असतो मा सद्गमय। तमसो मा ज्योतिर्गमय। मृत्योर्मा अमृतं गमय॥",
+    "translationEn": "Lead me from the unreal to the real, from darkness to light, from death to immortality.",
+    "translationHi": "मुझे असत्य से सत्य की ओर, अंधकार से प्रकाश की ओर, मृत्यु से अमरता की ओर ले चलो।",
+    "keywords": "prayer truth light immortality pavamana"
+   },
+   {
+    "chapter": 0,
+    "verse": "Chandogya 6.8.7",
+    "sanskrit": "स य एषोऽणिमैतदात्म्यमिदं सर्वं तत्सत्यं स आत्मा तत्त्वमसि श्वेतकेतो॥",
+    "translationEn": "That which is the subtlest essence, the whole world has it as its Self. That is the truth, that is the Atman. That thou art, O Shvetaketu.",
+    "translationHi": "वह जो सूक्ष्मतम तत्व है, यह सारा जगत उसी का स्वरूप है। वही सत्य है, वही आत्मा है। हे श्वेतकेतु, तुम वही हो।",
+    "keywords": "tat tvam asi mahavakya atman brahman oneness advaita"
+   },
+   {
+    "chapter": 0,
+    "verse": "Mandukya 2",
+    "sanskrit": "सर्वं ह्येतद् ब्रह्मायमात्मा ब्रह्म सोऽयमात्मा चतुष्पात्॥",
+    "translationEn": "All this is indeed Brahman. This Self is Brahman. This Self has four quarters.",
+    "translationHi": "यह सब कुछ ब्रह्म ही है। यह आत्मा ब्रह्म है। यह आत्मा चार पादों वाली है।",
+    "keywords": "ayam atma brahma mahavakya om consciousness"
+   },
+   {
+    "chapter": 0,
+    "verse": "Katha 1.3.14",
+    "sanskrit": "उत्तिष्ठत जाग्रत प्राप्य वरान्निबोधत।\nक्षुरस्य धारा निशिता दुरत्यया दुर्गं पथस्तत्कवयो वदन्ति॥",
+    "translationEn": "Arise, awake, and learn by approaching the wise. The sages say the path is as sharp as a razor's edge, difficult to tread.",
+    "translationHi": "उठो, जागो और श्रेष्ठ पुरुषों के पास जाकर ज्ञान प्राप्त करो। ज्ञानी कहते हैं कि यह मार्ग छुरे की तीक्ष्ण धार के समान दुर्गम है।",
+    "keywords": "arise awake motivation vivekananda effort path wisdom"
+   },
+   {
+    "chapter": 0,
+    "verse": "Mundaka 3.1.6",
+    "sanskrit": "सत्यमेव जयते नानृतं सत्येन पन्था विततो देवयानः।\nयेनाक्रमन्त्यृषयो ह्याप्तकामा यत्र तत् सत्यस्य परमं निधानम्॥",
+    "translationEn": "Truth alone triumphs, not falsehood. By truth the divine path is laid out, by which the sages, their desires fulfilled, ascend to the supreme abode of Truth.",
+    "translationHi": "सत्य की ही विजय होती है, असत्य की नहीं। सत्य से ही देवयान मार्ग विस्तृत है, जिससे पूर्णकाम ऋषि सत्य के परम धाम को प्राप्त होते हैं।",
+    "keywords": "satyameva jayate truth honesty victory national motto"
+   },
+   {
+    "chapter": 0,
+    "verse": "Taittiriya 1.11.2",
+    "sanskrit": "मातृदेवो भव। पितृदेवो भव। आचार्यदेवो भव। अतिथिदेवो भव॥",
+    "translationEn": "Treat your mother as divine. Treat your father as divine. Treat your teacher as divine. Treat your guest as divine.",
+    "translationHi": "माता को देवता मानो। पिता को देवता मानो। आचार्य को देवता मानो। अतिथि को देवता मानो।",
+    "keywords": "parents mother father teacher guest atithi respect family"
+   }
+  ]
+ }
+]
