@@ -90,28 +90,48 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.6 6.1 6.4.5-4.9 4.2 1.5 6.4L12 16.3l-5.6 3.4 1.5-6.4L3 9.1l6.4-.5z"/></svg>
       <span>{{ i18n.t('nav.rashifal') }}</span>
     </a>
-    <a routerLink="/muhurat" routerLinkActive="on">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
-      <span>{{ i18n.t('nav.muhurat') }}</span>
-    </a>
-    <a routerLink="/learn" [class.on]="inMantra()">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>
-      <span>{{ i18n.t('nav.learn') }}</span>
-    </a>
     <a routerLink="/granth" routerLinkActive="on">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>
       <span>{{ i18n.t('nav.granth') }}</span>
     </a>
-    <a routerLink="/samagri" routerLinkActive="on">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h16l-1.6 8.2A2 2 0 0 1 16.4 21H7.6a2 2 0 0 1-2-1.8z"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><path d="M12 3.5c.8 1 1.2 1.8 1.2 2.4a1.2 1.2 0 0 1-2.4 0c0-.6.4-1.4 1.2-2.4z"/></svg>
-      <span>{{ i18n.t('nav.samagri') }}</span>
-    </a>
+    <button type="button" class="tab-more" [class.on]="more() || inMore()" (click)="more.set(!more())" [attr.aria-expanded]="more()" aria-controls="moresheet">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+      <span>{{ i18n.t('more') }}</span>
+    </button>
   </nav>
 
+  @if (more()) {
+    <div class="scrim sheet-scrim" (click)="more.set(false)"></div>
+    <nav id="moresheet" class="sheet" [attr.aria-label]="i18n.t('more')" (keydown.escape)="more.set(false)">
+      <span class="grip" aria-hidden="true"></span>
+      <a routerLink="/ask" class="sheet-ai" (click)="more.set(false)">
+        <vp-bot-avatar [size]="40" />
+        <span><b>✨ {{ i18n.t('askAiShort') }}</b><small>{{ i18n.t('botHello') }}</small></span>
+      </a>
+      <div class="sheet-grid">
+        <a routerLink="/muhurat" routerLinkActive="on" (click)="more.set(false)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span>{{ i18n.t('nav.muhurat') }}</span></a>
+        <a routerLink="/learn" [class.on]="inMantra()" (click)="more.set(false)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg><span>{{ i18n.t('nav.mantra') }}</span></a>
+        <a routerLink="/samagri" routerLinkActive="on" (click)="more.set(false)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h16l-1.6 8.2A2 2 0 0 1 16.4 21H7.6a2 2 0 0 1-2-1.8z"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>{{ i18n.t('nav.samagri') }}</span></a>
+        <a routerLink="/granth/t/gita" (click)="more.set(false)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M9 8h7M9 11h5"/></svg><span>{{ i18n.t('libGita') }}</span></a>
+        <a routerLink="/dakshina" routerLinkActive="on" (click)="more.set(false)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1.6 2.2 2.4 3.9 2.4 5.2A2.4 2.4 0 0 1 12 10.6a2.4 2.4 0 0 1-2.4-2.4C9.6 6.9 10.4 5.2 12 3Z"/><path d="M3 14h18c-.6 3.6-4.2 6-9 6s-8.4-2.4-9-6Z"/></svg><span>{{ i18n.t('nav.dakshina') }}</span></a>
+        @if (!native.isApp) {
+          <button type="button" (click)="more.set(false); getApp.set(true)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M12 7v7M9 11.5l3 3 3-3"/></svg><span>{{ i18n.t('getApp') }}</span></button>
+        }
+      </div>
+    </nav>
+  }
+
   @if (!onAsk()) {
-    @if (!drawer()) {
+    @if (!drawer() && !more()) {
       <button type="button" class="bot-fab" (click)="openBot()" [attr.aria-expanded]="drawer()" aria-controls="botwin" [attr.aria-label]="i18n.t('openChat')">
         @if (teaser()) { <span class="teaser" role="status">{{ i18n.t('botHello') }}</span> }
+        @else { <span class="fab-label">✨ {{ i18n.t('askAiShort') }}</span> }
         <span class="ring"><vp-bot-avatar [size]="58" [animate]="true" /></span>
         <span class="live" [class.ai]="api.ai()" aria-hidden="true"></span>
       </button>
@@ -187,6 +207,10 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
     .credit .sig:hover { color: var(--sindoor); text-decoration: underline; text-decoration-color: var(--haldi); }
 
     .tabbar { display: none; }
+    .sheet, .sheet-scrim { display: none; }
+    .fab-label { background: var(--ink); color: #fff; font-weight: 700; font-size: .92rem; padding: 9px 14px; border-radius: 999px;
+      box-shadow: 0 8px 22px rgba(29,23,54,.28); white-space: nowrap; border: 2px solid var(--haldi); }
+    .bot-fab:hover .fab-label { background: #2A2250; }
 
     .bot-fab { position: fixed; right: calc(18px + env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 40;
       border: 0; background: none; padding: 0; cursor: pointer; display: flex; align-items: center; gap: 10px; }
@@ -225,7 +249,23 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
     @media (max-width: 1024px) {
       .desk { display: none; }
       .bot-fab { bottom: calc(78px + env(safe-area-inset-bottom, 0px)); right: calc(14px + env(safe-area-inset-right, 0px)); }
-      .botwin { left: 0; right: 0; bottom: 0; width: auto; height: 86vh; height: 86dvh; border-radius: 22px 22px 0 0; }
+      .botwin { left: 0; right: 0; bottom: 0; width: auto; height: 90vh; height: 90dvh; border-radius: 22px 22px 0 0; }
+      .fab-label { font-size: .84rem; padding: 7px 12px; }
+      .sheet-scrim { display: block; z-index: 41; }
+      .sheet { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 42; background: var(--card); border-radius: 22px 22px 0 0;
+        padding: 8px max(16px, env(safe-area-inset-right, 0px)) calc(80px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+        box-shadow: 0 -12px 40px rgba(29,23,54,.25); animation: rise .2s ease-out; }
+      .grip { display: block; width: 40px; height: 4px; border-radius: 2px; background: var(--line); margin: 4px auto 12px; }
+      .sheet-ai { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; text-decoration: none;
+        background: var(--ink); color: #fff; margin-bottom: 12px; }
+      .sheet-ai b { display: block; font-size: 1.02rem; }
+      .sheet-ai small { display: block; color: rgba(246,244,250,.75); font-size: .82rem; }
+      .sheet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .sheet-grid a, .sheet-grid button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 80px;
+        border: 1px solid var(--line); border-radius: 14px; background: var(--paper); color: var(--ink); text-decoration: none; font: inherit;
+        font-size: .86rem; font-weight: 600; cursor: pointer; padding: 8px 4px; text-align: center; }
+      .sheet-grid a.on { border-color: var(--sindoor); color: var(--sindoor); }
+      .sheet-grid svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
       .bar { flex-wrap: wrap; gap: 8px 12px; padding-block: 10px; min-height: 0; }
       .brand { flex: 1; order: 0; }
       .acts { order: 1; }
@@ -241,23 +281,24 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       .foot { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
 
       .tabbar {
-        display: grid; grid-template-columns: repeat(7, 1fr);
+        display: grid; grid-template-columns: repeat(5, 1fr);
         position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
         background: var(--card); border-top: 1px solid var(--line);
         padding: 6px max(4px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px));
         box-shadow: 0 -6px 20px rgba(29,23,54,.08);
       }
-      .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 2px; text-decoration: none;
+      .tabbar a, .tabbar .tab-more { display: flex; border: 0; background: none; font: inherit; cursor: pointer; flex-direction: column; align-items: center; gap: 2px; padding: 4px 2px; text-decoration: none;
                   color: var(--muted); font-size: .72rem; font-weight: 500; border-radius: 10px; min-height: 52px; justify-content: center; }
       .tabbar a span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .tabbar svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-      .tabbar a.on { color: var(--sindoor); }
-      .tabbar a.on svg { stroke-width: 2.2; }
+      .tabbar a.on, .tabbar .tab-more.on { color: var(--sindoor); }
+      .tabbar a.on svg, .tabbar .tab-more.on svg { stroke-width: 2.2; }
+      .tabbar .tab-more span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
       .tabbar { max-width: 100%; }
     }
-    @media (max-width: 430px) {
-      .tabbar a { font-size: .64rem; padding-inline: 0; }
-      .tabbar svg { width: 21px; height: 21px; }
+    @media (max-width: 600px) {
+      /* phones: the chat opens full screen so the keyboard never hides the input */
+      .botwin { top: 0; height: auto; border-radius: 0; padding-top: env(safe-area-inset-top, 0px); }
     }
     @media (max-width: 1024px) and (min-width: 600px) { .tabbar { padding-inline: max(10%, env(safe-area-inset-left, 0px)); } }
     @media (max-width: 380px) {
@@ -289,13 +330,17 @@ export class AppComponent {
   readonly native = inject(NativeService);
   readonly teaser = signal(false);
 
-  openBot() { this.teaser.set(false); this.drawer.set(true); }
+  openBot() { this.teaser.set(false); this.more.set(false); this.drawer.set(true); }
+  readonly more = signal(false);
+  /** The current page lives in the More sheet (the tab bar shows only Today, Panchang, Rashifal, Granth). */
+  inMore() { const u = this.url(); return ['/muhurat', '/learn', '/mantra', '/samagri', '/dakshina'].some(p => u.startsWith(p)); }
 
   constructor() {
     const router = inject(Router);
     // Android back button: close what's open, else go back a page, else minimise the app
     this.native.onBack(() => {
       if (this.getApp()) { this.getApp.set(false); return true; }
+      if (this.more()) { this.more.set(false); return true; }
       if (this.drawer()) { this.drawer.set(false); return true; }
       if (router.url !== '/' && router.url !== '') { history.back(); return true; }
       return false;
@@ -304,6 +349,7 @@ export class AppComponent {
       this.onAsk.set((e as NavigationEnd).urlAfterRedirects.startsWith('/ask'));
       this.url.set((e as NavigationEnd).urlAfterRedirects);
       this.drawer.set(false);
+      this.more.set(false);
       window.scrollTo({ top: 0 });
     });
     this.api.isOnline();

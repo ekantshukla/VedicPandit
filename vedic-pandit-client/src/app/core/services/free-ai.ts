@@ -13,6 +13,7 @@ import { rashifalContext, rashiIndex, RASHIS } from '../astro/rashifal';
 import { findMantra, loadMantras } from './mantra-search';
 import { localSearch } from './api.service';
 import { FOLLOWUP_RULE, stripFollowups } from './followups';
+import { findText, readPassage } from './granth-library';
 
 export interface AiEvent { type: 'delta' | 'card' | 'status' | 'done' | 'error'; text?: string; cardType?: string; payload?: unknown; tool?: string; message?: string; }
 export interface AiContext { language: string; today: string; lat: number; lng: number; tz: string; tradition: string; placeName: string; }
@@ -25,7 +26,7 @@ const LANGS: Record<string, string> = {
 };
 
 function systemPrompt(c: AiContext): string {
-  return `You are "PanditJi" (पंडित जी), a warm, learned and humble Vedic scholar and friendly guide inside the Vedic Pandit app.
+  return `You are "AI PanditJi" (AI पंडित जी), a warm, learned and humble Vedic scholar and friendly guide inside the Vedic Pandit app (website and Android app by Ekant Shukla).
 You answer ANY question the user asks — dharma, scriptures, rituals, festivals, panchang, muhurat, mantras, rashifal and jyotish,
 and also everyday questions (general knowledge, studies, health basics, cooking, technology, life advice, maths, writing help…).
 Never refuse just because a question is not about religion; answer it helpfully like a wise, well-read family elder would.
@@ -41,6 +42,7 @@ TOOLS (use them, never guess these):
 - get_rashifal: for any horoscope / rashifal / "aaj ka din kaisa rahega" question about a rashi. If the user has not said their rashi, ask for it (or their name's first letter) in one short line.
 - search_scriptures: for what the Gita or Upanishads say. Quote ONLY verses the tool returns, with their exact citation, e.g. (Bhagavad Gita 2.47). If nothing relevant is returned, answer from general traditional understanding and say so. NEVER invent a shloka or a verse number.
 - get_mantra: for a mantra, stotra, chalisa or aarti. The app shows the full text with a chant-along player.
+- read_granth: to quote or explain a passage from the Vedas, Upanishads, Mahabharata (critical edition), Valmiki Ramayana, Ramcharitmanas, the Puranas, Ayurveda (Charaka, Sushruta), Natya Shastra, Arthashastra or Yoga Sutra. Fetch the exact Sanskrit before quoting it, and quote only what the tool returns, with its reference. The library has the original text only: translate and explain it yourself.
 
 STYLE: Speak like a kind family pandit — respectful ("aap"), clear and concise. Plain text with short paragraphs; no tables, no markdown symbols like ** or #, because replies may be read aloud.
 Present different sampradaya views fairly; never disparage any tradition or religion.
@@ -66,6 +68,10 @@ const TOOLS = [
     ['rashi']),
   fn('search_scriptures', 'Search the verse library (complete Bhagavad Gita, Upanishads). Topic keywords in English or a reference like "Gita 2.47".',
     { query: { type: 'string' } }, ['query']),
+  fn('read_granth', 'Read the original text of a passage from the Granth library. Chapter ids: mahabharata "parva.adhyaya" (Bhagavad Gita = 6.23–6.40, e.g. 6.24 is Gita ch. 2); valmiki-ramayana "kanda.sarga"; rigveda "mandala.sukta"; atharvaveda "kanda.sukta"; shukla-yajurveda "adhyaya"; bhagavata-purana "skandha.adhyaya"; vishnu/garuda/kurma/narada/brahmanda/linga-purana "part.adhyaya"; other puranas "adhyaya"; ramcharitmanas "kanda.doha-number"; yoga-sutra "pada"; katha/prashna/shvetashvatara-upanishad "adhyaya" or "valli"; chandogya/brihadaranyaka "adhyaya.khanda"; charaka/sushruta "sthana.adhyaya"; arthashastra "adhikarana.adhyaya".',
+    { text: { type: 'string', description: 'mahabharata, valmiki-ramayana, ramcharitmanas, rigveda, samaveda, shukla-yajurveda, atharvaveda, katha-upanishad, prashna-upanishad, shvetashvatara-upanishad, aitareya-upanishad, chandogya-upanishad, brihadaranyaka-upanishad, kaivalya-upanishad, mandukya-karika, bhagavata-purana, vishnu-purana, shiva-purana, markandeya-purana, brahma-purana, brahmanda-purana, garuda-purana, kurma-purana, linga-purana, matsya-purana, narada-purana, vamana-purana, skanda-purana, agni-purana, narasimha-purana, devi-gita, charaka-samhita, sushruta-samhita, natya-shastra, dhanurveda, arthashastra, yoga-sutra' },
+      chapter: { type: 'string', description: 'Chapter id, e.g. "6.24"' }, verse: { type: 'string', description: 'Verse number (optional)' } },
+    ['text', 'chapter']),
   fn('get_mantra', 'Look up a mantra, stotra, chalisa or aarti by name, deity or purpose (e.g. "gayatri", "hanuman chalisa", "shiva tandava").',
     { query: { type: 'string' } }, ['query']),
 ];
@@ -117,6 +123,16 @@ async function runTool(name: string, args: Record<string, unknown>, c: AiContext
         result: hits.map(v => `[${v.citation}]\n${v.sanskrit}\nEN: ${v.translationEn}\nHI: ${v.translationHi}`).join('\n\n'),
         card: { type: 'verses', payload: hits },
       };
+    }
+    case 'read_granth': {
+      const t = await findText(String(args['text'] ?? '')).catch(() => undefined);
+      if (!t) return { result: 'That text is not in the library. Answer from general knowledge and say the exact verse could not be checked.' };
+      const verse = args['verse'] !== undefined && args['verse'] !== '' ? String(args['verse']) : undefined;
+      const r = await readPassage(t.code, String(args['chapter'] ?? '1'), verse, 2).catch(() => null);
+      if (!r) return { result: `Chapter "${args['chapter']}" not found in ${t.name}. Check the chapter id format in the tool description.` };
+      let body = r.verses.map(v => `[${t.name} ${r.chapter}${/^\d/.test(v[0]) ? '.' + v[0] : ' ' + v[0]}]\n${v[1]}`).join('\n\n');
+      if (body.length > 6000) body = body.slice(0, 6000) + `\n… (chapter continues; ask for a verse number to read further)`;
+      return { result: `${t.name} (${t.src ?? ''})\n${body}`, card: { type: 'granth', payload: { code: t.code, name: t.name, nameDev: t.nameDev, chapter: r.chapter, verse, verses: r.verses.slice(0, 5) } } };
     }
     case 'get_mantra': {
       const q = String(args['query'] ?? '');

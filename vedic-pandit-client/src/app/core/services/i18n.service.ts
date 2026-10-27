@@ -17,6 +17,15 @@ export const LANGS: Lang[] = [
 type Dict = Record<string, string>;
 
 const en: Dict = {
+  dChoose: 'Choose your deity', dChooseSub: 'Mantras, stotras, chalisa and aarti of each deity, with their day and festivals.',
+  dListen: 'Listen to a recitation', dNone: 'Nothing here yet.', dEvery: 'For every puja', dAsk: 'Ask AI PanditJi about {d}',
+  dNote: '▶ opens a recitation on YouTube for popular texts not yet in the library.',
+  libIntro: 'The Vedas, Upanishads, Upavedas, Mahabharata, Ramayana, Puranas and more, in the original. Tap ✨ on any verse and AI PanditJi explains it.',
+  libCategories: 'Categories', libTranslated: 'Gita & Upanishads with translation', libTranslatedSub: 'Bhagavad Gita (all 701 verses) and Upanishads with English and Hindi meaning.',
+  libWithTr: 'with translation', libSoon: 'Coming soon', libChapters: 'chapters', libBook: 'Book', libExplain: 'Explain', libPrev: 'Previous', libNext: 'Next',
+  libReadChapter: 'Read the whole chapter', libOffline: 'The library could not be loaded. Check your internet connection and try again.',
+  libCredit: 'Original texts from public digital editions: BORI critical edition of the Mahabharata and Vedic Heritage Portal texts (via DharmicData, ODbL), GRETIL (Göttingen) and sanskrit/raw_etexts. Explanations by AI PanditJi are AI-generated; check important points with a teacher.',
+  aiAnything: 'answers any question, in your language', askAiShort: 'Ask AI PanditJi', more: 'More', libGita: 'Bhagavad Gita',
   askNext: 'You could ask next',
   'nav.rashifal': 'Rashifal', rashifalTitle: 'Rashifal', rashifalIntro: 'Your day, week and month by Moon sign, worked out from where the Moon and Sun really are — not copied from a newspaper.',
   rfToday: 'Today', rfTomorrow: 'Tomorrow', rfWeek: 'This week', rfMonth: 'This month', rfPick: 'Choose your rashi',
@@ -32,13 +41,13 @@ const en: Dict = {
   rfNote: 'General guidance by Moon sign (Chandra gochar, Lahiri ayanamsa) for your location. A personal reading needs your full birth chart.',
   ex5: 'What does today look like for Mesha rashi?',
   guruVoice: 'In Guru ji\'s voice', textComing: 'Full text coming soon. Listen to Guru ji and sing along.',
-  'nav.learn': 'Learn', 'nav.samagri': 'Samagri', learnTitle: 'Learn mantras', learnIntro: 'Every mantra, stotra, chalisa and aarti: the daily puja in order, then by deity. Tap one to chant along.',
+  'nav.learn': 'Learn', 'nav.samagri': 'Samagri', learnTitle: 'Learn mantras', learnIntro: 'Choose a deity to see their mantras, stotras, chalisa and aarti, or follow the daily puja in order. Tap any text to chant along.',
   dailyPuja: 'Daily puja, step by step', dailyPujaSub: 'The mantras of a simple home puja, from waking to sleep.', nothingFound: 'Nothing found.',
   samagriTitle: 'Puja samagri', samagriIntro: 'What to keep ready for each puja. Tick items off while shopping and share the list.',
   shareWhatsApp: 'Share on WhatsApp', copyList: 'Copy list', clearTicks: 'Clear ticks', samagriNote: 'Common practice; your family purohit may add or change items. Ticks are saved on this device.',
   listenSpeak: 'Speak now… PanditJi is listening', micDenied: 'Microphone permission is off. Allow it in Settings → Apps → Vedic Pandit → Permissions.', micError: 'Could not hear you. Tap the mic and try again.',
   rightNow: 'Right now', pakshaDay: 'Day {n} of 15, {p}', endsAt: 'ends', nowCaption: 'The bars show how much of each limb has passed. Tithi changes every 12° the Moon gains on the Sun; nakshatra and yoga every 13°20′.',
-  tradition: 'Sampradaya', botHello: 'Namaste! Ask me anything 🙏', botOnline: 'Online · answers any question', botBuiltIn: 'Built-in answers (server not connected)',
+  tradition: 'Sampradaya', botHello: 'Ask AI PanditJi anything 🙏', botOnline: 'Online · answers any question', botBuiltIn: 'Built-in answers (server not connected)',
   fullScreen: 'Open full screen', pickLocation: 'Choose your location', inIndia: 'India', outsideIndia: 'Outside India', state: 'State / UT', district: 'District',
   chooseState: 'Choose state', chooseDistrict: 'Choose district', tirths: 'Tirth kshetras',
   locNote: 'Sunrise and tithi are calculated for the centre of the district. District list: DataMeet (CC BY 2.5 India), names updated to today’s.',
@@ -81,7 +90,7 @@ const en: Dict = {
   creditPre: 'Crafted with devotion by ', creditName: 'Ekant Shukla',
   untilT: 'until {t}', 
   appName: 'Vedic Pandit', tagline: 'Panchang, muhurat, mantra and scripture — calculated for where you are.',
-  'nav.panchang': 'Panchang', 'nav.muhurat': 'Muhurat', 'nav.mantra': 'Mantra', 'nav.granth': 'Granth', 'nav.ask': 'Ask PanditJi',
+  'nav.panchang': 'Panchang', 'nav.muhurat': 'Muhurat', 'nav.mantra': 'Mantra', 'nav.granth': 'Granth', 'nav.ask': 'Ask AI PanditJi',
   today: 'Today', tithi: 'Tithi', nakshatra: 'Nakshatra', yoga: 'Yoga', karana: 'Karana', vara: 'Vara', paksha: 'Paksha', masa: 'Masa',
   samvat: 'Vikram Samvat', ritu: 'Ritu', ayana: 'Ayana', sunrise: 'Sunrise', sunset: 'Sunset', sunRashi: 'Sun sign', moonRashi: 'Moon sign',
   rahuKaal: 'Rahu Kaal', yamaganda: 'Yamaganda', gulika: 'Gulika Kaal', abhijit: 'Abhijit Muhurat', brahma: 'Brahma Muhurat',
@@ -90,7 +99,7 @@ const en: Dict = {
   skyCaption: 'The tithi is the angle between Moon and Sun. Each 12° is one tithi.',
   moonIn: 'Moon in', sunIn: 'Sun in',
   askPlaceholder: 'Ask about a shloka, a festival, today\'s Rahu Kaal…', ask: 'Ask', listening: 'Listening… tap to stop', speak: 'Speak your question',
-  readAloud: 'Read aloud', stopReading: 'Stop', thinking: 'PanditJi is consulting the panchang…',
+  readAloud: 'Read aloud', stopReading: 'Stop', thinking: 'AI PanditJi is thinking…',
   ex1: 'What does the Gita say about anger?', ex2: 'Is tomorrow good for buying a car?', ex3: 'Teach me to pronounce the Mahamrityunjaya mantra',
   ex4: 'When is the next Ekadashi?',
   muhuratTitle: 'Find a muhurat', muhuratIntro: 'Pick the occasion and a date range. Windows avoid Rahu Kaal, Yamaganda, Gulika and Bhadra.',
@@ -106,11 +115,20 @@ const en: Dict = {
   offline: 'PanditJi is answering from his built-in library: panchang, muhurat, mantras and Gita verses. Open questions need the PanditJi server.',
   loading: 'Loading…', error: 'Could not load. Check your connection and try again.',
   disclaimer: 'Calculated with Lahiri ayanamsa for the selected location. For major samskaras, confirm with your family purohit.',
-  chatEmpty: 'Namaste. Ask me anything: your rashifal, today\'s panchang, a muhurat, a mantra, the Gita — or any question at all.',
-  you: 'You', panditji: 'PanditJi', openChat: 'Ask PanditJi', closeChat: 'Close',
+  chatEmpty: 'Namaste, I am AI PanditJi. Ask me anything: your rashifal, today\'s panchang, a muhurat, a mantra, the Gita — or any question at all.',
+  you: 'You', panditji: 'AI PanditJi', openChat: 'Ask AI PanditJi', closeChat: 'Close',
 };
 
 const hi: Dict = {
+  dChoose: 'अपने आराध्य चुनें', dChooseSub: 'हर देवता के मंत्र, स्तोत्र, चालीसा और आरती, उनके वार और पर्व सहित।',
+  dListen: 'पाठ सुनें', dNone: 'अभी यहाँ कुछ नहीं है।', dEvery: 'हर पूजा के लिए', dAsk: '{d} के बारे में AI पंडित जी से पूछें',
+  dNote: '▶ जो लोकप्रिय पाठ अभी संग्रह में नहीं हैं, उनका पाठ YouTube पर खुलता है।',
+  libIntro: 'वेद, उपनिषद, उपवेद, महाभारत, रामायण, पुराण और भी बहुत कुछ, मूल पाठ में। किसी भी श्लोक पर ✨ दबाएँ, AI पंडित जी अर्थ समझाएँगे।',
+  libCategories: 'श्रेणियाँ', libTranslated: 'गीता और उपनिषद अनुवाद सहित', libTranslatedSub: 'श्रीमद्भगवद्गीता (सभी 701 श्लोक) और उपनिषद, हिन्दी व अंग्रेज़ी अर्थ सहित।',
+  libWithTr: 'अनुवाद सहित', libSoon: 'जल्द आ रहा है', libChapters: 'अध्याय', libBook: 'ग्रंथ भाग', libExplain: 'अर्थ समझें', libPrev: 'पिछला', libNext: 'अगला',
+  libReadChapter: 'पूरा अध्याय पढ़ें', libOffline: 'ग्रंथालय लोड नहीं हो सका। इंटरनेट जाँचकर फिर प्रयास करें।',
+  libCredit: 'मूल पाठ सार्वजनिक डिजिटल संस्करणों से: महाभारत का BORI समीक्षित संस्करण और वैदिक हेरिटेज पोर्टल (DharmicData, ODbL के माध्यम से), GRETIL (गॉटिंगन) और sanskrit/raw_etexts। AI पंडित जी की व्याख्या AI द्वारा है; महत्वपूर्ण बातें गुरु से जाँच लें।',
+  aiAnything: 'हर प्रश्न का उत्तर, आपकी भाषा में', askAiShort: 'AI पंडित जी से पूछें', more: 'और', libGita: 'भगवद्गीता',
   askNext: 'आगे पूछ सकते हैं',
   'nav.rashifal': 'राशिफल', rashifalTitle: 'राशिफल', rashifalIntro: 'चंद्र राशि के अनुसार आपका दिन, सप्ताह और महीना — चंद्रमा और सूर्य की वास्तविक स्थिति से गणना, अख़बार से नकल नहीं।',
   rfToday: 'आज', rfTomorrow: 'कल', rfWeek: 'साप्ताहिक', rfMonth: 'मासिक', rfPick: 'अपनी राशि चुनें',
@@ -126,13 +144,13 @@ const hi: Dict = {
   rfNote: 'आपके स्थान के लिए चंद्र राशि (चंद्र गोचर, लाहिड़ी अयनांश) से सामान्य मार्गदर्शन। व्यक्तिगत फल के लिए पूरी जन्म कुंडली देखनी होती है।',
   ex5: 'मेष राशि का आज का राशिफल बताइए',
   guruVoice: 'गुरु जी की वाणी में', textComing: 'पूरा पाठ जल्द ही। गुरु जी को सुनें और साथ में गाएँ।',
-  'nav.learn': 'मंत्र सीखें', 'nav.samagri': 'सामग्री', learnTitle: 'मंत्र सीखें', learnIntro: 'सभी मंत्र, स्तोत्र, चालीसा और आरती: पहले क्रम से नित्य पूजा, फिर देवता के अनुसार। किसी पर दबाएँ और साथ में जप करें।',
+  'nav.learn': 'मंत्र सीखें', 'nav.samagri': 'सामग्री', learnTitle: 'मंत्र सीखें', learnIntro: 'अपने आराध्य चुनें और उनके मंत्र, स्तोत्र, चालीसा व आरती देखें, या क्रम से नित्य पूजा करें। किसी भी पाठ पर दबाकर साथ-साथ जप करें।',
   dailyPuja: 'नित्य पूजा, क्रम से', dailyPujaSub: 'घर की सरल पूजा के मंत्र, जागने से सोने तक।', nothingFound: 'कुछ नहीं मिला।',
   samagriTitle: 'पूजा सामग्री', samagriIntro: 'हर पूजा के लिए क्या तैयार रखें। ख़रीदते समय टिक करें और सूची भेजें।',
   shareWhatsApp: 'WhatsApp पर भेजें', copyList: 'सूची कॉपी करें', clearTicks: 'टिक हटाएँ', samagriNote: 'सामान्य परंपरा; आपके कुल पुरोहित कुछ बदल या जोड़ सकते हैं। टिक इसी फ़ोन में सहेजे जाते हैं।',
   listenSpeak: 'बोलिए… पंडित जी सुन रहे हैं', micDenied: 'माइक्रोफ़ोन की अनुमति बंद है। Settings → Apps → Vedic Pandit → Permissions में चालू करें।', micError: 'आवाज़ सुनाई नहीं दी। माइक दबाकर फिर बोलें।',
   rightNow: 'इस समय', pakshaDay: '{p}, दिन {n} / 15', endsAt: 'समाप्ति', nowCaption: 'पट्टियाँ दिखाती हैं कि हर अंग कितना बीत चुका है। चंद्रमा सूर्य से हर 12° आगे बढ़ने पर तिथि बदलती है; नक्षत्र और योग हर 13°20′ पर।',
-  tradition: 'संप्रदाय', botHello: 'नमस्ते! कुछ भी पूछिए 🙏', botOnline: 'ऑनलाइन · हर प्रश्न का उत्तर', botBuiltIn: 'अंतर्निहित उत्तर (सर्वर जुड़ा नहीं)',
+  tradition: 'संप्रदाय', botHello: 'AI पंडित जी से कुछ भी पूछिए 🙏', botOnline: 'ऑनलाइन · हर प्रश्न का उत्तर', botBuiltIn: 'अंतर्निहित उत्तर (सर्वर जुड़ा नहीं)',
   fullScreen: 'पूरी स्क्रीन पर खोलें', pickLocation: 'अपना स्थान चुनें', inIndia: 'भारत', outsideIndia: 'भारत के बाहर', state: 'राज्य / केंद्रशासित प्रदेश', district: 'ज़िला',
   chooseState: 'राज्य चुनें', chooseDistrict: 'ज़िला चुनें', tirths: 'तीर्थ क्षेत्र',
   locNote: 'सूर्योदय और तिथि ज़िले के केंद्र के लिए निकाले जाते हैं। ज़िला सूची: DataMeet (CC BY 2.5 India), नाम आज के अनुसार।',
@@ -175,7 +193,7 @@ const hi: Dict = {
   creditPre: 'श्रद्धा और भक्ति से रचित — ', creditName: 'एकांत शुक्ल',
   untilT: '{t} तक', 
   appName: 'वैदिक पंडित', tagline: 'पंचांग, मुहूर्त, मंत्र और शास्त्र — आपके स्थान के अनुसार गणना।',
-  'nav.panchang': 'पंचांग', 'nav.muhurat': 'मुहूर्त', 'nav.mantra': 'मंत्र', 'nav.granth': 'ग्रंथ', 'nav.ask': 'पंडित जी से पूछें',
+  'nav.panchang': 'पंचांग', 'nav.muhurat': 'मुहूर्त', 'nav.mantra': 'मंत्र', 'nav.granth': 'ग्रंथ', 'nav.ask': 'AI पंडित जी से पूछें',
   today: 'आज', tithi: 'तिथि', nakshatra: 'नक्षत्र', yoga: 'योग', karana: 'करण', vara: 'वार', paksha: 'पक्ष', masa: 'मास',
   samvat: 'विक्रम संवत', ritu: 'ऋतु', ayana: 'अयन', sunrise: 'सूर्योदय', sunset: 'सूर्यास्त', sunRashi: 'सूर्य राशि', moonRashi: 'चंद्र राशि',
   rahuKaal: 'राहु काल', yamaganda: 'यमगंड', gulika: 'गुलिक काल', abhijit: 'अभिजित मुहूर्त', brahma: 'ब्रह्म मुहूर्त',
@@ -184,7 +202,7 @@ const hi: Dict = {
   skyCaption: 'चंद्रमा और सूर्य के बीच का कोण ही तिथि है। हर 12° एक तिथि।',
   moonIn: 'चंद्र', sunIn: 'सूर्य',
   askPlaceholder: 'किसी श्लोक, पर्व या आज के राहु काल के बारे में पूछें…', ask: 'पूछें', listening: 'सुन रहे हैं… रोकने के लिए दबाएँ', speak: 'बोलकर पूछें',
-  readAloud: 'सुनें', stopReading: 'रोकें', thinking: 'पंडित जी पंचांग देख रहे हैं…',
+  readAloud: 'सुनें', stopReading: 'रोकें', thinking: 'AI पंडित जी सोच रहे हैं…',
   ex1: 'गीता में क्रोध के बारे में क्या कहा गया है?', ex2: 'क्या कल गाड़ी खरीदना शुभ है?', ex3: 'महामृत्युंजय मंत्र का सही उच्चारण सिखाइए',
   ex4: 'अगली एकादशी कब है?',
   muhuratTitle: 'मुहूर्त खोजें', muhuratIntro: 'अवसर और तिथियाँ चुनें। राहु काल, यमगंड, गुलिक और भद्रा को छोड़कर समय दिए जाते हैं।',
@@ -200,8 +218,8 @@ const hi: Dict = {
   offline: 'पंडित जी अभी अपनी अंतर्निहित जानकारी से उत्तर दे रहे हैं: पंचांग, मुहूर्त, मंत्र और गीता के श्लोक। खुले प्रश्नों के लिए पंडित जी का सर्वर चाहिए।',
   loading: 'लोड हो रहा है…', error: 'लोड नहीं हो सका। कनेक्शन जाँचकर फिर प्रयास करें।',
   disclaimer: 'चयनित स्थान के लिए लाहिड़ी अयनांश से गणना। प्रमुख संस्कारों के लिए अपने कुल पुरोहित से पुष्टि करें।',
-  chatEmpty: 'नमस्ते। कुछ भी पूछिए: राशिफल, आज का पंचांग, मुहूर्त, मंत्र, गीता — या कोई भी प्रश्न।',
-  you: 'आप', panditji: 'पंडित जी', openChat: 'पंडित जी से पूछें', closeChat: 'बंद करें',
+  chatEmpty: 'नमस्ते, मैं AI पंडित जी हूँ। कुछ भी पूछिए: राशिफल, आज का पंचांग, मुहूर्त, मंत्र, गीता — या कोई भी प्रश्न।',
+  you: 'आप', panditji: 'AI पंडित जी', openChat: 'AI पंडित जी से पूछें', closeChat: 'बंद करें',
 };
 
 const mr: Dict = {
@@ -215,7 +233,7 @@ const mr: Dict = {
   rahuKaal: 'राहुकाळ', yamaganda: 'यमगंड', gulika: 'गुलिक काळ', abhijit: 'अभिजित मुहूर्त', brahma: 'ब्रह्म मुहूर्त', choghadiya: 'चौघडिया',
   day: 'दिवस', night: 'रात्र', until: 'पर्यंत', observances: 'सण व व्रत', now: 'आता', good: 'शुभ', avoid: 'वर्ज्य',
   ask: 'विचारा', askPlaceholder: 'श्लोक, सण किंवा आजच्या राहुकाळाबद्दल विचारा…', find: 'मुहूर्त शोधा', play: 'जप करा', pause: 'थांबा',
-  meaning: 'अर्थ', pronunciation: 'उच्चार', location: 'स्थान', date: 'दिनांक', todayBtn: 'आज', search: 'श्लोक शोधा', you: 'तुम्ही', panditji: 'पंडितजी',
+  meaning: 'अर्थ', pronunciation: 'उच्चार', location: 'स्थान', date: 'दिनांक', todayBtn: 'आज', search: 'श्लोक शोधा', you: 'तुम्ही', panditji: 'AI पंडितजी',
 };
 
 const kn: Dict = {
@@ -229,7 +247,7 @@ const kn: Dict = {
   rahuKaal: 'ರಾಹುಕಾಲ', yamaganda: 'ಯಮಗಂಡ', gulika: 'ಗುಳಿಕ ಕಾಲ', abhijit: 'ಅಭಿಜಿತ್ ಮುಹೂರ್ತ', brahma: 'ಬ್ರಹ್ಮ ಮುಹೂರ್ತ', choghadiya: 'ಚೌಘಡಿಯಾ',
   day: 'ಹಗಲು', night: 'ರಾತ್ರಿ', until: 'ವರೆಗೆ', observances: 'ಹಬ್ಬ ಮತ್ತು ವ್ರತ', now: 'ಈಗ', good: 'ಶುಭ', avoid: 'ವರ್ಜ್ಯ',
   ask: 'ಕೇಳಿ', askPlaceholder: 'ಶ್ಲೋಕ, ಹಬ್ಬ ಅಥವಾ ಇಂದಿನ ರಾಹುಕಾಲದ ಬಗ್ಗೆ ಕೇಳಿ…', find: 'ಮುಹೂರ್ತ ಹುಡುಕಿ', play: 'ಜಪಿಸಿ', pause: 'ನಿಲ್ಲಿಸಿ',
-  meaning: 'ಅರ್ಥ', pronunciation: 'ಉಚ್ಚಾರಣೆ', location: 'ಸ್ಥಳ', date: 'ದಿನಾಂಕ', todayBtn: 'ಇಂದು', search: 'ಶ್ಲೋಕ ಹುಡುಕಿ', you: 'ನೀವು', panditji: 'ಪಂಡಿತರು',
+  meaning: 'ಅರ್ಥ', pronunciation: 'ಉಚ್ಚಾರಣೆ', location: 'ಸ್ಥಳ', date: 'ದಿನಾಂಕ', todayBtn: 'ಇಂದು', search: 'ಶ್ಲೋಕ ಹುಡುಕಿ', you: 'ನೀವು', panditji: 'AI ಪಂಡಿತರು',
 };
 
 const ta: Dict = {
@@ -243,7 +261,7 @@ const ta: Dict = {
   rahuKaal: 'ராகு காலம்', yamaganda: 'எமகண்டம்', gulika: 'குளிகை', abhijit: 'அபிஜித் முகூர்த்தம்', brahma: 'பிரம்ம முகூர்த்தம்', choghadiya: 'சௌகடியா',
   day: 'பகல்', night: 'இரவு', until: 'வரை', observances: 'பண்டிகை, விரதம்', now: 'இப்போது', good: 'நல்லது', avoid: 'தவிர்க்கவும்',
   ask: 'கேளுங்கள்', askPlaceholder: 'ஸ்லோகம், பண்டிகை அல்லது இன்றைய ராகு காலம் பற்றி கேளுங்கள்…', find: 'முகூர்த்தம் தேடு', play: 'ஜபிக்கவும்', pause: 'நிறுத்து',
-  meaning: 'பொருள்', pronunciation: 'உச்சரிப்பு', location: 'இடம்', date: 'தேதி', todayBtn: 'இன்று', search: 'ஸ்லோகம் தேடு', you: 'நீங்கள்', panditji: 'பண்டிதர்',
+  meaning: 'பொருள்', pronunciation: 'உச்சரிப்பு', location: 'இடம்', date: 'தேதி', todayBtn: 'இன்று', search: 'ஸ்லோகம் தேடு', you: 'நீங்கள்', panditji: 'AI பண்டிதர்',
 };
 
 const te: Dict = {
@@ -257,7 +275,7 @@ const te: Dict = {
   rahuKaal: 'రాహుకాలం', yamaganda: 'యమగండం', gulika: 'గుళిక కాలం', abhijit: 'అభిజిత్ ముహూర్తం', brahma: 'బ్రహ్మ ముహూర్తం', choghadiya: 'చౌఘడియా',
   day: 'పగలు', night: 'రాత్రి', until: 'వరకు', observances: 'పండుగలు, వ్రతాలు', now: 'ఇప్పుడు', good: 'శుభం', avoid: 'వర్జ్యం',
   ask: 'అడగండి', askPlaceholder: 'శ్లోకం, పండుగ లేదా ఈరోజు రాహుకాలం గురించి అడగండి…', find: 'ముహూర్తం వెతకండి', play: 'జపించండి', pause: 'ఆపండి',
-  meaning: 'అర్థం', pronunciation: 'ఉచ్చారణ', location: 'స్థలం', date: 'తేదీ', todayBtn: 'ఈరోజు', search: 'శ్లోకం వెతకండి', you: 'మీరు', panditji: 'పండితుడు',
+  meaning: 'అర్థం', pronunciation: 'ఉచ్చారణ', location: 'స్థలం', date: 'తేదీ', todayBtn: 'ఈరోజు', search: 'శ్లోకం వెతకండి', you: 'మీరు', panditji: 'AI పండితుడు',
 };
 
 const bn: Dict = {
@@ -271,7 +289,7 @@ const bn: Dict = {
   rahuKaal: 'রাহুকাল', yamaganda: 'যমগণ্ড', gulika: 'গুলিক কাল', abhijit: 'অভিজিৎ মুহূর্ত', brahma: 'ব্রাহ্ম মুহূর্ত', choghadiya: 'চৌঘড়িয়া',
   day: 'দিন', night: 'রাত', until: 'পর্যন্ত', observances: 'উৎসব ও ব্রত', now: 'এখন', good: 'শুভ', avoid: 'বর্জনীয়',
   ask: 'জিজ্ঞাসা', askPlaceholder: 'শ্লোক, উৎসব বা আজকের রাহুকাল সম্পর্কে জিজ্ঞাসা করুন…', find: 'মুহূর্ত খুঁজুন', play: 'জপ করুন', pause: 'থামুন',
-  meaning: 'অর্থ', pronunciation: 'উচ্চারণ', location: 'স্থান', date: 'তারিখ', todayBtn: 'আজ', search: 'শ্লোক খুঁজুন', you: 'আপনি', panditji: 'পণ্ডিতজি',
+  meaning: 'অর্থ', pronunciation: 'উচ্চারণ', location: 'স্থান', date: 'তারিখ', todayBtn: 'আজ', search: 'শ্লোক খুঁজুন', you: 'আপনি', panditji: 'AI পণ্ডিতজি',
 };
 
 const gu: Dict = {
@@ -285,7 +303,7 @@ const gu: Dict = {
   rahuKaal: 'રાહુકાળ', yamaganda: 'યમઘંટ', gulika: 'ગુલિક કાળ', abhijit: 'અભિજિત મુહૂર્ત', brahma: 'બ્રહ્મ મુહૂર્ત', choghadiya: 'ચોઘડિયા',
   day: 'દિવસ', night: 'રાત', until: 'સુધી', observances: 'તહેવાર અને વ્રત', now: 'હમણાં', good: 'શુભ', avoid: 'વર્જ્ય',
   ask: 'પૂછો', askPlaceholder: 'શ્લોક, તહેવાર અથવા આજના રાહુકાળ વિશે પૂછો…', find: 'મુહૂર્ત શોધો', play: 'જપ કરો', pause: 'રોકો',
-  meaning: 'અર્થ', pronunciation: 'ઉચ્ચાર', location: 'સ્થળ', date: 'તારીખ', todayBtn: 'આજે', search: 'શ્લોક શોધો', you: 'તમે', panditji: 'પંડિતજી',
+  meaning: 'અર્થ', pronunciation: 'ઉચ્ચાર', location: 'સ્થળ', date: 'તારીખ', todayBtn: 'આજે', search: 'શ્લોક શોધો', you: 'તમે', panditji: 'AI પંડિતજી',
 };
 
 const DICTS: Record<string, Dict> = { en, hi, mr, kn, ta, te, bn, gu };

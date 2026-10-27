@@ -44,6 +44,7 @@ interface Upcoming { date: string; names: string[]; }
           </dl>
         }
 
+        <p class="ai-l">✨ {{ i18n.t('askAiShort') }} <span>· {{ i18n.t('aiAnything') }}</span></p>
         <form class="ask" (ngSubmit)="ask()">
           <label for="home-ask" class="sr-only">{{ i18n.t('askPlaceholder') }}</label>
           <input id="home-ask" class="input" name="q" [(ngModel)]="q" [placeholder]="i18n.t('askPlaceholder')" autocomplete="off">
@@ -79,7 +80,7 @@ interface Upcoming { date: string; names: string[]; }
         <a routerLink="/rashifal"><b>{{ i18n.t('rashifalTitle') }}</b><span>{{ i18n.t('rashifalIntro') }}</span></a>
         <a routerLink="/muhurat"><b>{{ i18n.t('muhuratTitle') }}</b><span>{{ i18n.t('muhuratIntro') }}</span></a>
         <a routerLink="/mantra"><b>{{ i18n.t('mantraTitle') }}</b><span>{{ i18n.t('mantraIntro') }}</span></a>
-        <a routerLink="/granth"><b>{{ i18n.t('granthTitle') }}</b><span>{{ i18n.t('granthIntro') }}</span></a>
+        <a routerLink="/granth"><b>{{ i18n.t('granthTitle') }}</b><span>{{ i18n.t('libIntro') }}</span></a>
       </nav>
     </aside>
   </section>`,
@@ -101,6 +102,8 @@ interface Upcoming { date: string; names: string[]; }
     .sun { display: flex; gap: 28px; margin: 0 0 22px; flex-wrap: wrap; }
     .sun dt { font-size: var(--s-1); color: rgba(246,244,250,.6); }
     .sun dd { margin: 0; font-size: var(--s1); font-weight: 600; color: #fff; }
+    .ai-l { margin: 0 0 8px; font-weight: 700; color: var(--haldi); }
+    .ai-l span { font-weight: 400; color: rgba(246,244,250,.75); }
     .ask { display: flex; gap: 8px; background: var(--card); padding: 6px; border-radius: 999px; box-shadow: 0 10px 30px rgba(29,23,54,.18); }
     .ask .input { border: 0; border-radius: 999px; color: var(--text); padding-left: 16px; }
     .ex { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; }

@@ -65,7 +65,17 @@ The engine exists twice with identical math:
     Hindi TTS sounds closer to Sanskrit. With no Indic voice the button is hidden and the page says how to add one.
   - Text in Devanagari, IAST, simple Roman, Kannada, Telugu, Tamil, Bengali, Gujarati or Malayalam.
   - Add `audioUrl` + forced-alignment timings for recorded chants.
-- **Granth**:
+- **Granth library** (`/granth`): about 2,75,000 verses in the original, read chapter by chapter, built at deploy time by
+  `tools/build_library.py` from public digital editions:
+  - **Vedas:** Rigveda (with svaras), Samaveda, Shukla Yajurveda (Madhyandina), Atharvaveda (Shaunaka).
+  - **Upanishads:** Katha, Prashna, Shvetashvatara, Aitareya, Chandogya, Brihadaranyaka, Kaivalya, Mandukya Karika (plus Isha and Mandukya with translation).
+  - **Upavedas:** Ayurveda (Charaka and Sushruta Samhitas), Dhanurveda (Vasishtha), Gandharvaveda (Natya Shastra), Arthaveda (Kautilya Arthashastra).
+  - **Itihasa:** Mahabharata (BORI critical edition, all 18 parvas), Valmiki Ramayana (Baroda critical edition).
+  - **Puranas:** Bhagavata, Vishnu, Shiva, Markandeya (with Devi Mahatmya), Brahma, Brahmanda, Garuda, Kurma, Linga, Matsya, Narada, Vamana, Skanda, Agni, Narasimha, Devi Gita.
+  - **Darshana and Bhakti:** Yoga Sutra, Ramcharitmanas.
+  - Every verse has **✨ Explain**: AI PanditJi gets the exact text and explains it. He can also look passages up himself (`read_granth` tool).
+  - The website serves the library; the Android app reads it from the website, so the APK stays small.
+- **Gita & Upanishads with translation**:
   - The complete Bhagavad Gita (all 701 verses, read chapter by chapter), the complete Isha and Mandukya Upanishads, and key verses from five more.
   - English translation of the Gita by Swami Sivananda; Hindi for selected verses.
   - BM25 search plus direct references ("Gita 2.47").

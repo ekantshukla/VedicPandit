@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
 import { I18nService } from '../../core/services/i18n.service';
 import { Scripture, Verse } from '../../core/astro/models';
@@ -8,11 +9,12 @@ import { VerseCardComponent } from '../../shared/verse-card.component';
 @Component({
   selector: 'vp-granth-page',
   standalone: true,
-  imports: [FormsModule, VerseCardComponent],
+  imports: [FormsModule, RouterLink, VerseCardComponent],
   template: `
   <div class="wrap page">
+    <a routerLink="/granth" class="back">← {{ i18n.t('granthTitle') }}</a>
     <header class="page-head">
-      <h1>{{ i18n.t('granthTitle') }}</h1>
+      <h1>{{ i18n.t('libTranslated') }}</h1>
       <p>{{ i18n.t('granthIntro') }}</p>
     </header>
 
@@ -52,10 +54,11 @@ import { VerseCardComponent } from '../../shared/verse-card.component';
     @if (current()?.translationCredit && !query()) { <p class="credit faint">{{ current()?.translationCredit }}</p> }
   </div>`,
   styles: [`
+    .back { display: inline-block; margin-bottom: 10px; font-weight: 600; text-decoration: none; color: var(--sindoor); }
     .search { display: flex; gap: 8px; max-width: 640px; margin-bottom: 20px; }
     .search .input { min-width: 0; }
-    .tabs { display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
-    .tabs button { background: none; border: 0; padding: 10px 14px; cursor: pointer; font-size: 1.05rem; border-bottom: 3px solid transparent; margin-bottom: -1px; }
+    .tabs { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
+    .tabs button { background: none; border: 0; padding: 10px 14px; cursor: pointer; font-size: 1.05rem; border-bottom: 3px solid transparent; margin-bottom: -1px; flex: none; white-space: nowrap; }
     .tabs button[aria-selected="true"] { border-bottom-color: var(--sindoor); color: var(--ink); }
     .tabs .faint { font-size: var(--s-1); }
     .desc { max-width: 70ch; }
@@ -86,7 +89,11 @@ export class GranthPageComponent {
   readonly shown = computed(() => this.query() || this.chapters().length <= 1 ? this.verses() : this.verses().filter(v => v.chapter === this.chapter()));
 
   constructor() {
-    this.api.scriptures().then(s => { this.scriptures.set(s); if (s.length) this.open(s[0].code); });
+    const want = inject(ActivatedRoute).snapshot.paramMap.get('code');
+    this.api.scriptures().then(s => {
+      this.scriptures.set(s);
+      if (s.length) this.open(s.some(x => x.code === want) ? want! : s[0].code);
+    });
   }
 
   current() { return this.scriptures().find(s => s.code === this.active()); }

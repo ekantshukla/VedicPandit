@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/services/api.service';
 import { I18nService } from '../../core/services/i18n.service';
 import { Mantra } from '../../core/astro/models';
+import { DEITIES, textsFor } from '../../core/data/deities';
 
 interface Step { slug: string; en: string; hi: string; }
-interface Group { id: string; en: string; hi: string; tags: string[]; }
 
 /** A simple daily puja, in the order it is done. Each step opens the chant-along player. */
 const DAILY: Step[] = [
@@ -26,15 +26,6 @@ const DAILY: Step[] = [
   { slug: 'kara-charana-kritam', en: 'Before sleep', hi: 'सोने से पहले' },
 ];
 
-const GROUPS: Group[] = [
-  { id: 'ganesha', en: 'Ganesha', hi: 'गणेश', tags: ['ganesha'] },
-  { id: 'shiva', en: 'Shiva', hi: 'शिव', tags: ['shiva', 'bhairava'] },
-  { id: 'vishnu', en: 'Vishnu & Krishna', hi: 'विष्णु व कृष्ण', tags: ['vishnu', 'krishna', 'narasimha'] },
-  { id: 'rama', en: 'Rama & Hanuman', hi: 'राम व हनुमान', tags: ['rama', 'hanuman'] },
-  { id: 'devi', en: 'Devi: Durga, Lakshmi, Saraswati', hi: 'देवी: दुर्गा, लक्ष्मी, सरस्वती', tags: ['devi', 'durga', 'lakshmi', 'saraswati', 'lalita', 'kali'] },
-  { id: 'surya', en: 'Surya & Navagraha', hi: 'सूर्य व नवग्रह', tags: ['surya', 'navagraha', 'shani'] },
-  { id: 'shanti', en: 'Peace & prayers', hi: 'शांति पाठ व प्रार्थना', tags: ['shanti', 'prayer', 'guru'] },
-];
 
 @Component({
   selector: 'vp-learn',
@@ -57,6 +48,19 @@ const GROUPS: Group[] = [
         </div>
       </section>
     } @else {
+      <section>
+        <h2>{{ i18n.t('dChoose') }}</h2>
+        <p class="muted sub">{{ i18n.t('dChooseSub') }}</p>
+        <div class="gods">
+          @for (d of deities(); track d.d.id) {
+            <a class="god" [routerLink]="['/learn', d.d.id]" [style.--dc]="d.d.color">
+              <span class="gi" aria-hidden="true">{{ d.d.icon }}</span>
+              <b [class.sa]="hi()">{{ hi() ? d.d.hi : d.d.en }}</b>
+              <small>{{ d.n }} · {{ hi() ? d.d.dayHi : d.d.day }}</small>
+            </a>
+          }
+        </div>
+      </section>
       @if (recorded().length) {
         <section class="guru">
           <h2>🎙 {{ i18n.t('guruVoice') }}</h2>
@@ -81,19 +85,18 @@ const GROUPS: Group[] = [
         </ol>
       </section>
 
-      @for (g of groups(); track g.g.id) {
-        <section>
-          <h2>{{ hi() ? g.g.hi : g.g.en }} <span class="cnt num">{{ g.items.length }}</span></h2>
-          <div class="grid">
-            @for (m of g.items; track m.slug) {
-              <a class="card" [routerLink]="['/mantra', m.slug]"><b [class.sa]="hi()">{{ nm(m) }}</b><span>{{ kind(m) }} · {{ m.source }}</span></a>
-            }
-          </div>
-        </section>
-      }
     }
   </div>`,
   styles: [`
+    .gods { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .god { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; padding: 14px 8px 12px; border-radius: 16px;
+      background: var(--card); border: 1px solid var(--line); border-bottom: 4px solid var(--dc); text-decoration: none; color: inherit; }
+    .god:hover { border-color: var(--dc); }
+    .gi { width: 56px; height: 56px; border-radius: 18px; display: grid; place-items: center; font-size: 1.9rem; background: color-mix(in srgb, var(--dc) 14%, white); }
+    .god b { color: var(--ink); font-size: 1rem; line-height: 1.2; }
+    .god b.sa { font-weight: 400; font-size: 1.1rem; }
+    .god small { color: var(--faint); font-size: .74rem; }
+    @media (max-width: 560px) { .gods { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; } .god { padding: 10px 4px; } .gi { width: 46px; height: 46px; font-size: 1.6rem; } .god b { font-size: .9rem; } }
     .q { max-width: 420px; border-radius: 999px; margin-bottom: 8px; }
     section { margin-top: 28px; }
     h2 { margin: 0 0 6px; font-size: var(--s2); }
@@ -109,7 +112,7 @@ const GROUPS: Group[] = [
     .st b.sa, .card b.sa { font-weight: 400; font-size: 1.12rem; }
     .go { color: var(--sindoor); font-size: 1.5rem; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
-    .card { display: flex; flex-direction: column; gap: 2px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; text-decoration: none; color: inherit; }
+    .card { min-width: 0; display: flex; flex-direction: column; gap: 2px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; text-decoration: none; color: inherit; }
     .card:hover { border-color: var(--ink); }
     .card b { color: var(--ink); }
     .card.rec { background: var(--ink); border-color: var(--ink); }
@@ -134,15 +137,8 @@ export class LearnComponent {
     return DAILY.filter(s => by.has(s.slug)).map(s => ({ step: s, m: by.get(s.slug)! }));
   });
 
-  /** Each text in the first group whose deity tags it carries. */
-  readonly groups = computed(() => {
-    const used = new Set<string>();
-    return GROUPS.map(g => {
-      const items = this.all().filter(m => !used.has(m.slug) && m.tags.split(' ').some(t => g.tags.includes(t)));
-      items.forEach(m => used.add(m.slug));
-      return { g, items };
-    }).filter(x => x.items.length);
-  });
+  /** Deity tiles with how many texts each has. */
+  readonly deities = computed(() => DEITIES.map(d => ({ d, n: textsFor(d, this.all()).length })));
 
   readonly found = computed(() => {
     const q = this.q().trim().toLowerCase();

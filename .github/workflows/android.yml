@@ -73,6 +73,8 @@ jobs:
           if [ -z "$FREE_AI_KEY" ]; then echo "::warning::No FREE_AI_KEY secret: PanditJi will use built-in answers (or the server)."; fi
 
       - run: npx ng build
+      # The Granth library is read from the website, so it is not packed into the app (keeps the APK small)
+      - run: rm -rf dist/vedic-pandit-client/browser/granth
       - run: npx cap sync android
 
       - name: Signing key

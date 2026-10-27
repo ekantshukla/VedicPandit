@@ -1,6 +1,6 @@
 # Builds the website and publishes it to GitHub Pages (https://<you>.github.io/<repo>/).
-# The site runs fully in the browser (panchang, muhurat, mantra, granth). PanditJi gives full
-# AI answers only when it can reach the .NET API (see README); on Pages it uses its built-in answers.
+# The site runs fully in the browser (panchang, muhurat, mantra, granth library). AI PanditJi answers with the
+# free Gemini key in the FREE_AI_KEY secret (see FREE_AI.md), or with the .NET API if API_URL is set.
 #
 # One-time setup: repo Settings -> Pages -> Source: "GitHub Actions".
 name: Deploy website to GitHub Pages
@@ -10,6 +10,7 @@ on:
     branches: [main]
     paths:
       - 'vedic-pandit-client/**'
+      - 'tools/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
@@ -57,6 +58,17 @@ jobs:
           if [ -n "$AI_BASE_URL" ]; then sed -i "s|^export const AI_BASE_URL: string = .*|export const AI_BASE_URL: string = '${AI_BASE_URL}';|" src/app/core/app-info.ts; fi
           if [ -n "$AI_MODEL" ]; then sed -i "s|^export const AI_MODEL: string = .*|export const AI_MODEL: string = '${AI_MODEL}';|" src/app/core/app-info.ts; fi
           if [ -z "$FREE_AI_KEY" ]; then echo "::warning::No FREE_AI_KEY secret: PanditJi will use built-in answers (or the server)."; fi
+
+      # The Granth library (Vedas, Upanishads, Upavedas, Mahabharata, Ramayana, Puranas…), built from public digital
+      # editions into public/granth. Both sources are public GitHub repositories; see tools/build_library.py.
+      - name: Build the Granth library
+        working-directory: .
+        run: |
+          git clone -q --depth 1 --filter=blob:none --sparse https://github.com/bhavykhatri/DharmicData "$RUNNER_TEMP/dharmic"
+          git -C "$RUNNER_TEMP/dharmic" sparse-checkout set --no-cone --stdin < tools/library_sources_dharmic.txt
+          git clone -q --depth 1 --filter=blob:none --sparse https://github.com/sanskrit/raw_etexts "$RUNNER_TEMP/etexts"
+          git -C "$RUNNER_TEMP/etexts" sparse-checkout set --no-cone --stdin < tools/library_sources.txt
+          python3 tools/build_library.py --dharmic "$RUNNER_TEMP/dharmic" --etexts "$RUNNER_TEMP/etexts" --out vedic-pandit-client/public/granth
 
       - run: npx ng build --base-href "/${{ github.event.repository.name }}/"
       - uses: actions/upload-pages-artifact@v3

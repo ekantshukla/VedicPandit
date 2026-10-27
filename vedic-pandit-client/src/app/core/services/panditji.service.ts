@@ -12,7 +12,7 @@ import { askFreeAi, clearAiHistory } from './free-ai';
 import { builtInFollowups, parseFollowups, visibleText } from './followups';
 import { dailyRashifal, findRashiInText, RASHIS, stars } from '../astro/rashifal';
 
-export interface ChatCard { type: 'panchang' | 'muhurat' | 'mantra' | 'verses' | 'rashifal'; payload: any; }
+export interface ChatCard { type: 'panchang' | 'muhurat' | 'mantra' | 'verses' | 'rashifal' | 'granth'; payload: any; }
 export interface ChatMessage {
   role: 'user' | 'assistant'; text: string; cards: ChatCard[]; status?: string; pending?: boolean; error?: boolean;
   /** The answer as streamed, including the hidden [[NEXT]] block. */
@@ -25,7 +25,7 @@ interface BotEvent { type: string; text?: string; cardType?: string; payload?: u
 
 const TOOL_LABEL: Record<string, string> = {
   get_panchang: 'Calculating panchang…', find_muhurat: 'Scanning dates for muhurat…', get_mantra: 'Opening the mantra…', search_scriptures: 'Searching the granth…',
-  get_rashifal: 'Reading the Moon\'s transit…',
+  get_rashifal: 'Reading the Moon\'s transit…', read_granth: 'Opening the granth…',
 };
 /** Models sometimes add markdown; the chat bubble is plain text that may be read aloud. */
 const plain = (s: string) => s.replace(/\*\*/g, '').replace(/^#{1,6}\s*/gm, '').replace(/^(\s*)[*-]\s+/gm, '$1• ');
@@ -135,7 +135,7 @@ export class PanditJiService {
     const hi = ['hi', 'mr'].includes(this.i18n.lang());
     const card = m.cards[m.cards.length - 1];
     if (card?.type === 'rashifal') return builtInFollowups('rashifal', hi, RASHIS[card.payload?.rashi ?? 0]);
-    return builtInFollowups(card ? card.type : 'general', hi);
+    return builtInFollowups(card ? (card.type === 'granth' ? 'verses' : card.type) : 'general', hi);
   }
 
   /** Rule-based answers used in demo mode (no API). Mirrors PanditJiOrchestrator.OfflineAnswerAsync. */

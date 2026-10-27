@@ -10,3 +10,6 @@ vedic-pandit-client/dist/
 vedic-pandit-client/.angular/
 src/VedicPandit.WebAPI/wwwroot/
 src/VedicPandit.WebAPI/data/
+
+# Built by tools/build_library.py in the website workflow
+vedic-pandit-client/public/granth/

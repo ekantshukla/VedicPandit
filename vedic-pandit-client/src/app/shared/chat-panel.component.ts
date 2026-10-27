@@ -10,11 +10,12 @@ import { MantraPlayerComponent } from './mantra-player.component';
 import { VerseCardComponent } from './verse-card.component';
 import { BotAvatarComponent } from './bot-avatar.component';
 import { RashifalCardComponent } from './rashifal-card.component';
+import { GranthCardComponent } from './granth-card.component';
 
 @Component({
   selector: 'vp-chat-panel',
   standalone: true,
-  imports: [FormsModule, PanchangViewComponent, MuhuratListComponent, MantraPlayerComponent, VerseCardComponent, BotAvatarComponent, RashifalCardComponent],
+  imports: [FormsModule, PanchangViewComponent, MuhuratListComponent, MantraPlayerComponent, VerseCardComponent, BotAvatarComponent, RashifalCardComponent, GranthCardComponent],
   template: `
   <div class="chat" [class.full]="full">
     <div class="log" #log aria-live="polite">
@@ -46,6 +47,7 @@ import { RashifalCardComponent } from './rashifal-card.component';
                   @case ('panchang') { <vp-panchang-view [p]="c.payload" [compact]="true" /> }
                   @case ('muhurat') { <vp-muhurat-list [r]="c.payload" [compact]="!full" /> }
                   @case ('mantra') { <vp-mantra-player [mantra]="c.payload" [compact]="true" /> }
+                  @case ('granth') { <vp-granth-card [data]="c.payload" /> }
                   @case ('rashifal') { <vp-rashifal-card [payload]="c.payload" /> }
                   @case ('verses') { <div class="verses">@for (v of c.payload.slice(0, 3); track $index) { <vp-verse [v]="v" /> }</div> }
                 }
