@@ -112,7 +112,8 @@ public sealed class PanchangEngine : IPanchangEngine
         var observances = Observances(tithiAtRise, amantaIdx, isAdhik, new ObservanceTithis(
             Madhyahna: TithiAt(r + dayLen / 2), Aparahna: TithiAt(r + dayLen * 0.7), Pradosh: TithiAt(s),
             Nishita: TithiAt((s + nr) / 2), PrevMadhyahna: TithiAt(r - 1 + dayLen / 2), PrevAparahna: TithiAt(r - 1 + dayLen * 0.7),
-            PrevPradosh: TithiAt(s - 1), PrevNishita: TithiAt(r - nightLen / 2)));
+            PrevPradosh: TithiAt(s - 1), PrevNishita: TithiAt(r - nightLen / 2),
+            Arunodaya: TithiAt(r - ArunodayaDays), PrevArunodaya: TithiAt(r - 1 - ArunodayaDays), PrevSunrise: TithiAt(r - 1)));
         // Sankranti between sunrise and next sunrise
         int rashiAtRise = (int)Math.Floor(sunSid / 30);
         int rashiNext = (int)Math.Floor(SunSidereal(nr) / 30);
@@ -210,7 +211,30 @@ public sealed class PanchangEngine : IPanchangEngine
 
     /// <summary>Tithi prevailing at the kaal that decides each festival.</summary>
     private readonly record struct ObservanceTithis(int Madhyahna, int Aparahna, int Pradosh, int Nishita,
-        int PrevMadhyahna, int PrevAparahna, int PrevPradosh, int PrevNishita);
+        int PrevMadhyahna, int PrevAparahna, int PrevPradosh, int PrevNishita, int Arunodaya, int PrevArunodaya, int PrevSunrise);
+
+    /// <summary>Arunodaya: 4 ghatis (96 minutes) before sunrise. Vaishnavas reject an Ekadashi that Dashami touches at arunodaya.</summary>
+    public const double ArunodayaDays = 96.0 / 1440;
+
+    /// <summary>
+    /// Smarta Ekadashi: the first day with Ekadashi at sunrise (when it spans two sunrises, families keep the first). Vaishnava Ekadashi: the first day Ekadashi holds at arunodaya; if Ekadashi
+    /// never reaches an arunodaya (Dashami at one, Dvadashi at the next), the fast is on that Dvadashi day.
+    /// When both fall on the same day it is just "Ekadashi".
+    /// </summary>
+    public static string? Ekadashi(int tithi, int aruna, int prevAruna, int prevSunrise = 0)
+    {
+        static bool IsE(int x) => x is 11 or 26;
+        // Kshaya Ekadashi (Dashami at one sunrise, Dvadashi at the next): the fast is on that Dvadashi day
+        bool smarta = (IsE(tithi) && prevSunrise != tithi) || ((tithi is 12 or 27) && prevSunrise == tithi - 2);
+        bool vaishnava = (IsE(aruna) && aruna != prevAruna) || ((aruna is 12 or 27) && prevAruna == aruna - 2);
+        return (smarta, vaishnava) switch
+        {
+            (true, true) => "Ekadashi",
+            (true, false) => "Ekadashi (Smarta)",
+            (false, true) => "Ekadashi (Vaishnava)",
+            _ => null,
+        };
+    }
 
     /// <summary>A kaal-based festival falls on the first day whose kaal has the tithi (skipped if yesterday's kaal already had it).</summary>
     private static bool FirstAt(Dictionary<(int, int), string> table, int masa, int now, int prev, out string? f)
@@ -222,10 +246,10 @@ public sealed class PanchangEngine : IPanchangEngine
     private static List<string> Observances(int tithi, int amantaMasa, bool adhik, ObservanceTithis t)
     {
         var o = new List<string>();
+        if (Ekadashi(tithi, t.Arunodaya, t.PrevArunodaya, t.PrevSunrise) is { } ek) o.Add(ek);
         switch (tithi)
         {
             case 4: o.Add("Vinayaka Chaturthi"); break;
-            case 11: case 26: o.Add("Ekadashi"); break;
             case 13: case 28: o.Add("Pradosh Vrat (confirm Trayodashi at pradosh kaal)"); break;
             case 15: o.Add("Purnima"); break;
             case 19: o.Add("Sankashti Chaturthi"); break;

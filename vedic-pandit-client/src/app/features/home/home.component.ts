@@ -7,17 +7,18 @@ import { LocationService } from '../../core/services/location.service';
 import { PanditJiService } from '../../core/services/panditji.service';
 import { PanchangResult, TimeWindow } from '../../core/astro/models';
 import { addDays, computePanchang, todayIn } from '../../core/astro/panchang-engine';
-import { SkyDialComponent } from '../../shared/sky-dial.component';
+import { NowCardComponent } from '../../shared/now-card.component';
 import { PanchangViewComponent } from '../../shared/panchang-view.component';
 import { DayPipe, TimePipe } from '../../shared/time.pipe';
 import { deva } from '../../core/astro/display';
+import { TraditionService, forTradition, isFocus } from '../../core/services/tradition.service';
 
 interface Upcoming { date: string; names: string[]; }
 
 @Component({
   selector: 'vp-home',
   standalone: true,
-  imports: [RouterLink, FormsModule, SkyDialComponent, PanchangViewComponent, DayPipe, TimePipe],
+  imports: [RouterLink, FormsModule, NowCardComponent, PanchangViewComponent, DayPipe, TimePipe],
   template: `
   <section class="hero">
     <div class="wrap grid">
@@ -29,7 +30,7 @@ interface Upcoming { date: string; names: string[]; }
             {{ i18n.f('untilT', { t: (p.tithis[0].ends | hm: p.date) }) }},
             {{ i18n.t('nakshatra') }} <b [class.sa]="i18n.lang() !== 'en'">{{ i18n.sanskritName(p.nakshatras[0].nameSanskrit, p.nakshatras[0].name) }}</b>
           </p>
-          @if (p.observances.length) { <p class="fest">{{ obs(p.observances) }}</p> }
+          @if (obs(p.observances)) { <p class="fest">{{ obs(p.observances) }}</p> }
 
           @if (kaalNow(); as k) {
             <p class="status avoid"><span class="dot"></span>{{ label(k.name) }} {{ i18n.t('now') }}, {{ i18n.f('untilT', { t: (k.end | hm) }) }}</p>
@@ -52,7 +53,7 @@ interface Upcoming { date: string; names: string[]; }
           @for (k of ['ex1', 'ex2', 'ex3']; track k) { <button type="button" (click)="q = i18n.t(k); ask()">{{ i18n.t(k) }}</button> }
         </div>
       </div>
-      <vp-sky-dial class="dial" />
+      <vp-now-card class="dial" />
     </div>
   </section>
 
@@ -65,8 +66,8 @@ interface Upcoming { date: string; names: string[]; }
     <aside class="col-side">
       <h2>{{ i18n.t('observances') }}</h2>
       <ol class="upcoming">
-        @for (u of upcoming(); track u.date) {
-          <li><span class="ud">{{ u.date | day: i18n.lang() : 'short' }}</span><span>{{ obs(u.names) }}</span></li>
+        @for (u of upcomingFor(); track u.date) {
+          <li [class.focus]="u.focus"><span class="ud">{{ u.date | day: i18n.lang() : 'short' }}</span><span>{{ obs(u.names) }}</span></li>
         }
       </ol>
       <nav class="paths" aria-label="Sections">
@@ -104,13 +105,14 @@ interface Upcoming { date: string; names: string[]; }
     .upcoming { list-style: none; margin: 0 0 32px; padding: 0; border-top: 1px solid var(--line); }
     .upcoming li { display: grid; grid-template-columns: 7.5rem 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
     .ud { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .upcoming li.focus span:last-child { color: var(--sindoor); font-weight: 600; }
     .paths { display: grid; gap: 4px; }
     .paths a { display: flex; flex-direction: column; text-decoration: none; padding: 14px 0; border-bottom: 1px solid var(--line); }
     .paths b { color: var(--sindoor); font-size: var(--s1); }
     .paths span { color: var(--muted); }
     @media (max-width: 900px) {
       .grid, .body { grid-template-columns: 1fr; gap: 24px; }
-      .dial { max-width: 420px; margin: 0 auto; width: 100%; }
+      .dial { width: 100%; }
     }
   `],
 })
@@ -136,7 +138,7 @@ export class HomeComponent {
       // Upcoming festivals for 45 days, computed in the browser (same engine as the server)
       setTimeout(() => {
         const list: Upcoming[] = [];
-        for (let i = 1; i <= 45 && list.length < 8; i++) {
+        for (let i = 1; i <= 45 && list.length < 12; i++) {
           const day = addDays(d, i);
           const r = computePanchang(day, place.lat, place.lng, place.tz);
           if (r.observances.length) list.push({ date: day, names: r.observances.map(o => o.replace(/ \(confirm[^)]*\)/, '')) });
@@ -160,7 +162,12 @@ export class HomeComponent {
     return this.windows().filter(w => Date.parse(w.start) > n).sort((a, b) => Date.parse(a.start) - Date.parse(b.start))[0]
       ?? this.windows()[0];
   }
-  obs(list: string[]) { return list.map(o => this.i18n.prefersDevanagari() ? deva(o) : o).join(', '); }
+  private trad = inject(TraditionService);
+  obs(list: string[]) { return forTradition(list, this.trad.tradition()).map(o => this.i18n.prefersDevanagari() ? deva(o) : o).join(', '); }
+  upcomingFor() {
+    const t = this.trad.tradition();
+    return this.upcoming().map(u => ({ ...u, names: forTradition(u.names, t), focus: u.names.some(n => isFocus(n, t)) })).filter(u => u.names.length).slice(0, 8);
+  }
   label(name: string) {
     const map: Record<string, string> = { 'Rahu Kaal': 'rahuKaal', 'Yamaganda': 'yamaganda', 'Gulika Kaal': 'gulika' };
     return this.i18n.t(map[name] ?? name);

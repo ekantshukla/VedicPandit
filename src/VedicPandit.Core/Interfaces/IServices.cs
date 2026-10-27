@@ -31,7 +31,8 @@ public record BotToolStatus(string Tool, string Status) : BotEvent;
 public record BotDone(string FullText) : BotEvent;
 public record BotError(string Message) : BotEvent;
 
-public record BotRequest(string SessionId, string Text, string Language, double Latitude, double Longitude, string TimeZone);
+/// <param name="Tradition">The reader's sampradaya: all, vaishnava, shaiva, shakta or smarta.</param>
+public record BotRequest(string SessionId, string Text, string Language, double Latitude, double Longitude, string TimeZone, string Tradition = "all");
 
 public interface IPanditJiOrchestrator
 {

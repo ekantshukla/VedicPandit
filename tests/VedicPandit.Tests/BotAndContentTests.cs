@@ -169,7 +169,7 @@ public class PanditJiTests
             new()
             {
                 new ClaudeToolUse("a", "find_muhurat", new JsonObject { ["event"] = "VahanKharid", ["from_date"] = "2026-11-01", ["to_date"] = "2026-11-30" }),
-                new ClaudeToolUse("b", "get_mantra", new JsonObject { ["query"] = "ganesha" }),
+                new ClaudeToolUse("b", "get_mantra", new JsonObject { ["query"] = "vakratunda" }),
                 new ClaudeStop("tool_use")
             },
             new() { new ClaudeText("Here are the dates and the Ganesha mantra."), new ClaudeStop("end_turn") });

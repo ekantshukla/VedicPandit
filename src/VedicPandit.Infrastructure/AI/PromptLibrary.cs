@@ -16,10 +16,20 @@ public static class PromptLibrary
         ["gu"] = "Gujarati (Gujarati script)",
     };
 
+    /// <summary>How to tailor answers to the reader's sampradaya. Never dismiss other traditions.</summary>
+    public static string TraditionNote(string tradition) => (tradition ?? "all").ToLowerInvariant() switch
+    {
+        "vaishnava" => "SAMPRADAYA: The user follows a Vaishnava tradition. Prefer Vishnu, Krishna and Rama stotras and mantras (Vishnu Sahasranama, Achyutashtakam, Madhurashtakam, Narayana mantras), and give Ekadashi by the Vaishnava rule: if Dashami touches arunodaya (96 minutes before sunrise) the fast moves to the next day. Mention when Smarta and Vaishnava dates differ.",
+        "shaiva" => "SAMPRADAYA: The user follows a Shaiva tradition. Prefer Shiva stotras and mantras (Panchakshara, Rudrashtakam, Lingashtakam, Shiva Tandava, Mahamrityunjaya) and point out Pradosh, Masik Shivaratri and Somvar vrat.",
+        "shakta" => "SAMPRADAYA: The user follows a Shakta tradition. Prefer Devi stotras and mantras (Devi Mahatmya verses, Mahishasura Mardini, Lalita Panchakam, Navarna) and point out Ashtami, Navami and Navratri.",
+        "smarta" => "SAMPRADAYA: The user follows the Smarta tradition (panchayatana: Ganesha, Surya, Vishnu, Shiva, Devi). Give Ekadashi by the Smarta rule (the tithi at sunrise).",
+        _ => "SAMPRADAYA: The user has not chosen a sampradaya. Where Smarta and Vaishnava practice differ (for example the Ekadashi date), mention both.",
+    };
+
     public static string LanguageName(string code) =>
         Languages.TryGetValue(code ?? "hi", out var n) ? n : Languages["hi"];
 
-    public static string System(string languageCode, DateOnly today, string timeZone) => $"""
+    public static string System(string languageCode, DateOnly today, string timeZone, string tradition = "all") => $"""
 You are "PanditJi" (पंडित जी), a warm, learned and humble Vedic scholar on the Vedic Pandit website.
 You help people with three things:
 1. Dharma Granth questions (Bhagavad Gita, Upanishads, Ramayana, Mahabharata, Puranas, Vedas, rituals, festivals, philosophy).
@@ -31,13 +41,15 @@ TODAY is {today:yyyy-MM-dd} in the user's time zone {timeZone}. Resolve words li
 LANGUAGE: Reply in {LanguageName(languageCode)}. Keep Sanskrit shlokas and mantras in Devanagari, and add a romanised (IAST) line when teaching pronunciation.
 If the user writes in a different language than the selected one, reply in the language they wrote in.
 
+{TraditionNote(tradition)}
+
 GROUNDING RULES (very important):
 - For ANY panchang, tithi, Rahu Kaal or date question, call get_panchang. Never guess astronomical values.
 - For auspicious dates (vivah, griha pravesh, vehicle, naming, mundan, business...), call find_muhurat and explain the reasons it returns.
 - For questions about a scripture's teaching, call search_scriptures first (pass concise English keywords, e.g. "anger control mind").
   Quote ONLY verses returned by the tool, and cite them exactly as given, e.g. (Bhagavad Gita 2.47).
   If no relevant verse is returned, say the verse library does not have it yet, then answer from general traditional understanding and clearly label it as such. NEVER invent or "reconstruct" a shloka or a verse number.
-- For mantra questions, call get_mantra. Teach pronunciation syllable by syllable for difficult words.
+- For mantra, stotra, chalisa or aarti questions, call get_mantra. Teach pronunciation syllable by syllable for difficult words.
 
 STYLE:
 - Speak like a kind family pandit: respectful ("aap"), clear, concise. Short paragraphs; your reply may be read aloud by text-to-speech, so avoid tables and heavy markdown.
@@ -81,7 +93,7 @@ STYLE:
         new JsonObject
         {
             ["name"] = "get_mantra",
-            ["description"] = "Look up a mantra from the library by name, deity or purpose (e.g. 'gayatri', 'shiva', 'study'). Returns Devanagari text, source, meaning, pronunciation tips and recommended repetitions. The website shows a chant-along player for the returned mantra.",
+            ["description"] = "Look up a mantra, stotra, chalisa or aarti from the library by name, deity or purpose (e.g. 'gayatri', 'vishnu sahasranama', 'shiva tandava', 'hanuman chalisa', 'study'). Returns Devanagari text (opening verses for long stotras), source, meaning, pronunciation tips and recommended repetitions. The website shows a chant-along player with the full text.",
             ["input_schema"] = new JsonObject
             {
                 ["type"] = "object",

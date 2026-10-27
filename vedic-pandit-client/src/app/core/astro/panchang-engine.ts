@@ -81,14 +81,34 @@ const AT_PRADOSH: Record<string, string> = { '6-19': 'Karwa Chauth', '6-28': 'Dh
 const AT_NISHITA: Record<string, string> = { '4-23': 'Krishna Janmashtami', '10-29': 'Maha Shivaratri' };
 const AT_MADHYAHNA: Record<string, string> = { '0-9': 'Ram Navami', '5-4': 'Ganesh Chaturthi' };
 const AT_APARAHNA: Record<string, string> = { '6-10': 'Vijayadashami (Dussehra)' };
-export interface ObservanceTimes { madhyahna: number; aparahna: number; pradosh: number; nishita: number; prevMadhyahna: number; prevAparahna: number; prevPradosh: number; prevNishita: number; }
+export interface ObservanceTimes { madhyahna: number; aparahna: number; pradosh: number; nishita: number; prevMadhyahna: number; prevAparahna: number; prevPradosh: number; prevNishita: number; arunodaya: number; prevArunodaya: number; prevSunrise: number; }
+/** Arunodaya: 4 ghatis (96 minutes) before sunrise. Vaishnavas reject an Ekadashi that Dashami touches at arunodaya. */
+export const ARUNODAYA_DAYS = 96 / 1440;
 // A kaal-based festival falls on the first day whose kaal has the tithi (skip if yesterday's kaal already had it).
 const firstAt = (table: Record<string, string>, masa: number, now: number, prev: number) => now !== prev ? table[`${masa}-${now}`] : undefined;
 const tithiAt = (jd: number) => Math.floor(elongation(jd) / 12) + 1;
 
+/**
+ * Smarta Ekadashi: the first day with Ekadashi at sunrise (when it spans two sunrises, families keep the first). Vaishnava Ekadashi: the first day Ekadashi holds at arunodaya; if Ekadashi
+ * never reaches an arunodaya (Dashami at one, Dvadashi at the next), the fast is on that Dvadashi day.
+ * When both fall on the same day it is just "Ekadashi".
+ */
+export function ekadashi(tithi: number, aruna: number, prevAruna: number, prevSunrise = 0): string | undefined {
+  const isE = (x: number) => x === 11 || x === 26;
+  // Kshaya Ekadashi (Dashami at one sunrise, Dvadashi at the next): the fast is on that Dvadashi day
+  const smarta = (isE(tithi) && prevSunrise !== tithi) || ((tithi === 12 || tithi === 27) && prevSunrise === tithi - 2);
+  const vaishnava = (isE(aruna) && aruna !== prevAruna) || ((aruna === 12 || aruna === 27) && prevAruna === aruna - 2);
+  if (smarta && vaishnava) return 'Ekadashi';
+  if (smarta) return 'Ekadashi (Smarta)';
+  if (vaishnava) return 'Ekadashi (Vaishnava)';
+  return undefined;
+}
+
 function observances(tithi: number, masa: number, adhik: boolean, t: ObservanceTimes): string[] {
   const o: string[] = [];
-  const monthly: Record<number, string> = { 4: 'Vinayaka Chaturthi', 11: 'Ekadashi', 26: 'Ekadashi', 13: 'Pradosh Vrat (confirm Trayodashi at pradosh kaal)', 28: 'Pradosh Vrat (confirm Trayodashi at pradosh kaal)', 15: 'Purnima', 19: 'Sankashti Chaturthi', 29: 'Masik Shivaratri', 30: 'Amavasya' };
+  const monthly: Record<number, string> = { 4: 'Vinayaka Chaturthi', 13: 'Pradosh Vrat (confirm Trayodashi at pradosh kaal)', 28: 'Pradosh Vrat (confirm Trayodashi at pradosh kaal)', 15: 'Purnima', 19: 'Sankashti Chaturthi', 29: 'Masik Shivaratri', 30: 'Amavasya' };
+  const ek = ekadashi(tithi, t.arunodaya, t.prevArunodaya, t.prevSunrise);
+  if (ek) o.push(ek);
   if (monthly[tithi]) o.push(monthly[tithi]);
   if (adhik) { o.push('Adhik Masa (Purushottam Maas)'); return o; }
   let f = MAJOR[`${masa}-${tithi}`] ?? firstAt(AT_MADHYAHNA, masa, t.madhyahna, t.prevMadhyahna) ?? firstAt(AT_APARAHNA, masa, t.aparahna, t.prevAparahna)
@@ -143,6 +163,7 @@ export function computePanchang(date: string, lat: number, lng: number, tz: stri
   const obs = observances(tithiAtRise, amanta, adhik, {
     madhyahna: tithiAt(r + dayLen / 2), aparahna: tithiAt(r + dayLen * 0.7), pradosh: tithiAt(s), nishita: tithiAt((s + nr) / 2),
     prevMadhyahna: tithiAt(r - 1 + dayLen / 2), prevAparahna: tithiAt(r - 1 + dayLen * 0.7), prevPradosh: tithiAt(s - 1), prevNishita: tithiAt(r - nightLen / 2),
+    arunodaya: tithiAt(r - ARUNODAYA_DAYS), prevArunodaya: tithiAt(r - 1 - ARUNODAYA_DAYS), prevSunrise: tithiAt(r - 1),
   });
   const rashiAtRise = Math.floor(sunSid / 30), rashiNext = Math.floor(sunSidereal(nr) / 30);
   if (rashiNext !== rashiAtRise) {

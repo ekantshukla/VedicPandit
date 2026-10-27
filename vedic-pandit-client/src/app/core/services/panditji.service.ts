@@ -5,8 +5,8 @@ import { I18nService } from './i18n.service';
 import { LocationService } from './location.service';
 import { addDays, computePanchang, todayIn } from '../astro/panchang-engine';
 import { findMuhurat } from '../astro/muhurat-engine';
-import { Mantra } from '../astro/models';
-import mantrasJson from '../data/mantras.json';
+import { findMantra, loadMantras } from './mantra-search';
+import { TraditionService } from './tradition.service';
 
 export interface ChatCard { type: 'panchang' | 'muhurat' | 'mantra' | 'verses'; payload: any; }
 export interface ChatMessage { role: 'user' | 'assistant'; text: string; cards: ChatCard[]; status?: string; pending?: boolean; error?: boolean; }
@@ -22,6 +22,7 @@ export class PanditJiService {
   private api = inject(ApiService);
   private i18n = inject(I18nService);
   private loc = inject(LocationService);
+  private trad = inject(TraditionService);
 
   readonly messages = signal<ChatMessage[]>([]);
   readonly busy = signal(false);
@@ -80,7 +81,7 @@ export class PanditJiService {
         }
       };
       const p = this.loc.place();
-      hub.invoke('Ask', { sessionId: this.sessionId, text: q, language: this.i18n.lang(), latitude: p.lat, longitude: p.lng, timeZone: p.tz })
+      hub.invoke('Ask', { sessionId: this.sessionId, text: q, language: this.i18n.lang(), latitude: p.lat, longitude: p.lng, timeZone: p.tz, tradition: this.trad.tradition() })
         .catch(() => { patch(m => ({ ...m, pending: false, error: true, text: this.i18n.t('error') })); resolve(); });
     });
     this.current = undefined;
@@ -118,8 +119,12 @@ export class PanditJiService {
         for (let i = 0; i < 20; i++) {
           const d = addDays(today, i);
           const pp = computePanchang(d, p.lat, p.lng, p.tz);
-          if (pp.observances.some(o => o.includes('Ekadashi'))) {
-            return { text: (hi ? `अगली एकादशी ${d} को है (${pp.tithis[0].nameSanskrit})।` : `The next Ekadashi is on ${d} (${pp.tithis[0].name}).`) + note, cards: [{ type: 'panchang', payload: pp }] };
+          // Vaishnavas skip the Smarta-only day and vice versa; plain "Ekadashi" is the same day for both
+          const skip = this.trad.tradition() === 'vaishnava' ? 'Ekadashi (Smarta)' : 'Ekadashi (Vaishnava)';
+          const ek = pp.observances.find(o => o.startsWith('Ekadashi') && o !== skip);
+          if (ek) {
+            const rule = ek === 'Ekadashi' ? '' : hi ? (ek.includes('Vaishnava') ? ' वैष्णव नियम से (अरुणोदय में दशमी नहीं)।' : ' स्मार्त नियम से (सूर्योदय की तिथि); वैष्णव एकादशी अगले दिन है।') : (ek.includes('Vaishnava') ? ' by the Vaishnava rule (no Dashami at arunodaya).' : ' by the Smarta rule (tithi at sunrise); Vaishnavas fast the next day.');
+            return { text: (hi ? `अगली एकादशी ${d} को है (${pp.tithis[0].nameSanskrit})।` : `The next Ekadashi is on ${d} (${pp.tithis[0].name}).`) + rule + note, cards: [{ type: 'panchang', payload: pp }] };
           }
         }
       }
@@ -132,10 +137,12 @@ export class PanditJiService {
       return { text: text + note, cards: [{ type: 'panchang', payload: pp }] };
     }
 
-    if (has('mantra', 'मंत्र', 'jaap', 'जाप', 'जप', 'uchcharan', 'उच्चारण', 'pronounce', 'chant')) {
-      const mantras = mantrasJson as Mantra[];
-      const m = mantras.find(x => t.includes(x.slug.split('-')[0]) || t.includes(x.name.toLowerCase().split(' ')[0]) || q.includes(x.nameHi.split(' ')[0]))
-        ?? mantras.find(x => x.tags.split(' ').some(tag => t.includes(tag))) ?? mantras[0];
+    const mantras = await loadMantras();
+    const asked = has('mantra', 'मंत्र', 'jaap', 'जाप', 'जप', 'uchcharan', 'उच्चारण', 'pronounce', 'chant', 'stotra', 'स्तोत्र', 'chalisa', 'चालीसा', 'aarti', 'आरती', 'paath', 'पाठ');
+    // Without a word like "mantra" or "stotra", only a clear name match counts (so Gita questions still reach the verse search)
+    const named = findMantra(q, mantras, this.trad.tradition(), asked ? 2 : 6);
+    if (named || asked) {
+      const m = named ?? mantras[0];
       return { text: (hi ? `यह रहा ${m.nameHi}। नीचे के प्लेयर के साथ धीरे-धीरे जप करें। ${m.meaningHi}` : `Here is the ${m.name}. Chant slowly along with the player. ${m.meaningEn}`) + note, cards: [{ type: 'mantra', payload: m }] };
     }
 

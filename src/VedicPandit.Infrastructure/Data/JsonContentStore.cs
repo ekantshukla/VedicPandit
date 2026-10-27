@@ -57,11 +57,15 @@ public sealed class JsonContentStore : IContentStore
     {
         // Mantras
         var mantras = new List<Mantra>();
-        var mantraFile = Path.Combine(_opt.SeedFolder, "mantras.json");
-        if (File.Exists(mantraFile))
-            mantras = JsonSerializer.Deserialize<List<Mantra>>(File.ReadAllText(mantraFile), Json) ?? new();
+        // mantras.json, then SeedData/mantras/*.json (stotras, chalisas, aartis) in name order
+        var mantraFiles = new List<string> { Path.Combine(_opt.SeedFolder, "mantras.json") };
+        var mantraDir = Path.Combine(_opt.SeedFolder, "mantras");
+        if (Directory.Exists(mantraDir)) mantraFiles.AddRange(Directory.GetFiles(mantraDir, "*.json").OrderBy(f => f, StringComparer.Ordinal));
+        foreach (var f in mantraFiles.Where(File.Exists))
+            mantras.AddRange(JsonSerializer.Deserialize<List<Mantra>>(File.ReadAllText(f), Json) ?? new());
+        // Karaoke timing for short mantras; long stotras are timed verse by verse in the browser
         foreach (var m in mantras)
-            if (string.IsNullOrWhiteSpace(m.TimingJson) || m.TimingJson == "[]")
+            if (m.Kind == "mantra" && (string.IsNullOrWhiteSpace(m.TimingJson) || m.TimingJson == "[]"))
                 m.TimingJson = ChantTiming.Generate(m.Sanskrit);
 
         // Scriptures: seed files first (alphabetical), then imports (oldest first)

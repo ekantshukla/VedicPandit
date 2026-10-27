@@ -34,7 +34,7 @@ public class PanditJiHub : Hub
 
         var session = string.IsNullOrWhiteSpace(request.SessionId) ? Context.ConnectionId : request.SessionId!;
         var botReq = new BotRequest(session, request.Text ?? "", request.Language ?? "hi",
-            request.Latitude ?? 25.3176, request.Longitude ?? 82.9739, request.TimeZone ?? "Asia/Kolkata");
+            request.Latitude ?? 25.3176, request.Longitude ?? 82.9739, request.TimeZone ?? "Asia/Kolkata", request.Tradition ?? "all");
 
         try
         {
@@ -61,7 +61,7 @@ public class PanditJiHub : Hub
     }
 }
 
-public record AskRequest(string? SessionId, string? Text, string? Language, double? Latitude, double? Longitude, string? TimeZone);
+public record AskRequest(string? SessionId, string? Text, string? Language, double? Latitude, double? Longitude, string? TimeZone, string? Tradition = null);
 
 /// <summary>Sliding one-minute window per client IP for hub calls (ASP.NET's rate limiter only covers HTTP requests).</summary>
 public sealed class HubRateLimiter

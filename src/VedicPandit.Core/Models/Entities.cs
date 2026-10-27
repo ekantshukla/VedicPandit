@@ -56,6 +56,10 @@ public class Mantra
     /// <summary>JSON array of {"w": word, "s": startMs, "e": endMs, "l": line} used for karaoke-style highlighting.</summary>
     public string TimingJson { get; set; } = "[]";
     public string Tags { get; set; } = string.Empty;
+    /// <summary>"mantra" (short, for japa), "stotra" (verses), "chalisa" or "aarti". Verses are separated by a blank line.</summary>
+    public string Kind { get; set; } = "mantra";
+    /// <summary>Where the digital text comes from, e.g. "sanskritdocuments.org".</summary>
+    public string Credit { get; set; } = string.Empty;
 }
 
 public class ChatTurn

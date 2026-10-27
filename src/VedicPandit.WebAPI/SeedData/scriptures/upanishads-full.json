@@ -1,0 +1,270 @@
+[
+ {
+  "code": "isha",
+  "name": "Isha Upanishad",
+  "nameDevanagari": "ईशावास्योपनिषद्",
+  "category": "Upanishad (Vedanta)",
+  "description": "The 18 mantras of the Isha Upanishad (Shukla Yajurveda, chapter 40): the Lord in everything, action without attachment, knowledge and action together.",
+  "translationCredit": "Sanskrit: traditional text (Kanva recension for the Isha). English and Hindi: Vedic Pandit.",
+  "verses": [
+   {
+    "chapter": 0,
+    "verse": "Shanti",
+    "sanskrit": "ॐ पूर्णमदः पूर्णमिदं पूर्णात्पूर्णमुदच्यते ।\nपूर्णस्य पूर्णमादाय पूर्णमेवावशिष्यते ॥\nॐ शान्तिः शान्तिः शान्तिः ॥",
+    "translationEn": "That is whole, this is whole; from the whole the whole arises. Taking the whole from the whole, the whole alone remains. Om, peace, peace, peace.",
+    "translationHi": "वह पूर्ण है, यह पूर्ण है; पूर्ण से पूर्ण उत्पन्न होता है। पूर्ण में से पूर्ण निकाल लेने पर भी पूर्ण ही शेष रहता है। ॐ शांति शांति शांति।",
+    "keywords": "purnam whole fullness infinite shanti peace invocation"
+   },
+   {
+    "chapter": 0,
+    "verse": "1",
+    "sanskrit": "ॐ ईशा वास्यमिदं सर्वं यत्किञ्च जगत्यां जगत् ।\nतेन त्यक्तेन भुञ्जीथा मा गृधः कस्यस्विद्धनम् ॥ १॥",
+    "translationEn": "All this, whatever moves in this moving world, is to be covered by the Lord. Enjoy it by letting go; do not covet anyone's wealth.",
+    "translationHi": "इस गतिशील जगत में जो कुछ भी है, वह सब ईश्वर से व्याप्त है। त्याग भाव से उसका भोग करो; किसी के धन का लोभ मत करो।",
+    "keywords": "isha lord everywhere renunciation greed wealth contentment detachment"
+   },
+   {
+    "chapter": 0,
+    "verse": "2",
+    "sanskrit": "कुर्वन्नेवेह कर्माणि जिजीविषेच्छतं समाः ।\nएवं त्वयि नान्यथेतोऽस्ति न कर्म लिप्यते नरे ॥ २॥",
+    "translationEn": "Doing one's work here, one may wish to live a hundred years. For you, living so, there is no other way: action does not cling to such a person.",
+    "translationHi": "यहाँ कर्म करते हुए ही सौ वर्ष जीने की इच्छा करे। ऐसे जीने वाले के लिए इसके सिवा कोई मार्ग नहीं; ऐसे मनुष्य को कर्म बाँधता नहीं।",
+    "keywords": "karma action work long life hundred years duty detachment"
+   },
+   {
+    "chapter": 0,
+    "verse": "3",
+    "sanskrit": "असुर्या नाम ते लोका अन्धेन तमसाऽऽवृताः ।\nतांस्ते प्रेत्याभिगच्छन्ति ये के चात्महनो जनाः ॥ ३॥",
+    "translationEn": "Sunless are those worlds, covered in blind darkness. To them, after death, go those who slay the Self (who live denying their own Self).",
+    "translationHi": "वे लोक असुर्य (प्रकाशहीन) कहलाते हैं, घोर अंधकार से ढके हुए। जो आत्मा का हनन करते हैं (आत्मा को भूलकर जीते हैं), वे मृत्यु के बाद वहीं जाते हैं।",
+    "keywords": "darkness death atman self ignorance afterlife"
+   },
+   {
+    "chapter": 0,
+    "verse": "4",
+    "sanskrit": "अनेजदेकं मनसो जवीयो नैनद्देवा आप्नुवन्पूर्वमर्षत् ।\nतद्धावतोऽन्यानत्येति तिष्ठत्तस्मिन्नपो मातरिश्वा दधाति ॥ ४॥",
+    "translationEn": "Unmoving, it is one, swifter than the mind; the senses never reached it, for it ran ahead. Standing still, it outruns those who run. In it the wind places the waters (all activity).",
+    "translationHi": "वह एक है, अचल है, फिर भी मन से भी तेज़ है; इंद्रियाँ उस तक नहीं पहुँचीं, वह उनसे आगे ही रहा। स्थिर रहकर भी वह दौड़ने वालों से आगे निकल जाता है। उसी में वायु सब कर्मों को धारण करता है।",
+    "keywords": "brahman mind speed senses paradox one"
+   },
+   {
+    "chapter": 0,
+    "verse": "5",
+    "sanskrit": "तदेजति तन्नैजति तद्दूरे तद्वन्तिके ।\nतदन्तरस्य सर्वस्य तदु सर्वस्यास्य बाह्यतः ॥ ५॥",
+    "translationEn": "It moves and it does not move. It is far and it is near. It is within all this, and it is outside all this.",
+    "translationHi": "वह चलता है और नहीं भी चलता। वह दूर है और निकट भी। वह इस सबके भीतर है और इस सबके बाहर भी।",
+    "keywords": "brahman far near inside outside omnipresent paradox"
+   },
+   {
+    "chapter": 0,
+    "verse": "6",
+    "sanskrit": "यस्तु सर्वाणि भूतान्यात्मन्येवानुपश्यति ।\nसर्वभूतेषु चात्मानं ततो न विजुगुप्सते ॥ ६॥",
+    "translationEn": "One who sees all beings in the Self and the Self in all beings no longer shrinks from anyone.",
+    "translationHi": "जो सब प्राणियों को आत्मा में और आत्मा को सब प्राणियों में देखता है, वह फिर किसी से घृणा नहीं करता।",
+    "keywords": "oneness atman all beings hatred love equality compassion"
+   },
+   {
+    "chapter": 0,
+    "verse": "7",
+    "sanskrit": "यस्मिन्सर्वाणि भूतान्यात्मैवाभूद्विजानतः ।\nतत्र को मोहः कः शोक एकत्वमनुपश्यतः ॥ ७॥",
+    "translationEn": "For the knower in whom all beings have become the Self, what delusion, what sorrow can there be, seeing oneness everywhere?",
+    "translationHi": "जिस ज्ञानी के लिए सब प्राणी आत्मा ही हो गए, उस एकत्व देखने वाले के लिए कैसा मोह, कैसा शोक?",
+    "keywords": "oneness sorrow grief delusion moha shoka knowledge"
+   },
+   {
+    "chapter": 0,
+    "verse": "8",
+    "sanskrit": "स पर्यगाच्छुक्रमकायमव्रणमस्नाविरं शुद्धमपापविद्धम् ।\nकविर्मनीषी परिभूः स्वयम्भूर्याथातथ्यतोऽर्थान् व्यदधाच्छाश्वतीभ्यः समाभ्यः ॥ ८॥",
+    "translationEn": "He is all-pervading, radiant, bodiless, without wound or sinew, pure, untouched by evil. The seer, the wise, encompassing all, self-existent, he has ordained all things rightly for eternal years.",
+    "translationHi": "वह सर्वव्यापी, तेजस्वी, अशरीरी, घाव और नसों से रहित, शुद्ध और पाप से अछूता है। वह कवि, मनीषी, सबको घेरने वाला, स्वयंभू है; उसी ने अनंत काल के लिए सब पदार्थों को यथावत् रचा।",
+    "keywords": "brahman pure bodiless self existent creator"
+   },
+   {
+    "chapter": 0,
+    "verse": "9",
+    "sanskrit": "अन्धं तमः प्रविशन्ति येऽविद्यामुपासते ।\nततो भूय इव ते तमो य उ विद्यायां रताः ॥ ९॥",
+    "translationEn": "Into blind darkness enter those who worship ignorance (ritual action alone); into greater darkness, as it were, those who delight only in knowledge.",
+    "translationHi": "जो केवल अविद्या (कर्मकांड) की उपासना करते हैं, वे घोर अंधकार में प्रवेश करते हैं; और जो केवल विद्या में रत हैं, वे मानो उससे भी अधिक अंधकार में।",
+    "keywords": "vidya avidya knowledge ignorance ritual balance"
+   },
+   {
+    "chapter": 0,
+    "verse": "10",
+    "sanskrit": "अन्यदेवाहुर्विद्यया अन्यदाहुरविद्यया ।\nइति शुश्रुम धीराणां ये नस्तद्विचचक्षिरे ॥ १०॥",
+    "translationEn": "One result, they say, comes from knowledge, and another from ignorance (action). So we have heard from the wise who explained it to us.",
+    "translationHi": "कहते हैं कि विद्या का फल एक है और अविद्या का दूसरा। ऐसा हमने उन धीर पुरुषों से सुना है जिन्होंने हमें यह समझाया।",
+    "keywords": "vidya avidya teachers wise tradition"
+   },
+   {
+    "chapter": 0,
+    "verse": "11",
+    "sanskrit": "विद्यां चाविद्यां च यस्तद्वेदोभयं सह ।\nअविद्यया मृत्युं तीर्त्वा विद्ययाऽमृतमश्नुते ॥ ११॥",
+    "translationEn": "One who knows both knowledge and action together crosses death through action and attains immortality through knowledge.",
+    "translationHi": "जो विद्या और अविद्या दोनों को साथ-साथ जानता है, वह अविद्या (कर्म) से मृत्यु को पार करके विद्या से अमृत को प्राप्त करता है।",
+    "keywords": "vidya avidya immortality death karma jnana balance"
+   },
+   {
+    "chapter": 0,
+    "verse": "12",
+    "sanskrit": "अन्धं तमः प्रविशन्ति येऽसम्भूतिमुपासते ।\nततो भूय इव ते तमो य उ सम्भूत्यां रताः ॥ १२॥",
+    "translationEn": "Into blind darkness enter those who worship the unmanifest; into greater darkness, as it were, those who delight only in the manifest.",
+    "translationHi": "जो केवल असंभूति (अव्यक्त) की उपासना करते हैं, वे घोर अंधकार में जाते हैं; जो केवल संभूति (व्यक्त) में रत हैं, वे मानो उससे भी अधिक अंधकार में।",
+    "keywords": "manifest unmanifest sambhuti worship"
+   },
+   {
+    "chapter": 0,
+    "verse": "13",
+    "sanskrit": "अन्यदेवाहुः सम्भवादन्यदाहुरसम्भवात् ।\nइति शुश्रुम धीराणां ये नस्तद्विचचक्षिरे ॥ १३॥",
+    "translationEn": "One result, they say, comes from the manifest, and another from the unmanifest. So we have heard from the wise who explained it to us.",
+    "translationHi": "कहते हैं कि संभव (व्यक्त) का फल एक है और असंभव (अव्यक्त) का दूसरा। ऐसा हमने उन धीर पुरुषों से सुना है जिन्होंने हमें यह समझाया।",
+    "keywords": "manifest unmanifest teachers"
+   },
+   {
+    "chapter": 0,
+    "verse": "14",
+    "sanskrit": "सम्भूतिं च विनाशं च यस्तद्वेदोभयं सह ।\nविनाशेन मृत्युं तीर्त्वा सम्भूत्याऽमृतमश्नुते ॥ १४॥",
+    "translationEn": "One who knows both the manifest and the perishable together crosses death through the perishable and attains immortality through the manifest.",
+    "translationHi": "जो संभूति और विनाश दोनों को साथ-साथ जानता है, वह विनाश से मृत्यु को पार करके संभूति से अमृत को प्राप्त करता है।",
+    "keywords": "immortality death manifest"
+   },
+   {
+    "chapter": 0,
+    "verse": "15",
+    "sanskrit": "हिरण्मयेन पात्रेण सत्यस्यापिहितं मुखम् ।\nतत्त्वं पूषन्नपावृणु सत्यधर्माय दृष्टये ॥ १५॥",
+    "translationEn": "The face of Truth is covered by a golden disc. Uncover it, O Pushan (Sun), so that I, devoted to truth, may see.",
+    "translationHi": "सत्य का मुख सोने के पात्र से ढका है। हे पूषन (सूर्य), उसे हटा दो, ताकि मैं, सत्यधर्मी, उसे देख सकूँ।",
+    "keywords": "truth golden sun pushan prayer vision"
+   },
+   {
+    "chapter": 0,
+    "verse": "16",
+    "sanskrit": "पूषन्नेकर्षे यम सूर्य प्राजापत्य व्यूह रश्मीन् समूह तेजः ।\nयत्ते रूपं कल्याणतमं तत्ते पश्यामि योऽसावसौ पुरुषः सोऽहमस्मि ॥ १६॥",
+    "translationEn": "O Pushan, lone seer, Yama, Surya, son of Prajapati, spread apart your rays, gather in your light. I see your most blessed form; that Person over there, that I am.",
+    "translationHi": "हे पूषन, एकमात्र ऋषि, यम, सूर्य, प्रजापतिपुत्र, अपनी किरणें हटाओ, तेज समेटो। मैं तुम्हारा परम कल्याणमय रूप देखता हूँ; वह जो पुरुष है, वह मैं हूँ।",
+    "keywords": "sun surya so ham oneness light prayer"
+   },
+   {
+    "chapter": 0,
+    "verse": "17",
+    "sanskrit": "वायुरनिलममृतमथेदं भस्मान्तं शरीरम् ।\nॐ क्रतो स्मर कृतं स्मर क्रतो स्मर कृतं स्मर ॥ १७॥",
+    "translationEn": "Let my breath return to the immortal wind; this body ends in ashes. Om. O mind, remember what has been done; remember, O mind, what has been done.",
+    "translationHi": "मेरा प्राण अमर वायु में मिल जाए; यह शरीर अंत में भस्म हो जाता है। ॐ। हे मन, किए हुए को स्मरण कर, स्मरण कर।",
+    "keywords": "death body ashes breath remember mind last rites"
+   },
+   {
+    "chapter": 0,
+    "verse": "18",
+    "sanskrit": "अग्ने नय सुपथा राये अस्मान् विश्वानि देव वयुनानि विद्वान् ।\nयुयोध्यस्मज्जुहुराणमेनो भूयिष्ठां ते नमउक्तिं विधेम ॥ १८॥",
+    "translationEn": "O Agni, lead us by the good path to prosperity, O god who knows all our ways. Keep from us the crooked sin; we offer you our many words of salutation.",
+    "translationHi": "हे अग्नि, हमें सुपथ से कल्याण की ओर ले चलो; हे देव, तुम हमारे सब कर्मों को जानते हो। हमसे कुटिल पाप को दूर करो; हम तुम्हें बार-बार नमस्कार करते हैं।",
+    "keywords": "agni prayer good path guidance sin forgiveness"
+   }
+  ]
+ },
+ {
+  "code": "mandukya",
+  "name": "Mandukya Upanishad",
+  "nameDevanagari": "माण्डूक्योपनिषद्",
+  "category": "Upanishad (Vedanta)",
+  "description": "The 12 mantras of the Mandukya Upanishad (Atharvaveda): Om and the four states of the Self (waking, dream, deep sleep and turiya).",
+  "translationCredit": "Sanskrit: traditional text. English and Hindi: Vedic Pandit.",
+  "verses": [
+   {
+    "chapter": 0,
+    "verse": "1",
+    "sanskrit": "ओमित्येतदक्षरमिदं सर्वं तस्योपव्याख्यानं भूतं भवद्भविष्यदिति सर्वमोङ्कार एव ।\nयच्चान्यत्त्रिकालातीतं तदप्योङ्कार एव ॥ १॥",
+    "translationEn": "Om: this syllable is all this. Its explanation: all that was, is and will be is Om alone. And whatever is beyond the three times, that too is Om.",
+    "translationHi": "ॐ यह अक्षर ही यह सब है। उसकी व्याख्या: जो था, जो है और जो होगा, वह सब ओंकार ही है। और जो तीनों कालों से परे है, वह भी ओंकार ही है।",
+    "keywords": "om omkara syllable time past present future"
+   },
+   {
+    "chapter": 0,
+    "verse": "2",
+    "sanskrit": "सर्वं ह्येतद् ब्रह्मायमात्मा ब्रह्म सोऽयमात्मा चतुष्पात् ॥ २॥",
+    "translationEn": "All this is Brahman. This Self is Brahman. This Self has four quarters.",
+    "translationHi": "यह सब ब्रह्म है। यह आत्मा ब्रह्म है। यह आत्मा चार पादों वाला है।",
+    "keywords": "ayam atma brahma mahavakya four quarters"
+   },
+   {
+    "chapter": 0,
+    "verse": "3",
+    "sanskrit": "जागरितस्थानो बहिष्प्रज्ञः सप्ताङ्ग एकोनविंशतिमुखः स्थूलभुग्वैश्वानरः प्रथमः पादः ॥ ३॥",
+    "translationEn": "The first quarter is Vaishvanara: its field is waking, its awareness turned outward, with seven limbs and nineteen mouths, enjoying the gross.",
+    "translationHi": "पहला पाद वैश्वानर है: जाग्रत अवस्था उसका स्थान है, उसकी चेतना बाहर की ओर है, सात अंग और उन्नीस मुख हैं, वह स्थूल का भोग करता है।",
+    "keywords": "waking jagrat vaishvanara consciousness states"
+   },
+   {
+    "chapter": 0,
+    "verse": "4",
+    "sanskrit": "स्वप्नस्थानोऽन्तःप्रज्ञः सप्ताङ्ग एकोनविंशतिमुखः प्रविविक्तभुक्तैजसो द्वितीयः पादः ॥ ४॥",
+    "translationEn": "The second quarter is Taijasa: its field is dream, its awareness turned inward, with seven limbs and nineteen mouths, enjoying the subtle.",
+    "translationHi": "दूसरा पाद तैजस है: स्वप्न उसका स्थान है, उसकी चेतना भीतर की ओर है, सात अंग और उन्नीस मुख हैं, वह सूक्ष्म का भोग करता है।",
+    "keywords": "dream svapna taijasa consciousness states"
+   },
+   {
+    "chapter": 0,
+    "verse": "5",
+    "sanskrit": "यत्र सुप्तो न कञ्चन कामं कामयते न कञ्चन स्वप्नं पश्यति तत्सुषुप्तम् ।\nसुषुप्तस्थान एकीभूतः प्रज्ञानघन एवानन्दमयो ह्यानन्दभुक् चेतोमुखः प्राज्ञस्तृतीयः पादः ॥ ५॥",
+    "translationEn": "Where the sleeper desires nothing and sees no dream, that is deep sleep. The third quarter is Prajna: its field is deep sleep, become one, a mass of awareness, full of bliss, enjoying bliss, the doorway to knowing.",
+    "translationHi": "जहाँ सोया हुआ न कोई कामना करता है, न कोई स्वप्न देखता है, वह सुषुप्ति है। तीसरा पाद प्राज्ञ है: सुषुप्ति उसका स्थान है, वह एकीभूत, प्रज्ञानघन, आनंदमय, आनंद का भोक्ता और चेतना का द्वार है।",
+    "keywords": "deep sleep sushupti prajna bliss ananda consciousness"
+   },
+   {
+    "chapter": 0,
+    "verse": "6",
+    "sanskrit": "एष सर्वेश्वर एष सर्वज्ञ एषोऽन्तर्याम्येष योनिः सर्वस्य प्रभवाप्ययौ हि भूतानाम् ॥ ६॥",
+    "translationEn": "This is the Lord of all, this the knower of all, this the inner controller, this the source of all; it is the origin and the dissolution of beings.",
+    "translationHi": "यही सबका ईश्वर है, यही सर्वज्ञ है, यही अंतर्यामी है, यही सबका मूल है; यही प्राणियों की उत्पत्ति और लय का स्थान है।",
+    "keywords": "ishvara lord omniscient antaryami creation dissolution"
+   },
+   {
+    "chapter": 0,
+    "verse": "7",
+    "sanskrit": "नान्तःप्रज्ञं न बहिष्प्रज्ञं नोभयतःप्रज्ञं न प्रज्ञानघनं न प्रज्ञं नाप्रज्ञम् ।\nअदृष्टमव्यवहार्यमग्राह्यमलक्षणमचिन्त्यमव्यपदेश्यमेकात्मप्रत्ययसारं प्रपञ्चोपशमं शान्तं शिवमद्वैतं चतुर्थं मन्यन्ते स आत्मा स विज्ञेयः ॥ ७॥",
+    "translationEn": "Not inward-aware, not outward-aware, not both, not a mass of awareness, not aware, not unaware; unseen, beyond dealings, ungraspable, without marks, unthinkable, indescribable, its essence the one Self, where the world comes to rest, peaceful, auspicious, non-dual: this they consider the fourth. That is the Self; that is to be known.",
+    "translationHi": "न भीतर की चेतना, न बाहर की, न दोनों; न प्रज्ञानघन, न प्रज्ञ, न अप्रज्ञ; अदृश्य, व्यवहार से परे, अग्राह्य, लक्षणरहित, अचिंत्य, अवर्णनीय, एक आत्मा के अनुभव का सार, प्रपंच का उपशम, शांत, शिव, अद्वैत: इसे चौथा (तुरीय) मानते हैं। वही आत्मा है, वही जानने योग्य है।",
+    "keywords": "turiya fourth advaita non dual shantam shivam self"
+   },
+   {
+    "chapter": 0,
+    "verse": "8",
+    "sanskrit": "सोऽयमात्माऽध्यक्षरमोङ्कारोऽधिमात्रं पादा मात्रा मात्राश्च पादा अकार उकारो मकार इति ॥ ८॥",
+    "translationEn": "This Self, as a syllable, is Om; as its parts: the quarters are the letters and the letters are the quarters, namely A, U and M.",
+    "translationHi": "यह आत्मा अक्षर रूप में ओंकार है; मात्राओं के रूप में: पाद ही मात्राएँ हैं और मात्राएँ ही पाद: अकार, उकार और मकार।",
+    "keywords": "om aum a u m syllable matra"
+   },
+   {
+    "chapter": 0,
+    "verse": "9",
+    "sanskrit": "जागरितस्थानो वैश्वानरोऽकारः प्रथमा मात्राऽऽप्तेरादिमत्त्वाद्वाऽऽप्नोति ह वै सर्वान्कामानादिश्च भवति य एवं वेद ॥ ९॥",
+    "translationEn": "Vaishvanara, whose field is waking, is A, the first letter, for it pervades and comes first. One who knows this attains all desires and becomes the first.",
+    "translationHi": "जाग्रत स्थान वाला वैश्वानर अकार है, पहली मात्रा, क्योंकि वह व्याप्त है और आदि है। जो ऐसा जानता है वह सब कामनाएँ पाता है और प्रथम होता है।",
+    "keywords": "om a waking vaishvanara"
+   },
+   {
+    "chapter": 0,
+    "verse": "10",
+    "sanskrit": "स्वप्नस्थानस्तैजस उकारो द्वितीया मात्रोत्कर्षादुभयत्वाद्वोत्कर्षति ह वै ज्ञानसन्ततिं समानश्च भवति नास्याब्रह्मवित्कुले भवति य एवं वेद ॥ १०॥",
+    "translationEn": "Taijasa, whose field is dream, is U, the second letter, for it is higher and lies between both. One who knows this raises the stream of knowledge, becomes even-minded, and none in his line is ignorant of Brahman.",
+    "translationHi": "स्वप्न स्थान वाला तैजस उकार है, दूसरी मात्रा, क्योंकि वह उत्कृष्ट है और दोनों के बीच है। जो ऐसा जानता है वह ज्ञान की परंपरा बढ़ाता है, समभाव वाला होता है और उसके कुल में कोई ब्रह्म को न जानने वाला नहीं होता।",
+    "keywords": "om u dream taijasa knowledge"
+   },
+   {
+    "chapter": 0,
+    "verse": "11",
+    "sanskrit": "सुषुप्तस्थानः प्राज्ञो मकारस्तृतीया मात्रा मितेरपीतेर्वा मिनोति ह वा इदं सर्वमपीतिश्च भवति य एवं वेद ॥ ११॥",
+    "translationEn": "Prajna, whose field is deep sleep, is M, the third letter, for it measures and absorbs. One who knows this measures all this and absorbs it into himself.",
+    "translationHi": "सुषुप्ति स्थान वाला प्राज्ञ मकार है, तीसरी मात्रा, क्योंकि वह मापने वाला और लय करने वाला है। जो ऐसा जानता है वह इस सबको माप लेता है और सबको अपने में लीन कर लेता है।",
+    "keywords": "om m deep sleep prajna"
+   },
+   {
+    "chapter": 0,
+    "verse": "12",
+    "sanskrit": "अमात्रश्चतुर्थोऽव्यवहार्यः प्रपञ्चोपशमः शिवोऽद्वैत एवमोङ्कार आत्मैव संविशत्यात्मनाऽऽत्मानं य एवं वेद ॥ १२॥",
+    "translationEn": "Without parts is the fourth: beyond dealings, where the world comes to rest, auspicious, non-dual. Thus Om is the Self itself. One who knows this enters the Self by the Self.",
+    "translationHi": "मात्रारहित चौथा (तुरीय) है: व्यवहार से परे, प्रपंच का उपशम, शिव, अद्वैत। इस प्रकार ओंकार आत्मा ही है। जो ऐसा जानता है वह आत्मा से आत्मा में प्रवेश करता है।",
+    "keywords": "turiya silence om self advaita"
+   }
+  ]
+ }
+]

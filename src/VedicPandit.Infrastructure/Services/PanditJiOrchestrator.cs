@@ -77,7 +77,7 @@ public sealed class PanditJiOrchestrator : IPanditJiOrchestrator
             messages.Add(new JsonObject { ["role"] = role, ["content"] = t });
         messages.Add(new JsonObject { ["role"] = "user", ["content"] = text });
 
-        var system = PromptLibrary.System(req.Language, today, req.TimeZone);
+        var system = PromptLibrary.System(req.Language, today, req.TimeZone, req.Tradition);
         var tools = PromptLibrary.Tools(_muhurat.SupportedEvents.Select(e => e.Event.ToString()));
         var full = new StringBuilder();
 
@@ -173,7 +173,10 @@ public sealed class PanditJiOrchestrator : IPanditJiOrchestrator
                     var q = tu.Input["query"]?.GetValue<string>() ?? "";
                     var m = await FindMantraAsync(q, ct);
                     if (m is null) return ($"No mantra matching '{q}' in the library.", null, false);
-                    var info = $"{m.Name} ({m.Source})\n{m.Sanskrit}\nMeaning: {m.MeaningEn}\nHindi: {m.MeaningHi}\nPronunciation tips: {m.PronunciationTips}\nRecommended repetitions: {m.RecommendedRepetitions}";
+                    // Long stotras: give the model the opening verses only; the card shows the whole text
+                    var verses = m.Sanskrit.Split("\n\n");
+                    var text = verses.Length > 4 ? string.Join("\n\n", verses.Take(3)) + $"\n… ({verses.Length} verses in all; the full text is in the card shown to the user)" : m.Sanskrit;
+                    var info = $"{m.Name} ({m.Source}) [{m.Kind}]\n{text}\nAbout: {m.MeaningEn}\nHindi: {m.MeaningHi}\nWhen: {m.Benefits}\nPronunciation tips: {m.PronunciationTips}\nRecommended repetitions: {m.RecommendedRepetitions}";
                     return (info, new BotCard("mantra", m), false);
                 }
                 case "search_scriptures":
@@ -208,15 +211,22 @@ public sealed class PanditJiOrchestrator : IPanditJiOrchestrator
     {
         await Task.CompletedTask;
         var all = _content.Mantras;
-        var terms = q.ToLowerInvariant().Split(new[] { ' ', ',', '-' }, StringSplitOptions.RemoveEmptyEntries);
+        var terms = q.ToLowerInvariant().Split(new[] { ' ', ',', '-' }, StringSplitOptions.RemoveEmptyEntries)
+            .Where(t => t.Length > 2 && t is not ("mantra" or "stotra" or "stotram" or "the" or "and" or "for")).ToArray();
+        string kind = q.Contains("stotra", StringComparison.OrdinalIgnoreCase) || q.Contains("स्तोत्र") ? "stotra"
+            : q.Contains("chalisa", StringComparison.OrdinalIgnoreCase) || q.Contains("चालीसा") ? "chalisa"
+            : q.Contains("aarti", StringComparison.OrdinalIgnoreCase) || q.Contains("आरती") ? "aarti" : "";
+        // "shiv tandav" should find "shiva-tandava": also match on the first five letters of each term
+        static bool Has(string hay, string t) => hay.Contains(t) || (t.Length >= 5 && hay.Contains(t[..5]));
         return all
             .Select(m => new
             {
                 m,
                 score = terms.Sum(t =>
-                    (m.Slug.Contains(t) ? 5 : 0) + (m.Name.ToLowerInvariant().Contains(t) ? 4 : 0) +
+                    (Has(m.Slug, t) ? 5 : 0) + (Has(m.Name.ToLowerInvariant(), t) ? 4 : 0) +
                     (m.NameHi.Contains(t) ? 4 : 0) + (m.Deity.ToLowerInvariant().Contains(t) ? 2 : 0) +
-                    (m.Tags.Contains(t) ? 2 : 0) + (m.Sanskrit.Contains(t) ? 3 : 0))
+                    (m.Tags.Contains(t) ? 2 : 0) + (m.Kind == "mantra" && m.Sanskrit.Contains(t) ? 3 : 0))
+                    + (kind != "" && m.Kind == kind ? 2 : 0)
             })
             .Where(x => x.score > 0)
             .OrderByDescending(x => x.score)
@@ -239,7 +249,26 @@ public sealed class PanditJiOrchestrator : IPanditJiOrchestrator
         bool hi = req.Language is "hi" or "mr";
         string answer;
 
-        if (ContainsAny(t, "panchang", "tithi", "rahu", "पंचांग", "तिथि", "राहु", "nakshatra", "नक्षत्र", "choghadiya", "चौघड़िया"))
+        if (ContainsAny(t, "ekadashi", "एकादशी"))
+        {
+            // Next Ekadashi by the reader's rule: Vaishnavas skip the Smarta-only day, everyone else the Vaishnava-only one
+            string skip = req.Tradition == "vaishnava" ? "Ekadashi (Smarta)" : "Ekadashi (Vaishnava)";
+            for (int i = 0; i < 20; i++)
+            {
+                var d = today.AddDays(i);
+                var pp = _panchang.Compute(d, req.Latitude, req.Longitude, req.TimeZone);
+                var ek = pp.Observances.FirstOrDefault(o => o.StartsWith("Ekadashi") && o != skip);
+                if (ek is null) continue;
+                yield return new BotCard("panchang", pp);
+                string rule = ek == "Ekadashi" ? "" : ek.Contains("Vaishnava")
+                    ? (hi ? " वैष्णव नियम से (अरुणोदय में दशमी नहीं)।" : " by the Vaishnava rule (no Dashami at arunodaya).")
+                    : (hi ? " स्मार्त नियम से; वैष्णव एकादशी अगले दिन है।" : " by the Smarta rule; Vaishnavas fast the next day.");
+                answer = (hi ? $"अगली एकादशी {d:dd MMM yyyy} को है।" : $"The next Ekadashi is on {d:dd MMM yyyy}.") + rule;
+                goto done;
+            }
+            answer = hi ? "अगले 20 दिनों में एकादशी नहीं मिली।" : "No Ekadashi in the next 20 days.";
+        }
+        else if (ContainsAny(t, "panchang", "tithi", "rahu", "पंचांग", "तिथि", "राहु", "nakshatra", "नक्षत्र", "choghadiya", "चौघड़िया"))
         {
             var date = t.Contains("kal") || t.Contains("कल") || t.Contains("tomorrow") ? today.AddDays(1) : today;
             var p = _panchang.Compute(date, req.Latitude, req.Longitude, req.TimeZone);
@@ -259,7 +288,7 @@ public sealed class PanditJiOrchestrator : IPanditJiOrchestrator
             answer = hi ? $"अगले 60 दिनों में {r.EventName} के लिए {r.Windows.Count} शुभ समय मिले। विवरण नीचे देखें।"
                         : $"I found {r.Windows.Count} auspicious windows for {r.EventName} in the next 60 days. See the details below.";
         }
-        else if (ContainsAny(t, "mantra", "मंत्र", "jaap", "जाप", "uchcharan", "उच्चारण"))
+        else if (ContainsAny(t, "mantra", "मंत्र", "jaap", "जाप", "uchcharan", "उच्चारण", "stotra", "स्तोत्र", "chalisa", "चालीसा", "aarti", "आरती", "paath", "पाठ"))
         {
             var m = await FindMantraAsync(text, ct) ?? _content.Mantras.FirstOrDefault();
             if (m != null) yield return new BotCard("mantra", m);
@@ -281,6 +310,7 @@ public sealed class PanditJiOrchestrator : IPanditJiOrchestrator
             else answer = hi ? "क्षमा करें, इस प्रश्न के लिए अभी कोई श्लोक नहीं मिला।" : "Sorry, I couldn't find a matching verse yet.";
         }
 
+        done:
         answer += hi ? "\n\n(ऑफ़लाइन मोड: पूर्ण उत्तरों के लिए Claude API कुंजी जोड़ें।)" : "\n\n(Offline mode: add a Claude API key for full conversational answers.)";
         yield return new BotTextDelta(answer);
         yield return new BotDone(answer);

@@ -32,15 +32,16 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- "Use my location" for the panchang (sunrise and tithi depend on where you are) -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- Dakshina: let the app find UPI apps (GPay, PhonePe, Paytm, BHIM) on Android 11+ -->
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="upi" />
+        </intent>
+        <!-- Lets the app use the phone's Hindi text-to-speech voice for mantras (Android 11+) -->
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
     </queries>
 </manifest>

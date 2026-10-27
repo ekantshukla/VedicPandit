@@ -36,7 +36,7 @@ public class MantrasController : ControllerBase
 
     [HttpGet]
     public IActionResult List() =>
-        Ok(_content.Mantras.Select(m => new { m.Slug, m.Name, m.NameHi, m.Deity, m.Source, m.Tags }));
+        Ok(_content.Mantras.Select(m => new { m.Slug, m.Name, m.NameHi, m.Deity, m.Source, m.Tags, m.Kind }));
 
     [HttpGet("{slug}")]
     public IActionResult Get(string slug)
@@ -114,14 +114,14 @@ public class ChatController : ControllerBase
     private readonly IPanditJiOrchestrator _bot;
     public ChatController(IPanditJiOrchestrator bot) => _bot = bot;
 
-    public record ChatRequest(string Text, string? SessionId, string? Language, double? Latitude, double? Longitude, string? TimeZone);
+    public record ChatRequest(string Text, string? SessionId, string? Language, double? Latitude, double? Longitude, string? TimeZone, string? Tradition = null);
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] ChatRequest r, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(r.Text)) return BadRequest(new { error = "text is required" });
         var req = new BotRequest(r.SessionId ?? Guid.NewGuid().ToString("N"), r.Text, r.Language ?? "hi",
-            r.Latitude ?? 25.3176, r.Longitude ?? 82.9739, r.TimeZone ?? "Asia/Kolkata");
+            r.Latitude ?? 25.3176, r.Longitude ?? 82.9739, r.TimeZone ?? "Asia/Kolkata", r.Tradition ?? "all");
         var cards = new List<object>();
         var tools = new List<string>();
         string answer = "";

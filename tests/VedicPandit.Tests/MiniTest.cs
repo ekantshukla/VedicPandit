@@ -31,6 +31,12 @@ namespace Xunit
         { var hit = items.FirstOrDefault(pred); if (hit is not null && items.Any(pred)) throw new AssertException($"Unexpected item <{hit}>"); }
         public static void Contains(string expectedSubstring, string? actual)
         { if (actual is null || !actual.Contains(expectedSubstring)) throw new AssertException($"Expected text containing <{expectedSubstring}>, got <{actual}>"); }
+        public static void DoesNotContain(string unexpected, string? actual, string? msg = null)
+        { if (actual is not null && actual.Contains(unexpected)) throw new AssertException(msg ?? $"Did not expect <{unexpected}>"); }
+        public static void NotEqual<T>(T notExpected, T actual)
+        { if (EqualityComparer<T>.Default.Equals(notExpected, actual)) throw new AssertException($"Did not expect <{actual}>"); }
+        public static void InRange<T>(T actual, T low, T high) where T : IComparable<T>
+        { if (actual.CompareTo(low) < 0 || actual.CompareTo(high) > 0) throw new AssertException($"Expected {low}..{high}, got {actual}"); }
     }
 }
 

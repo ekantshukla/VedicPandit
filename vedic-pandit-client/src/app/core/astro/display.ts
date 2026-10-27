@@ -7,7 +7,7 @@ const DEVA: Record<string, string> = {
   'Vasanta (Spring)': 'वसंत', 'Grishma (Summer)': 'ग्रीष्म', 'Varsha (Monsoon)': 'वर्षा', 'Sharad (Autumn)': 'शरद',
   'Hemanta (Pre-winter)': 'हेमंत', 'Shishira (Winter)': 'शिशिर', Purnimanta: 'पूर्णिमांत', Amanta: 'अमांत',
   // observances
-  'Sharad Purnima': 'शरद पूर्णिमा', Purnima: 'पूर्णिमा', Amavasya: 'अमावस्या', Ekadashi: 'एकादशी',
+  'Sharad Purnima': 'शरद पूर्णिमा', Purnima: 'पूर्णिमा', Amavasya: 'अमावस्या', Ekadashi: 'एकादशी', 'Ekadashi (Smarta)': 'एकादशी (स्मार्त)', 'Ekadashi (Vaishnava)': 'एकादशी (वैष्णव)',
   'Vinayaka Chaturthi': 'विनायक चतुर्थी', 'Sankashti Chaturthi': 'संकष्टी चतुर्थी', 'Masik Shivaratri': 'मासिक शिवरात्रि',
   'Pradosh Vrat': 'प्रदोष व्रत', 'Karwa Chauth': 'करवा चौथ', Dhanteras: 'धनतेरस', 'Diwali (Lakshmi Puja)': 'दीपावली (लक्ष्मी पूजा)',
   'Govardhan Puja': 'गोवर्धन पूजा', 'Bhai Dooj': 'भाई दूज', 'Kartik Purnima / Dev Deepawali': 'कार्तिक पूर्णिमा / देव दीपावली',

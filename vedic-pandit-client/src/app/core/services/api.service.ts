@@ -5,7 +5,7 @@ import { MonthSystem, Mantra, MuhuratEventInfo, MuhuratSearchResult, PanchangRes
 import { computePanchang } from '../astro/panchang-engine';
 import { findMuhurat, MUHURAT_EVENTS } from '../astro/muhurat-engine';
 import { API_URL } from '../app-info';
-import mantrasJson from '../data/mantras.json';
+import { loadMantras } from './mantra-search';
 
 /**
  * Where the .NET API lives:
@@ -89,21 +89,12 @@ export class ApiService {
     return findMuhurat(event, from, to, lat, lng, tz, 30);
   }
 
-  async mantras(): Promise<Mantra[]> {
-    if (await this.isOnline()) {
-      try {
-        const list = await firstValueFrom(this.http.get<{ slug: string }[]>(`${apiBase()}/api/mantras`));
-        return await Promise.all(list.map(m => this.mantra(m.slug)));
-      } catch { /* fall through */ }
-    }
-    return mantrasJson as Mantra[];
-  }
+  /** The library is the same JSON the server loads (copied by tools/build_client_data.py), so it is read locally. */
+  mantras(): Promise<Mantra[]> { return loadMantras(); }
 
   async mantra(slug: string): Promise<Mantra> {
-    if (this.online()) {
-      try { return await firstValueFrom(this.http.get<Mantra>(`${apiBase()}/api/mantras/${slug}`)); } catch { /* fall through */ }
-    }
-    return (mantrasJson as Mantra[]).find(m => m.slug === slug) ?? (mantrasJson as Mantra[])[0];
+    const list = await loadMantras();
+    return list.find(m => m.slug === slug) ?? list[0];
   }
 
   async scriptures(): Promise<Scripture[]> {

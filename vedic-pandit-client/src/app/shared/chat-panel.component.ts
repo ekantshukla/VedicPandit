@@ -8,42 +8,51 @@ import { PanchangViewComponent } from './panchang-view.component';
 import { MuhuratListComponent } from './muhurat-list.component';
 import { MantraPlayerComponent } from './mantra-player.component';
 import { VerseCardComponent } from './verse-card.component';
+import { BotAvatarComponent } from './bot-avatar.component';
 
 @Component({
   selector: 'vp-chat-panel',
   standalone: true,
-  imports: [FormsModule, PanchangViewComponent, MuhuratListComponent, MantraPlayerComponent, VerseCardComponent],
+  imports: [FormsModule, PanchangViewComponent, MuhuratListComponent, MantraPlayerComponent, VerseCardComponent, BotAvatarComponent],
   template: `
   <div class="chat" [class.full]="full">
     <div class="log" #log aria-live="polite">
       @if (!bot.messages().length) {
-        <div class="welcome">
-          <p class="hello">{{ i18n.t('chatEmpty') }}</p>
-          <div class="ex">
-            @for (k of ['ex1','ex2','ex3','ex4']; track k) {
-              <button type="button" class="chip" (click)="send(i18n.t(k))">{{ i18n.t(k) }}</button>
-            }
+        <div class="row">
+          <vp-bot-avatar class="av" [size]="32" />
+          <div class="col">
+            <div class="bubble hello">{{ i18n.t('chatEmpty') }}</div>
+            <div class="ex">
+              @for (k of ['ex1','ex2','ex3','ex4']; track k) {
+                <button type="button" class="chip" (click)="send(i18n.t(k))">{{ i18n.t(k) }}</button>
+              }
+            </div>
           </div>
         </div>
       }
       @for (m of bot.messages(); track $index) {
-        <div class="msg" [class.me]="m.role === 'user'" [class.err]="m.error">
-          <span class="who">{{ m.role === 'user' ? i18n.t('you') : i18n.t('panditji') }}</span>
-          @if (m.text) { <div class="bubble">{{ m.text }}</div> }
-          @if (m.pending && !m.text) { <div class="bubble thinking">{{ m.status || i18n.t('thinking') }}</div> }
-          @for (c of m.cards; track $index) {
-            <div class="card">
-              @switch (c.type) {
-                @case ('panchang') { <vp-panchang-view [p]="c.payload" [compact]="true" /> }
-                @case ('muhurat') { <vp-muhurat-list [r]="c.payload" [compact]="!full" /> }
-                @case ('mantra') { <vp-mantra-player [mantra]="c.payload" [compact]="true" /> }
-                @case ('verses') { <div class="verses">@for (v of c.payload.slice(0, 3); track $index) { <vp-verse [v]="v" /> }</div> }
-              }
-            </div>
-          }
-          @if (m.role === 'assistant' && !m.pending && m.text && speech.canSpeak) {
-            <button type="button" class="speak" (click)="read(m.text)">{{ speech.speaking() ? i18n.t('stopReading') : i18n.t('readAloud') }}</button>
-          }
+        <div class="row" [class.me]="m.role === 'user'" [class.err]="m.error">
+          @if (m.role !== 'user') { <vp-bot-avatar class="av" [size]="32" /> }
+          <div class="col">
+            @if (m.text) { <div class="bubble">{{ m.text }}</div> }
+            @if (m.pending && !m.text) {
+              <div class="bubble typing" [attr.aria-label]="m.status || i18n.t('thinking')"><i></i><i></i><i></i></div>
+              <span class="status">{{ m.status || i18n.t('thinking') }}</span>
+            }
+            @for (c of m.cards; track $index) {
+              <div class="card">
+                @switch (c.type) {
+                  @case ('panchang') { <vp-panchang-view [p]="c.payload" [compact]="true" /> }
+                  @case ('muhurat') { <vp-muhurat-list [r]="c.payload" [compact]="!full" /> }
+                  @case ('mantra') { <vp-mantra-player [mantra]="c.payload" [compact]="true" /> }
+                  @case ('verses') { <div class="verses">@for (v of c.payload.slice(0, 3); track $index) { <vp-verse [v]="v" /> }</div> }
+                }
+              </div>
+            }
+            @if (m.role === 'assistant' && !m.pending && m.text && speech.canSpeak) {
+              <button type="button" class="speak" (click)="read(m.text)">{{ speech.speaking() ? i18n.t('stopReading') : i18n.t('readAloud') }}</button>
+            }
+          </div>
         </div>
       }
     </div>
@@ -65,17 +74,23 @@ import { VerseCardComponent } from './verse-card.component';
   styles: [`
     .chat { display: flex; flex-direction: column; height: 100%; min-height: 0; }
     .log { flex: 1; overflow-y: auto; padding: 4px 2px 12px; display: flex; flex-direction: column; gap: 16px; overscroll-behavior: contain; }
-    .welcome .hello { font-size: var(--s1); color: var(--ink); font-family: var(--sanskrit); }
+    .row { display: flex; gap: 8px; align-items: flex-start; }
+    .row.me { justify-content: flex-end; }
+    .av { flex: none; margin-top: 2px; }
+    .col { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; min-width: 0; flex: 1; }
+    .me .col { align-items: flex-end; }
+    .hello { font-size: 1.02rem; }
+    .typing { display: inline-flex; gap: 5px; padding: 14px 16px; }
+    .typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); animation: dot 1.2s infinite ease-in-out; }
+    .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+    @keyframes dot { 0%, 60%, 100% { transform: none; opacity: .45; } 30% { transform: translateY(-4px); opacity: 1; } }
+    .status { font-size: .78rem; color: var(--faint); }
     .ex { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip { border: 1.5px solid var(--line); background: var(--card); border-radius: 999px; padding: 8px 14px; cursor: pointer; text-align: left; min-height: 40px; }
     .chip:hover { border-color: var(--ink); }
-    .msg { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
-    .msg.me { align-items: flex-end; }
-    .who { font-size: .78rem; color: var(--faint); }
-    .bubble { white-space: pre-line; background: var(--card); border: 1px solid var(--line); padding: 10px 14px; border-radius: 4px 14px 14px 14px; max-width: 62ch; }
+    .bubble { white-space: pre-line; background: var(--card); border: 1px solid var(--line); padding: 10px 14px; border-radius: 4px 14px 14px 14px; max-width: min(62ch, 100%); }
     .me .bubble { background: var(--ink); color: #F6F4FA; border-color: var(--ink); border-radius: 14px 4px 14px 14px; }
     .err .bubble { border-color: var(--sindoor); }
-    .thinking { color: var(--muted); font-style: italic; }
     .card { width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px; }
     .card:has(vp-mantra-player) { padding: 0; border: 0; background: none; }
     .verses { display: grid; gap: 10px; }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Copies the server's content into the web app so the website and Android app work offline:
-  src/VedicPandit.WebAPI/SeedData/mantras.json          -> vedic-pandit-client/src/app/core/data/mantras.json
+  src/VedicPandit.WebAPI/SeedData/mantras.json + mantras/*.json -> vedic-pandit-client/src/app/core/data/mantras.json (merged)
   src/VedicPandit.WebAPI/SeedData/scriptures/*.json     -> vedic-pandit-client/src/app/core/data/scriptures.json (merged)
 Merging follows the server's rule (JsonContentStore): files in name order, same scripture code is merged verse by verse,
 non-empty fields from later files win, keywords are combined.
@@ -41,5 +41,12 @@ for s in by_code.values():
     s["verses"] = sorted(s["verses"], key=vkey)
     out.append(s)
 (OUT / "scriptures.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-(OUT / "mantras.json").write_text((SEED / "mantras.json").read_text(encoding="utf-8"), encoding="utf-8")
+mantras = json.loads((SEED / "mantras.json").read_text(encoding="utf-8"))
+for f in sorted((SEED / "mantras").glob("*.json")):
+    mantras += json.loads(f.read_text(encoding="utf-8"))
+# Same rule as the server: short mantras get karaoke timing; long texts are timed in the browser
+for m in mantras:
+    m.setdefault("kind", "mantra")
+(OUT / "mantras.json").write_text(json.dumps(mantras, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+print("Wrote", OUT / "mantras.json", len(mantras), "entries")
 print("Wrote", OUT / "scriptures.json", [(s["code"], len(s["verses"])) for s in out])

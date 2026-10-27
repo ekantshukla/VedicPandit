@@ -17,6 +17,16 @@ export const LANGS: Lang[] = [
 type Dict = Record<string, string>;
 
 const en: Dict = {
+  rightNow: 'Right now', pakshaDay: 'Day {n} of 15, {p}', endsAt: 'ends', nowCaption: 'The bars show how much of each limb has passed. Tithi changes every 12° the Moon gains on the Sun; nakshatra and yoga every 13°20′.',
+  tradition: 'Sampradaya', botHello: 'Namaste! Ask me anything 🙏', botOnline: 'Online · answers any question', botBuiltIn: 'Built-in answers (server not connected)',
+  fullScreen: 'Open full screen', pickLocation: 'Choose your location', inIndia: 'India', outsideIndia: 'Outside India', state: 'State / UT', district: 'District',
+  chooseState: 'Choose state', chooseDistrict: 'Choose district', tirths: 'Tirth kshetras',
+  locNote: 'Sunrise and tithi are calculated for the centre of the district. District list: DataMeet (CC BY 2.5 India), names updated to today’s.',
+  allTexts: 'All', kindMantra: 'Mantras', kindStotra: 'Stotras', kindChalisa: 'Chalisa & Aarti', searchMantra: 'Search mantra or stotra',
+  verseOf: 'Verse {n} of {total}', prevVerse: 'Previous verse', nextVerse: 'Next verse', fullText: 'Full text', textCredit: 'Text',
+  voiceNone: 'No Hindi or Sanskrit voice on this device. Install “Hindi” under Settings → Text-to-speech (Google Speech Services) to hear the guide.',
+  voiceNoneWeb: 'Your browser has no Hindi or Sanskrit voice, so the voice guide is off (an English voice cannot pronounce Sanskrit). Chrome on Android and Edge have one.',
+  voiceIs: 'Voice: {v}', forTradition: 'For your sampradaya', vaishnavaEkadashi: 'Vaishnava Ekadashi',
   'nav.dakshina': 'Dakshina',
   'chapter': 'Chapter',
   'clearSearch': 'Show all',
@@ -73,7 +83,7 @@ const en: Dict = {
   verses: 'verses',
   location: 'Location', useMyLocation: 'Use my location', monthSystem: 'Month system', purnimanta: 'Purnimanta (North)', amanta: 'Amanta (South/West)',
   date: 'Date', prevDay: 'Previous day', nextDayBtn: 'Next day', todayBtn: 'Today',
-  offline: 'Demo mode: calculations run in your browser. Connect the .NET API for PanditJi\'s full answers.',
+  offline: 'PanditJi is answering from his built-in library: panchang, muhurat, mantras and Gita verses. Open questions need the PanditJi server.',
   loading: 'Loading…', error: 'Could not load. Check your connection and try again.',
   disclaimer: 'Calculated with Lahiri ayanamsa for the selected location. For major samskaras, confirm with your family purohit.',
   chatEmpty: 'Namaste. Ask me about any granth, today\'s panchang, a muhurat, or how to chant a mantra.',
@@ -81,6 +91,16 @@ const en: Dict = {
 };
 
 const hi: Dict = {
+  rightNow: 'इस समय', pakshaDay: '{p}, दिन {n} / 15', endsAt: 'समाप्ति', nowCaption: 'पट्टियाँ दिखाती हैं कि हर अंग कितना बीत चुका है। चंद्रमा सूर्य से हर 12° आगे बढ़ने पर तिथि बदलती है; नक्षत्र और योग हर 13°20′ पर।',
+  tradition: 'संप्रदाय', botHello: 'नमस्ते! कुछ भी पूछिए 🙏', botOnline: 'ऑनलाइन · हर प्रश्न का उत्तर', botBuiltIn: 'अंतर्निहित उत्तर (सर्वर जुड़ा नहीं)',
+  fullScreen: 'पूरी स्क्रीन पर खोलें', pickLocation: 'अपना स्थान चुनें', inIndia: 'भारत', outsideIndia: 'भारत के बाहर', state: 'राज्य / केंद्रशासित प्रदेश', district: 'ज़िला',
+  chooseState: 'राज्य चुनें', chooseDistrict: 'ज़िला चुनें', tirths: 'तीर्थ क्षेत्र',
+  locNote: 'सूर्योदय और तिथि ज़िले के केंद्र के लिए निकाले जाते हैं। ज़िला सूची: DataMeet (CC BY 2.5 India), नाम आज के अनुसार।',
+  allTexts: 'सभी', kindMantra: 'मंत्र', kindStotra: 'स्तोत्र', kindChalisa: 'चालीसा व आरती', searchMantra: 'मंत्र या स्तोत्र खोजें',
+  verseOf: 'श्लोक {n} / {total}', prevVerse: 'पिछला श्लोक', nextVerse: 'अगला श्लोक', fullText: 'पूरा पाठ', textCredit: 'पाठ',
+  voiceNone: 'इस फ़ोन में हिन्दी/संस्कृत आवाज़ नहीं है। Settings → Text-to-speech (Google Speech Services) में “Hindi” इंस्टॉल करें।',
+  voiceNoneWeb: 'आपके ब्राउज़र में हिन्दी या संस्कृत आवाज़ नहीं है, इसलिए स्वर मार्गदर्शन बंद है (अंग्रेज़ी आवाज़ संस्कृत ठीक नहीं बोल पाती)। Android पर Chrome और Edge में यह उपलब्ध है।',
+  voiceIs: 'आवाज़: {v}', forTradition: 'आपके संप्रदाय के लिए', vaishnavaEkadashi: 'वैष्णव एकादशी',
   'nav.dakshina': 'दक्षिणा',
   'chapter': 'अध्याय',
   'clearSearch': 'सभी दिखाएँ',
@@ -137,7 +157,7 @@ const hi: Dict = {
   verses: 'श्लोक',
   location: 'स्थान', useMyLocation: 'मेरा स्थान', monthSystem: 'मास पद्धति', purnimanta: 'पूर्णिमांत (उत्तर)', amanta: 'अमांत (दक्षिण/पश्चिम)',
   date: 'दिनांक', prevDay: 'पिछला दिन', nextDayBtn: 'अगला दिन', todayBtn: 'आज',
-  offline: 'डेमो मोड: गणना आपके ब्राउज़र में हो रही है। पंडित जी के पूर्ण उत्तरों के लिए .NET API जोड़ें।',
+  offline: 'पंडित जी अभी अपनी अंतर्निहित जानकारी से उत्तर दे रहे हैं: पंचांग, मुहूर्त, मंत्र और गीता के श्लोक। खुले प्रश्नों के लिए पंडित जी का सर्वर चाहिए।',
   loading: 'लोड हो रहा है…', error: 'लोड नहीं हो सका। कनेक्शन जाँचकर फिर प्रयास करें।',
   disclaimer: 'चयनित स्थान के लिए लाहिड़ी अयनांश से गणना। प्रमुख संस्कारों के लिए अपने कुल पुरोहित से पुष्टि करें।',
   chatEmpty: 'नमस्ते। किसी भी ग्रंथ, आज के पंचांग, मुहूर्त या मंत्र जप के बारे में पूछिए।',

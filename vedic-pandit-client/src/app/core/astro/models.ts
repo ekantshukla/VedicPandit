@@ -25,6 +25,8 @@ export interface Mantra {
   slug: string; name: string; nameHi: string; deity: string; source: string; sanskrit: string;
   meaningEn: string; meaningHi: string; benefits: string; pronunciationTips: string;
   recommendedRepetitions: number; audioUrl?: string | null; timingJson?: string; tags: string;
+  /** mantra | stotra | chalisa | aarti. Stotra verses are separated by a blank line. */
+  kind?: 'mantra' | 'stotra' | 'chalisa' | 'aarti'; credit?: string;
 }
 
 export interface Verse { citation?: string; scripture?: string; chapter: number; verse: string; sanskrit: string; translationEn: string; translationHi: string; keywords?: string; }
@@ -32,4 +34,4 @@ export interface Scripture { code: string; name: string; nameDevanagari: string;
 
 export type MonthSystem = 'Purnimanta' | 'Amanta';
 
-export interface Place { name: string; nameHi?: string; lat: number; lng: number; tz: string; }
+export interface Place { name: string; nameHi?: string; lat: number; lng: number; tz: string; state?: string; district?: string; }

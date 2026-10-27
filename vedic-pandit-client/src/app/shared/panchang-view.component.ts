@@ -3,6 +3,7 @@ import { PanchangElement, PanchangResult, TimeWindow } from '../core/astro/model
 import { I18nService } from '../core/services/i18n.service';
 import { DayPipe, TimePipe } from './time.pipe';
 import { deva } from '../core/astro/display';
+import { TraditionService, forTradition, isFocus } from '../core/services/tradition.service';
 
 @Component({
   selector: 'vp-panchang-view',
@@ -14,9 +15,9 @@ import { deva } from '../core/astro/display';
     @if (compact) {
       <p class="when">{{ p.date | day: i18n.lang() }}</p>
     }
-    @if (p.observances.length) {
+    @if (obsList(p).length) {
       <ul class="obs" [attr.aria-label]="i18n.t('observances')">
-        @for (o of p.observances; track o) { <li>{{ d(o) }}</li> }
+        @for (o of obsList(p); track o) { <li [class.focus]="focus(o)">{{ d(o) }}</li> }
       </ul>
     }
 
@@ -91,6 +92,7 @@ import { deva } from '../core/astro/display';
     .when { margin: 0; font-weight: 600; color: var(--ink); }
     .obs { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
     .obs li { background: var(--haldi-soft); color: var(--ink); border-radius: 999px; padding: 3px 12px; font-weight: 600; font-size: var(--s-1); }
+    .obs li.focus { background: var(--sindoor); color: #fff; }
     .limbs { display: grid; border-top: 1px solid var(--line); }
     .limb { display: grid; grid-template-columns: 7.5rem 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
     .compact .limb { grid-template-columns: 6rem 1fr; padding: 6px 0; }
@@ -135,6 +137,9 @@ export class PanchangViewComponent implements OnInit, OnDestroy {
   @Input() p?: PanchangResult | null;
   @Input() compact = false;
   readonly i18n = inject(I18nService);
+  private trad = inject(TraditionService);
+  obsList(p: PanchangResult) { return forTradition(p.observances, this.trad.tradition()); }
+  focus(o: string) { return isFocus(o, this.trad.tradition()); }
   private readonly now = signal(Date.now());
   private timer?: ReturnType<typeof setInterval>;
 

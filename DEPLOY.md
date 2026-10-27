@@ -41,8 +41,9 @@ Mount a volume at `/data` to keep imported texts and the chat log across restart
 1. In the GitHub repo: **Settings → Secrets and variables → Actions → Variables → New repository variable**.
    Name `API_URL`, value `https://<your-service>.onrender.com` (no trailing slash).
 2. **Actions → Deploy website to GitHub Pages → Run workflow**, and **Actions → Build Android app → Run workflow**.
-3. Open `https://<your-username>.github.io/VedicPandit/` → **Ask PanditJi**. The "Demo mode" note is gone and
-   answers stream in.
+3. Open `https://<your-username>.github.io/VedicPandit/` and tap the floating PanditJi. Under his name it now says
+   **Online** (green dot) instead of "Built-in answers", and answers stream in.
+4. Install the new APK from the release (same link as before). The app has the API address built in, so it is online too.
 
 If your site lives somewhere other than `https://<your-username>.github.io`, add that address to `CORS_ORIGINS`
 in Render (comma-separated). The Android app is already allowed.

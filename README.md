@@ -33,7 +33,7 @@ These cases live in `tests/VedicPandit.Tests/PanchangAccuracyTests.cs`.
 The engine exists twice with identical math:
 
 - **C#** — `src/VedicPandit.Infrastructure/Astronomy` and `Panchang` (authoritative, used by the API and PanditJi).
-- **TypeScript** — `vedic-pandit-client/src/app/core/astro`. It powers the live sky dial and lets the site run fully in the browser when the API is not reachable (demo mode).
+- **TypeScript** — `vedic-pandit-client/src/app/core/astro`. It powers the live "Right now" card and lets the site run fully in the browser when the API is not reachable.
 
 > **Note:** keep the two in sync when changing rules.
 
@@ -45,23 +45,38 @@ The engine exists twice with identical math:
   - Day and night choghadiya, with the current slot highlighted.
   - Masa (Purnimanta or Amanta), Vikram and Shaka samvat, ritu, ayana, sun and moon rashi.
   - Sankranti moments, festivals and vrats.
+  - Ekadashi by both rules: Smarta (tithi at sunrise; first day when it spans two sunrises) and Vaishnava (no Dashami at arunodaya, 96 minutes before sunrise). The page shows the one for your sampradaya.
 - **Muhurat finder**:
   - 9 occasions: vivah, griha pravesh, vehicle, property, namakaran, mundan, annaprashan, vidyarambh, business.
   - Skips Kharmas, Chaturmas and Adhik masa where tradition requires.
   - Excludes Rahu, Yamaganda, Gulika and Bhadra.
   - Every window comes with its reasons. Rules are data in `MuhuratRules.cs` so a pandit can edit them.
-- **Mantra uchcharan**:
-  - 10 mantras with sources (Rigveda 3.62.10, 7.59.12…).
+- **Mantra, stotra, chalisa and aarti** (56 texts):
+  - 35 mantras with sources (Rigveda 3.62.10, 7.59.12, Devi Mahatmya 11.10…): deity gayatris, dhyana shlokas, daily prayers.
+  - 21 long texts read verse by verse: Vishnu Sahasranama, Hanuman Chalisa, Aditya Hridayam, Shiva Tandava, Lingashtakam,
+    Rudrashtakam, Shiva Panchakshara, Kalabhairava Ashtakam, Nirvana Shatakam, Achyutashtakam, Madhurashtakam,
+    Mahishasura Mardini, Mahalakshmi Ashtakam, Lalita Panchakam, Ganesha Pancharatnam, Navagraha Stotram, Om Jai Jagdish Hare…
+  - Each long text names where its digital edition comes from (sanskritdocuments.org, vishvAsa/devaH, or the standard printed
+    reading). `tools/import_stotras.py` rebuilds `SeedData/mantras/stotras.json`.
+  - Filter by mantra / stotra / chalisa and aarti, search, and order by sampradaya.
   - Karaoke highlighting timed by syllable count, speed control and a japa counter (mala ring).
-  - Optional voice guide.
+  - Voice guide that only uses a Hindi or Sanskrit voice, never an English one: the phone's own text-to-speech in the
+    Android app, or an Indic browser voice on the web (Chrome on Android, Edge). Visarga and avagraha are adjusted so
+    Hindi TTS sounds closer to Sanskrit. With no Indic voice the button is hidden and the page says how to add one.
   - Text in Devanagari, IAST, simple Roman, Kannada, Telugu, Tamil, Bengali, Gujarati or Malayalam.
   - Add `audioUrl` + forced-alignment timings for recorded chants.
 - **Granth**:
-  - The complete Bhagavad Gita (all 701 verses, read chapter by chapter) and key Upanishad verses.
+  - The complete Bhagavad Gita (all 701 verses, read chapter by chapter), the complete Isha and Mandukya Upanishads, and key verses from five more.
   - English translation of the Gita by Swami Sivananda; Hindi for selected verses.
   - BM25 search plus direct references ("Gita 2.47").
   - More texts can be added as JSON (see *Growing the knowledge base*).
+- **Sampradaya** (header): All, Vaishnava, Shaiva, Shakta or Smarta. It orders the stotra library, picks the Ekadashi rule,
+  highlights the festivals that tradition keeps, and tells PanditJi.
+- **Location**: State → District for all 640 census districts (names updated: Telangana, Ladakh, Prayagraj, Ayodhya…),
+  12 tirth kshetras, and 32 cities abroad. District points come from DataMeet's 2011 boundaries (CC BY 2.5 India);
+  `tools/build_districts.py` rebuilds them.
 - **PanditJi**:
+  - A floating chatbot on every page (phone and desktop), opening as a chat window; full screen at `/ask`.
   - Claude with tool use: `get_panchang`, `find_muhurat`, `get_mantra`, `search_scriptures`.
   - Answers stream over SignalR; panchang, muhurat, mantra and verse cards render alongside the text.
   - Voice input and read-aloud via the browser Web Speech API in 8 Indian languages.
@@ -117,8 +132,8 @@ npm start                                                 # http://localhost:420
 dotnet run --project tests/VedicPandit.Tests
 ```
 
-29 tests: panchang accuracy against Drik Panchang (sunrise, tithi, nakshatra, yoga, karana, sankrantis, new moons,
-festivals, Adhik masa), muhurat rules, the content store and verse search, and PanditJi's tool loop with a scripted
+41 tests: panchang accuracy against Drik Panchang (sunrise, tithi, nakshatra, yoga, karana, sankrantis, new moons,
+festivals, Adhik masa, Smarta/Vaishnava Ekadashi), muhurat rules, the stotra library, the content store and verse search, and PanditJi's tool loop with a scripted
 Claude (scripture, panchang, muhurat and mantra tools, API failure, no-key mode). The GitHub workflow `ci.yml` runs them on every push.
 
 ### Single deployable
@@ -171,7 +186,7 @@ PanditJi only cites what is in the verse library, so answer quality grows with t
 - Muhurat does **not** check lagna shuddhi, Guru/Shukra asta or personal kundali. The UI and bot say so.
 - Festival rules cover the major pan-Indian observances. Regional dates (e.g. Gujarati new year, Bengali Durga Puja calendar) need their own rules.
 - Rule changes must be made in both C# and TS engines.
-- PanditJi cites only verses in the library (the full Gita plus 7 Upanishad verses today). For other texts it answers
+- PanditJi cites only verses in the library (the full Gita, Isha and Mandukya, plus 7 Upanishad verses today). For other texts it answers
   from general knowledge and says so.
 - Hindi translations exist only for 20 hand-picked Gita verses; other verses show English, and PanditJi answers in Hindi itself.
 - Translations: Swami Sivananda (died 1963) is in the public domain in India; check the rules for other countries before
@@ -179,7 +194,7 @@ PanditJi only cites what is in the verse library, so answer quality grows with t
 
 ## Verified
 
-- `dotnet build`: 0 warnings, 0 errors. 29/29 tests pass.
+- `dotnet build`: 0 warnings, 0 errors. 41/41 tests pass.
 - The running API was tested over HTTP: every endpoint, input validation, admin-only import, CORS for the Pages site and the app.
 - PanditJi was tested end to end against a mock of the Anthropic streaming API (exact event format, tool calls split
   across chunks): REST, SignalR streaming, scripture/panchang/muhurat/mantra tools, conversation memory, chat log.
