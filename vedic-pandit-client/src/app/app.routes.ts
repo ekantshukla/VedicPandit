@@ -9,6 +9,7 @@ export const routes: Routes = [
   { path: 'granth', loadComponent: () => import('./features/granth/granth.component').then(m => m.GranthPageComponent), title: 'Granth — Vedic Pandit' },
   { path: 'learn', loadComponent: () => import('./features/learn/learn.component').then(m => m.LearnComponent), title: 'Learn mantras — Vedic Pandit' },
   { path: 'samagri', loadComponent: () => import('./features/samagri/samagri.component').then(m => m.SamagriComponent), title: 'Puja samagri — Vedic Pandit' },
+  { path: 'rashifal', loadComponent: () => import('./features/rashifal/rashifal.component').then(m => m.RashifalComponent), title: 'Rashifal — Vedic Pandit' },
   { path: 'ask', loadComponent: () => import('./features/chat/chat.component').then(m => m.ChatPageComponent), title: 'Ask PanditJi — Vedic Pandit' },
   { path: 'dakshina', loadComponent: () => import('./features/dakshina/dakshina.component').then(m => m.DakshinaComponent), title: 'Dakshina — Vedic Pandit' },
   { path: '**', redirectTo: '' },

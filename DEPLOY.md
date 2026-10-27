@@ -1,5 +1,8 @@
 # Putting Vedic Pandit online
 
+> **Just want PanditJi to answer everything for free, without a server?** See [FREE_AI.md](FREE_AI.md): one free
+> Google Gemini key saved as a GitHub secret, then re-run the two workflows.
+
 There are three pieces. You can do steps 1–3 in about 15 minutes.
 
 | Piece | Where | What it needs |
@@ -52,7 +55,10 @@ in Render (comma-separated). The Android app is already allowed.
 
 | Setting (environment variable) | Default | Meaning |
 |---|---|---|
-| `Claude__ApiKey` | empty | Claude API key. Empty = built-in answers only. |
+| `FreeAI__ApiKey` | empty | Free key: Google Gemini (default), Groq or OpenRouter. When set, PanditJi uses it instead of Claude. |
+| `FreeAI__BaseUrl` | `https://generativelanguage.googleapis.com/v1beta/openai` | The provider's OpenAI-compatible address. |
+| `FreeAI__Model` | `gemini-3.1-flash-lite` | Model name at that provider. |
+| `Claude__ApiKey` | empty | Claude API key. Empty (and no FreeAI key) = built-in answers only. |
 | `Claude__Model` | `claude-sonnet-5-5` | Claude model. |
 | `Claude__MaxTokens` | `1500` | Longest answer. |
 | `CORS_ORIGINS` | the GitHub Pages site | Extra sites allowed to call the API (comma-separated). |

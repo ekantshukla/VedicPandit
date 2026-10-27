@@ -142,7 +142,7 @@ public class PanditJiTests
         Assert.Equal("tool_result", result["type"]!.GetValue<string>());
         Assert.Equal("tu_1", result["tool_use_id"]!.GetValue<string>());
         Assert.Contains("[Bhagavad Gita 2.63]", result["content"]!.GetValue<string>());
-        Assert.True(claude.ToolsSent[0]!.Count == 4, "4 tools offered");
+        Assert.True(claude.ToolsSent[0]!.Count == 5, "5 tools offered");
 
         // Conversation memory for the next question
         Assert.Equal(2, store.Get("s1").Count);

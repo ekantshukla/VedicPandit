@@ -9,11 +9,12 @@ import { MuhuratListComponent } from './muhurat-list.component';
 import { MantraPlayerComponent } from './mantra-player.component';
 import { VerseCardComponent } from './verse-card.component';
 import { BotAvatarComponent } from './bot-avatar.component';
+import { RashifalCardComponent } from './rashifal-card.component';
 
 @Component({
   selector: 'vp-chat-panel',
   standalone: true,
-  imports: [FormsModule, PanchangViewComponent, MuhuratListComponent, MantraPlayerComponent, VerseCardComponent, BotAvatarComponent],
+  imports: [FormsModule, PanchangViewComponent, MuhuratListComponent, MantraPlayerComponent, VerseCardComponent, BotAvatarComponent, RashifalCardComponent],
   template: `
   <div class="chat" [class.full]="full">
     <div class="log" #log aria-live="polite">
@@ -23,7 +24,7 @@ import { BotAvatarComponent } from './bot-avatar.component';
           <div class="col">
             <div class="bubble hello">{{ i18n.t('chatEmpty') }}</div>
             <div class="ex">
-              @for (k of ['ex1','ex2','ex3','ex4']; track k) {
+              @for (k of ['ex5','ex1','ex2','ex3','ex4']; track k) {
                 <button type="button" class="chip" (click)="send(i18n.t(k))">{{ i18n.t(k) }}</button>
               }
             </div>
@@ -45,6 +46,7 @@ import { BotAvatarComponent } from './bot-avatar.component';
                   @case ('panchang') { <vp-panchang-view [p]="c.payload" [compact]="true" /> }
                   @case ('muhurat') { <vp-muhurat-list [r]="c.payload" [compact]="!full" /> }
                   @case ('mantra') { <vp-mantra-player [mantra]="c.payload" [compact]="true" /> }
+                  @case ('rashifal') { <vp-rashifal-card [payload]="c.payload" /> }
                   @case ('verses') { <div class="verses">@for (v of c.payload.slice(0, 3); track $index) { <vp-verse [v]="v" /> }</div> }
                 }
               </div>
@@ -52,12 +54,20 @@ import { BotAvatarComponent } from './bot-avatar.component';
             @if (m.role === 'assistant' && !m.pending && m.text && speech.canSpeak) {
               <button type="button" class="speak" (click)="read(m.text)">{{ speech.speaking() ? i18n.t('stopReading') : i18n.t('readAloud') }}</button>
             }
+            @if (m.role === 'assistant' && !m.pending && m.next?.length && $last) {
+              <div class="next" role="group" [attr.aria-label]="i18n.t('askNext')">
+                <span class="nl">{{ i18n.t('askNext') }}</span>
+                @for (n of m.next; track n) {
+                  <button type="button" class="chip nx" (click)="send(n)" [disabled]="bot.busy()">{{ n }}</button>
+                }
+              </div>
+            }
           </div>
         </div>
       }
     </div>
 
-    @if (api.online() === false && showOffline) { <p class="offline">{{ i18n.t('offline') }}</p> }
+    @if (api.online() === false && !api.ai() && showOffline) { <p class="offline">{{ i18n.t('offline') }}</p> }
 
     @if (speech.listening()) {
       <div class="listen" role="status">
@@ -104,6 +114,13 @@ import { BotAvatarComponent } from './bot-avatar.component';
     .card { width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); padding: 14px; }
     .card:has(vp-mantra-player) { padding: 0; border: 0; background: none; }
     .verses { display: grid; gap: 10px; }
+    .next { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; animation: nx-in .25s ease-out; }
+    .nl { width: 100%; font-size: .78rem; font-weight: 600; color: var(--faint); }
+    .chip.nx { border-color: var(--haldi); background: var(--haldi-soft); color: var(--ink); font-size: .92rem; min-height: 38px; padding: 7px 13px; }
+    .chip.nx::before { content: '↳ '; color: var(--sindoor); }
+    .chip.nx:hover { border-color: var(--sindoor); }
+    .chip.nx:disabled { opacity: .5; cursor: default; }
+    @keyframes nx-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
     .speak { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: var(--s-1); padding: 2px 0; text-decoration: underline; text-decoration-color: var(--line); }
     .offline { font-size: var(--s-1); color: var(--muted); background: var(--haldi-soft); border-radius: var(--r-sm); padding: 6px 10px; margin: 0 0 8px; max-width: none; }
     .ask { display: flex; gap: 8px; align-items: center; padding-top: 8px; border-top: 1px solid var(--line); }
@@ -137,7 +154,8 @@ export class ChatPanelComponent implements AfterViewChecked {
 
   ngAfterViewChecked() {
     const msgs = this.bot.messages();
-    const len = msgs.length ? msgs[msgs.length - 1].text.length + msgs[msgs.length - 1].cards.length : 0;
+    const last = msgs[msgs.length - 1];
+    const len = last ? last.text.length + last.cards.length + (last.next?.length ?? 0) : 0;
     if (msgs.length !== this.lastCount || len !== this.lastLen) {
       this.lastCount = msgs.length; this.lastLen = len;
       const el = this.log?.nativeElement;

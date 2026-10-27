@@ -49,6 +49,11 @@ interface Upcoming { date: string; names: string[]; }
           <input id="home-ask" class="input" name="q" [(ngModel)]="q" [placeholder]="i18n.t('askPlaceholder')" autocomplete="off">
           <button class="btn" type="submit">{{ i18n.t('ask') }}</button>
         </form>
+        <a routerLink="/rashifal" class="rf-btn">
+          <span class="rf-sym" aria-hidden="true">♈♌♐</span>
+          <span><b>{{ i18n.t('rfHomeBtn') }}</b><small>{{ i18n.t('rfHomeSub') }}</small></span>
+          <span aria-hidden="true" class="rf-go">→</span>
+        </a>
         <div class="ex">
           @for (k of ['ex1', 'ex2', 'ex3']; track k) { <button type="button" (click)="q = i18n.t(k); ask()">{{ i18n.t(k) }}</button> }
         </div>
@@ -71,6 +76,7 @@ interface Upcoming { date: string; names: string[]; }
         }
       </ol>
       <nav class="paths" aria-label="Sections">
+        <a routerLink="/rashifal"><b>{{ i18n.t('rashifalTitle') }}</b><span>{{ i18n.t('rashifalIntro') }}</span></a>
         <a routerLink="/muhurat"><b>{{ i18n.t('muhuratTitle') }}</b><span>{{ i18n.t('muhuratIntro') }}</span></a>
         <a routerLink="/mantra"><b>{{ i18n.t('mantraTitle') }}</b><span>{{ i18n.t('mantraIntro') }}</span></a>
         <a routerLink="/granth"><b>{{ i18n.t('granthTitle') }}</b><span>{{ i18n.t('granthIntro') }}</span></a>
@@ -98,6 +104,13 @@ interface Upcoming { date: string; names: string[]; }
     .ask { display: flex; gap: 8px; background: var(--card); padding: 6px; border-radius: 999px; box-shadow: 0 10px 30px rgba(29,23,54,.18); }
     .ask .input { border: 0; border-radius: 999px; color: var(--text); padding-left: 16px; }
     .ex { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; }
+    .rf-btn { display: flex; align-items: center; gap: 14px; margin-top: 14px; padding: 12px 18px; border-radius: 16px; text-decoration: none;
+      background: linear-gradient(135deg, var(--haldi), #F0B53A); color: var(--ink); box-shadow: 0 10px 26px rgba(0,0,0,.18); }
+    .rf-btn:hover { filter: brightness(1.05); }
+    .rf-btn b { display: block; font-size: 1.12rem; }
+    .rf-btn small { display: block; font-size: .85rem; color: rgba(29,23,54,.78); }
+    .rf-sym { font-size: 1.4rem; letter-spacing: 2px; color: var(--sindoor); font-family: 'Segoe UI Symbol', 'Noto Sans Symbols', system-ui, sans-serif; flex: none; }
+    .rf-go { margin-left: auto; font-size: 1.4rem; font-weight: 700; }
     .ex button { background: none; border: 0; padding: 4px 0; color: #F6F4FA; cursor: pointer; text-decoration: underline; text-decoration-color: var(--haldi); text-underline-offset: 4px; text-align: left; }
     .dial { display: block; }
     .body { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 48px; padding-top: 40px; padding-bottom: 40px; }

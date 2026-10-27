@@ -23,6 +23,7 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       </a>
       <nav class="desk" aria-label="Main">
         <a routerLink="/panchang" routerLinkActive="on">{{ i18n.t('nav.panchang') }}</a>
+        <a routerLink="/rashifal" routerLinkActive="on">{{ i18n.t('nav.rashifal') }}</a>
         <a routerLink="/muhurat" routerLinkActive="on">{{ i18n.t('nav.muhurat') }}</a>
         <a routerLink="/learn" [class.on]="inMantra()">{{ i18n.t('nav.mantra') }}</a>
         <a routerLink="/granth" routerLinkActive="on">{{ i18n.t('nav.granth') }}</a>
@@ -63,7 +64,7 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
   <footer class="foot">
     <div class="wrap">
       <p class="note">{{ i18n.t('disclaimer') }}</p>
-      @if (api.online() === false) { <p class="note faint">{{ i18n.t('offline') }}</p> }
+      @if (api.online() === false && !api.ai()) { <p class="note faint">{{ i18n.t('offline') }}</p> }
       <nav class="foot-links" aria-label="More">
         <a routerLink="/dakshina">{{ i18n.t('nav.dakshina') }}</a>
         @if (!native.isApp) { <button type="button" (click)="getApp.set(true)">{{ i18n.t('appTitle') }}</button> }
@@ -84,6 +85,10 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
     <a routerLink="/panchang" routerLinkActive="on">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
       <span>{{ i18n.t('nav.panchang') }}</span>
+    </a>
+    <a routerLink="/rashifal" routerLinkActive="on">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.6 6.1 6.4.5-4.9 4.2 1.5 6.4L12 16.3l-5.6 3.4 1.5-6.4L3 9.1l6.4-.5z"/></svg>
+      <span>{{ i18n.t('nav.rashifal') }}</span>
     </a>
     <a routerLink="/muhurat" routerLinkActive="on">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
@@ -236,7 +241,7 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       .foot { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
 
       .tabbar {
-        display: grid; grid-template-columns: repeat(6, 1fr);
+        display: grid; grid-template-columns: repeat(7, 1fr);
         position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
         background: var(--card); border-top: 1px solid var(--line);
         padding: 6px max(4px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px));
@@ -249,6 +254,10 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       .tabbar a.on { color: var(--sindoor); }
       .tabbar a.on svg { stroke-width: 2.2; }
       .tabbar { max-width: 100%; }
+    }
+    @media (max-width: 430px) {
+      .tabbar a { font-size: .64rem; padding-inline: 0; }
+      .tabbar svg { width: 21px; height: 21px; }
     }
     @media (max-width: 1024px) and (min-width: 600px) { .tabbar { padding-inline: max(10%, env(safe-area-inset-left, 0px)); } }
     @media (max-width: 380px) {

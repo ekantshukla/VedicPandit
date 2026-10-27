@@ -9,7 +9,9 @@ services:
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
-      - key: Claude__ApiKey          # from console.anthropic.com -> API keys
+      - key: FreeAI__ApiKey          # FREE: Google Gemini key from aistudio.google.com/apikey (see FREE_AI.md). Leave empty to use Claude.
+        sync: false
+      - key: Claude__ApiKey          # paid alternative: console.anthropic.com -> API keys
         sync: false
       - key: Claude__Model
         value: claude-sonnet-5-5

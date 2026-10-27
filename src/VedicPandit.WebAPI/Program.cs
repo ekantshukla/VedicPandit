@@ -50,7 +50,7 @@ var content = app.Services.GetRequiredService<IContentStore>();
 await app.Services.GetRequiredService<IScriptureRetriever>().RebuildAsync();
 var claude = app.Services.GetRequiredService<IClaudeClient>();
 app.Logger.LogInformation("Content: {Verses} verses, {Mantras} mantras. PanditJi mode: {Mode}",
-    content.AllVerses.Count(), content.Mantras.Count, claude.IsConfigured ? "Claude" : "offline (set Claude__ApiKey for full answers)");
+    content.AllVerses.Count(), content.Mantras.Count, claude.IsConfigured ? (claude is VedicPandit.Infrastructure.AI.OpenAiCompatClient ? "free AI (FreeAI__ApiKey)" : "Claude") : "offline (set FreeAI__ApiKey or Claude__ApiKey for full answers)");
 
 app.UseForwardedHeaders();
 app.UseCors("spa");

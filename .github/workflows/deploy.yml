@@ -46,6 +46,18 @@ jobs:
           # Empty = the site/app runs in demo mode with built-in answers.
           sed -i "s|^export const API_URL: string = .*|export const API_URL: string = '${{ vars.API_URL }}';|" src/app/core/app-info.ts
 
+      # Free AI for PanditJi straight from the app (see FREE_AI.md): secret FREE_AI_KEY, optional variables AI_BASE_URL / AI_MODEL.
+      - name: Give PanditJi his free AI key
+        env:
+          FREE_AI_KEY: ${{ secrets.FREE_AI_KEY }}
+          AI_BASE_URL: ${{ vars.AI_BASE_URL }}
+          AI_MODEL: ${{ vars.AI_MODEL }}
+        run: |
+          sed -i "s|^export const AI_KEY: string = .*|export const AI_KEY: string = '${FREE_AI_KEY}';|" src/app/core/app-info.ts
+          if [ -n "$AI_BASE_URL" ]; then sed -i "s|^export const AI_BASE_URL: string = .*|export const AI_BASE_URL: string = '${AI_BASE_URL}';|" src/app/core/app-info.ts; fi
+          if [ -n "$AI_MODEL" ]; then sed -i "s|^export const AI_MODEL: string = .*|export const AI_MODEL: string = '${AI_MODEL}';|" src/app/core/app-info.ts; fi
+          if [ -z "$FREE_AI_KEY" ]; then echo "::warning::No FREE_AI_KEY secret: PanditJi will use built-in answers (or the server)."; fi
+
       - run: npx ng build --base-href "/${{ github.event.repository.name }}/"
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { firstValueFrom, timeout } from 'rxjs';
 import { MonthSystem, Mantra, MuhuratEventInfo, MuhuratSearchResult, PanchangResult, Scripture, Verse } from '../astro/models';
 import { computePanchang } from '../astro/panchang-engine';
 import { findMuhurat, MUHURAT_EVENTS } from '../astro/muhurat-engine';
 import { API_URL } from '../app-info';
 import { loadMantras } from './mantra-search';
+import { freeAiConfigured } from './ai-config';
 
 /**
  * Where the .NET API lives:
@@ -39,8 +40,10 @@ export function loadScriptures(): Promise<Scripture[]> {
 export class ApiService {
   private http = inject(HttpClient);
   readonly online = signal<boolean | null>(null);
-  /** True when the API reports a Claude key, i.e. PanditJi gives full answers. */
-  readonly ai = signal(false);
+  /** True when the .NET API reports an AI key (Claude or a free model). */
+  readonly serverAi = signal(false);
+  /** True when PanditJi gives full AI answers: through the server, or straight from the app with a free AI key. */
+  readonly ai = computed(() => this.serverAi() || freeAiConfigured());
   private probe?: Promise<boolean>;
   private probedAt = 0;
 
@@ -50,7 +53,7 @@ export class ApiService {
     if (!this.probe || stale) {
       this.probedAt = Date.now();
       this.probe = firstValueFrom(this.http.get<{ ai?: boolean }>(`${apiBase()}/api/health`).pipe(timeout(waitMs)))
-        .then(r => { this.ai.set(!!r?.ai); return true; }).catch(() => false)
+        .then(r => { this.serverAi.set(!!r?.ai); return true; }).catch(() => false)
         .then(ok => { this.online.set(ok); return ok; });
     }
     return this.probe;

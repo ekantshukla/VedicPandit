@@ -21,7 +21,12 @@ public static class DependencyInjection
         services.AddSingleton<IChatLog, FileChatLog>();
 
         services.Configure<ClaudeOptions>(config.GetSection(ClaudeOptions.Section));
-        services.AddHttpClient<IClaudeClient, ClaudeClient>();
+        services.Configure<FreeAiOptions>(config.GetSection(FreeAiOptions.Section));
+        // A free OpenAI-compatible model (Groq, Gemini, OpenRouter…) when FreeAI__ApiKey is set, otherwise Claude
+        if (!string.IsNullOrWhiteSpace(config[$"{FreeAiOptions.Section}:ApiKey"]))
+            services.AddHttpClient<IClaudeClient, OpenAiCompatClient>();
+        else
+            services.AddHttpClient<IClaudeClient, ClaudeClient>();
 
         services.AddSingleton<IPanchangEngine, PanchangEngine>();
         services.AddSingleton<IMuhuratEngine, MuhuratEngine>();

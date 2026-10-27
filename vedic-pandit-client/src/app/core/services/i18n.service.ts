@@ -17,6 +17,20 @@ export const LANGS: Lang[] = [
 type Dict = Record<string, string>;
 
 const en: Dict = {
+  askNext: 'You could ask next',
+  'nav.rashifal': 'Rashifal', rashifalTitle: 'Rashifal', rashifalIntro: 'Your day, week and month by Moon sign, worked out from where the Moon and Sun really are — not copied from a newspaper.',
+  rfToday: 'Today', rfTomorrow: 'Tomorrow', rfWeek: 'This week', rfMonth: 'This month', rfPick: 'Choose your rashi',
+  rfName: 'Don\'t know your rashi? Type your name', rfNamePh: 'e.g. Rahul or राहुल', rfFind: 'Find rashi',
+  rfNameIs: 'By the first letter of “{n}”, your naam rashi is {r}. If you know your janma rashi (Moon sign at birth), choose that instead.',
+  rfNameNone: 'Couldn\'t tell from that name. Please choose your rashi above.',
+  rfOverall: 'Overall', rfWork: 'Work & money', rfLove: 'Family & relations', rfHealth: 'Health', rfLord: 'Lord',
+  rfLuckyColour: 'Lucky colour', rfLuckyNumber: 'Lucky number', rfUpay: 'Upay', rfChant: 'Chant',
+  rfMoonIn: 'The Moon is in {r}, the {h} house from your sign.', rfChange: 'From {t} the Moon moves to {r} ({h} house):',
+  rfSunIn: 'The Sun is in {r}, the {h} house from your sign.', rfAfter: 'After {d}:', rfBestDay: 'Best day this week',
+  rfAsk: 'Ask PanditJi in detail', 'rfAskQ.today': 'Tell me today\'s rashifal for {r} rashi in detail', 'rfAskQ.tomorrow': 'Tell me tomorrow\'s rashifal for {r} rashi in detail', 'rfAskQ.week': 'Tell me this week\'s rashifal for {r} rashi in detail', 'rfAskQ.month': 'Tell me this month\'s rashifal for {r} rashi in detail', rfOpen: 'Full rashifal',
+  rfHomeBtn: 'Today\'s Rashifal', rfHomeSub: 'All 12 rashis · daily, weekly, monthly',
+  rfNote: 'General guidance by Moon sign (Chandra gochar, Lahiri ayanamsa) for your location. A personal reading needs your full birth chart.',
+  ex5: 'What does today look like for Mesha rashi?',
   guruVoice: 'In Guru ji\'s voice', textComing: 'Full text coming soon. Listen to Guru ji and sing along.',
   'nav.learn': 'Learn', 'nav.samagri': 'Samagri', learnTitle: 'Learn mantras', learnIntro: 'Every mantra, stotra, chalisa and aarti: the daily puja in order, then by deity. Tap one to chant along.',
   dailyPuja: 'Daily puja, step by step', dailyPujaSub: 'The mantras of a simple home puja, from waking to sleep.', nothingFound: 'Nothing found.',
@@ -92,11 +106,25 @@ const en: Dict = {
   offline: 'PanditJi is answering from his built-in library: panchang, muhurat, mantras and Gita verses. Open questions need the PanditJi server.',
   loading: 'Loading…', error: 'Could not load. Check your connection and try again.',
   disclaimer: 'Calculated with Lahiri ayanamsa for the selected location. For major samskaras, confirm with your family purohit.',
-  chatEmpty: 'Namaste. Ask me about any granth, today\'s panchang, a muhurat, or how to chant a mantra.',
+  chatEmpty: 'Namaste. Ask me anything: your rashifal, today\'s panchang, a muhurat, a mantra, the Gita — or any question at all.',
   you: 'You', panditji: 'PanditJi', openChat: 'Ask PanditJi', closeChat: 'Close',
 };
 
 const hi: Dict = {
+  askNext: 'आगे पूछ सकते हैं',
+  'nav.rashifal': 'राशिफल', rashifalTitle: 'राशिफल', rashifalIntro: 'चंद्र राशि के अनुसार आपका दिन, सप्ताह और महीना — चंद्रमा और सूर्य की वास्तविक स्थिति से गणना, अख़बार से नकल नहीं।',
+  rfToday: 'आज', rfTomorrow: 'कल', rfWeek: 'साप्ताहिक', rfMonth: 'मासिक', rfPick: 'अपनी राशि चुनें',
+  rfName: 'राशि नहीं पता? अपना नाम लिखें', rfNamePh: 'जैसे राहुल या Rahul', rfFind: 'राशि जानें',
+  rfNameIs: '“{n}” के पहले अक्षर से आपकी नाम राशि {r} है। अगर जन्म राशि (जन्म के समय चंद्र राशि) पता हो तो वही चुनें।',
+  rfNameNone: 'इस नाम से राशि तय नहीं हो पाई। कृपया ऊपर से अपनी राशि चुनें।',
+  rfOverall: 'सामान्य', rfWork: 'काम और धन', rfLove: 'परिवार और संबंध', rfHealth: 'स्वास्थ्य', rfLord: 'स्वामी',
+  rfLuckyColour: 'शुभ रंग', rfLuckyNumber: 'शुभ अंक', rfUpay: 'उपाय', rfChant: 'जप करें',
+  rfMoonIn: 'चंद्रमा {r} राशि में है, आपकी राशि से {h} भाव में।', rfChange: '{t} से चंद्रमा {r} राशि में ({h} भाव):',
+  rfSunIn: 'सूर्य {r} राशि में है, आपकी राशि से {h} भाव में।', rfAfter: '{d} के बाद:', rfBestDay: 'इस सप्ताह का सबसे अच्छा दिन',
+  rfAsk: 'पंडित जी से विस्तार में पूछें', 'rfAskQ.today': '{r} राशि का आज का राशिफल विस्तार से बताइए', 'rfAskQ.tomorrow': '{r} राशि का कल का राशिफल विस्तार से बताइए', 'rfAskQ.week': '{r} राशि का इस सप्ताह का राशिफल विस्तार से बताइए', 'rfAskQ.month': '{r} राशि का इस महीने का राशिफल विस्तार से बताइए', rfOpen: 'पूरा राशिफल',
+  rfHomeBtn: 'आज का राशिफल', rfHomeSub: 'सभी 12 राशियाँ · दैनिक, साप्ताहिक, मासिक',
+  rfNote: 'आपके स्थान के लिए चंद्र राशि (चंद्र गोचर, लाहिड़ी अयनांश) से सामान्य मार्गदर्शन। व्यक्तिगत फल के लिए पूरी जन्म कुंडली देखनी होती है।',
+  ex5: 'मेष राशि का आज का राशिफल बताइए',
   guruVoice: 'गुरु जी की वाणी में', textComing: 'पूरा पाठ जल्द ही। गुरु जी को सुनें और साथ में गाएँ।',
   'nav.learn': 'मंत्र सीखें', 'nav.samagri': 'सामग्री', learnTitle: 'मंत्र सीखें', learnIntro: 'सभी मंत्र, स्तोत्र, चालीसा और आरती: पहले क्रम से नित्य पूजा, फिर देवता के अनुसार। किसी पर दबाएँ और साथ में जप करें।',
   dailyPuja: 'नित्य पूजा, क्रम से', dailyPujaSub: 'घर की सरल पूजा के मंत्र, जागने से सोने तक।', nothingFound: 'कुछ नहीं मिला।',
@@ -172,7 +200,7 @@ const hi: Dict = {
   offline: 'पंडित जी अभी अपनी अंतर्निहित जानकारी से उत्तर दे रहे हैं: पंचांग, मुहूर्त, मंत्र और गीता के श्लोक। खुले प्रश्नों के लिए पंडित जी का सर्वर चाहिए।',
   loading: 'लोड हो रहा है…', error: 'लोड नहीं हो सका। कनेक्शन जाँचकर फिर प्रयास करें।',
   disclaimer: 'चयनित स्थान के लिए लाहिड़ी अयनांश से गणना। प्रमुख संस्कारों के लिए अपने कुल पुरोहित से पुष्टि करें।',
-  chatEmpty: 'नमस्ते। किसी भी ग्रंथ, आज के पंचांग, मुहूर्त या मंत्र जप के बारे में पूछिए।',
+  chatEmpty: 'नमस्ते। कुछ भी पूछिए: राशिफल, आज का पंचांग, मुहूर्त, मंत्र, गीता — या कोई भी प्रश्न।',
   you: 'आप', panditji: 'पंडित जी', openChat: 'पंडित जी से पूछें', closeChat: 'बंद करें',
 };
 

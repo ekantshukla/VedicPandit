@@ -75,7 +75,13 @@ The engine exists twice with identical math:
 - **Location**: State → District for all 640 census districts (names updated: Telangana, Ladakh, Prayagraj, Ayodhya…),
   12 tirth kshetras, and 32 cities abroad. District points come from DataMeet's 2011 boundaries (CC BY 2.5 India);
   `tools/build_districts.py` rebuilds them.
+- **Rashifal** (`/rashifal`, button on the home page and in the menu): today, tomorrow, this week and this month for all 12
+  rashis, from the real Moon transit (Chandra gochar) and Sun transit, with lucky colour/number, a simple upay linked to the
+  mantra player, and a finder that gives the naam rashi from the first letter of a name (Devanagari or Roman).
 - **PanditJi**:
+  - Answers any question with Google Gemini's free API (or Groq / OpenRouter) straight from the app, see [FREE_AI.md](FREE_AI.md),
+    or with Claude / a free model through the .NET server.
+  - Interactive: after every answer PanditJi suggests the three questions you are most likely to ask next, as tappable chips.
   - A floating chatbot on every page (phone and desktop), opening as a chat window; full screen at `/ask`.
   - Claude with tool use: `get_panchang`, `find_muhurat`, `get_mantra`, `search_scriptures`.
   - Answers stream over SignalR; panchang, muhurat, mantra and verse cards render alongside the text.

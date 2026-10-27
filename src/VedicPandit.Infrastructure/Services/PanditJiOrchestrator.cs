@@ -8,6 +8,7 @@ using VedicPandit.Core.Dtos;
 using VedicPandit.Core.Interfaces;
 using VedicPandit.Core.Models;
 using VedicPandit.Infrastructure.AI;
+using VedicPandit.Infrastructure.Rashifal;
 
 namespace VedicPandit.Infrastructure.Services;
 
@@ -179,6 +180,16 @@ public sealed class PanditJiOrchestrator : IPanditJiOrchestrator
                     var info = $"{m.Name} ({m.Source}) [{m.Kind}]\n{text}\nAbout: {m.MeaningEn}\nHindi: {m.MeaningHi}\nWhen: {m.Benefits}\nPronunciation tips: {m.PronunciationTips}\nRecommended repetitions: {m.RecommendedRepetitions}";
                     return (info, new BotCard("mantra", m), false);
                 }
+                case "get_rashifal":
+                {
+                    var r = RashifalCalc.Parse(tu.Input["rashi"]?.GetValue<string>());
+                    if (r is null) return ("Unknown rashi. Ask the user for their Moon sign (rashi) or the first letter of their name.", null, false);
+                    var date = ParseDate(tu.Input["date"]?.GetValue<string>()) ?? today;
+                    var period = tu.Input["period"]?.GetValue<string>() is "week" or "month" ? tu.Input["period"]!.GetValue<string>() : "day";
+                    var tz = Panchang.PanchangEngine.ResolveTimeZone(req.TimeZone);
+                    return (RashifalCalc.Context(r.Value, date, tz, period),
+                        new BotCard("rashifal", new { rashi = r.Value, date = date.ToString("yyyy-MM-dd"), period }), false);
+                }
                 case "search_scriptures":
                 {
                     var q = tu.Input["query"]?.GetValue<string>() ?? "";
@@ -311,7 +322,7 @@ public sealed class PanditJiOrchestrator : IPanditJiOrchestrator
         }
 
         done:
-        answer += hi ? "\n\n(ऑफ़लाइन मोड: पूर्ण उत्तरों के लिए Claude API कुंजी जोड़ें।)" : "\n\n(Offline mode: add a Claude API key for full conversational answers.)";
+        answer += hi ? "\n\n(ऑफ़लाइन मोड: पूर्ण उत्तरों के लिए मुफ़्त AI कुंजी (FreeAI__ApiKey) जोड़ें।)" : "\n\n(Offline mode: add a free AI key (FreeAI__ApiKey) for full conversational answers.)";
         yield return new BotTextDelta(answer);
         yield return new BotDone(answer);
     }
