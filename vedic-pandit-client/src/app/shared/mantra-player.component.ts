@@ -94,8 +94,10 @@ function generateTiming(text: string): Word[] {
           {{ voiceOn() ? i18n.t('stopReading') : i18n.t('voice') }}
         </button>
       }
-      @if (mantra.audioUrl) { <audio #audio [src]="mantra.audioUrl" preload="metadata" (ended)="onEnded()"></audio> }
+      @if (mantra.audioUrl) { <audio #audio [src]="mantra.audioUrl" preload="metadata" (ended)="onAudioEnded()"></audio> }
     </div>
+    @if (mantra.audioUrl && mantra.audioCredit) { <p class="vnote rec">🎙 {{ mantra.audioCredit }}</p> }
+    @if (mantra.syncText === false) { <p class="vnote">{{ i18n.t('textComing') }}</p> }
     @if (!mantra.audioUrl) {
       @if (voice(); as v) { <p class="vnote">{{ i18n.f('voiceIs', { v: v.name }) }}</p> }
       @else if (voiceChecked() && !compact) { <p class="vnote">{{ native.isApp ? i18n.t('voiceNone') : i18n.t('voiceNoneWeb') }}</p> }
@@ -162,6 +164,7 @@ function generateTiming(text: string): Word[] {
     .tempo { display: flex; flex-direction: column; font-size: var(--s-1); color: var(--muted); min-width: 140px; }
     .tempo input { accent-color: var(--sindoor); }
     .vnote { font-size: .8rem; color: var(--faint); margin: 8px 0 0; max-width: 70ch; }
+    .vnote.rec { color: var(--tulsi); font-weight: 600; }
     .japa { display: flex; align-items: center; gap: 16px; margin-top: 18px; }
     .japa p { margin: 0; }
     .bead { position: relative; width: 92px; height: 92px; border: 0; background: none; padding: 0; cursor: pointer; border-radius: 50%; }
@@ -252,6 +255,15 @@ export class MantraPlayerComponent implements OnChanges, OnDestroy {
 
   go(i: number) {
     if (i < 0 || i >= this.verses().length) return;
+    const audio = this.audioRef?.nativeElement;
+    if (audio && audio.duration) {
+      // jump the recording to where this verse starts (same proportion rule as followAudio)
+      const per = this.verses().map(v => { const w = generateTiming(v); return w.length ? w[w.length - 1].e + 700 : 0; });
+      const total = per.reduce((x, y) => x + y, 0);
+      audio.currentTime = (per.slice(0, i).reduce((x, y) => x + y, 0) / total) * audio.duration;
+      this.load(i);
+      return;
+    }
     const wasVoice = this.voiceOn(), wasPlaying = this.playing();
     this.stopAll();
     this.load(i);
@@ -271,7 +283,8 @@ export class MantraPlayerComponent implements OnChanges, OnDestroy {
     this.startedAt = performance.now();
     this.playing.set(true);
     const tick = () => {
-      const elapsed = audio ? audio.currentTime * 1000 : this.offsetMs + (performance.now() - this.startedAt) * this.tempo();
+      if (audio) { if (this.mantra?.syncText !== false) this.followAudio(audio); this.raf = requestAnimationFrame(tick); return; }
+      const elapsed = this.offsetMs + (performance.now() - this.startedAt) * this.tempo();
       const idx = this.words().findIndex(w => elapsed >= w.s && elapsed < w.e + 120);
       if (idx >= 0) this.current.set(idx);
       if (!audio && elapsed >= this.totalMs) { this.onEnded(); return; }
@@ -313,6 +326,29 @@ export class MantraPlayerComponent implements OnChanges, OnDestroy {
       setTimeout(() => { this.load(this.vi() + 1); this.play(); }, 600);
       return;
     }
+    this.count.update(c => c + 1);
+  }
+
+  /**
+   * A recorded chant (e.g. your guru's voice) drives the highlighting: the recording's progress is spread over
+   * every verse in proportion to its syllables, so the right verse opens and the right word lights up.
+   */
+  private followAudio(audio: HTMLAudioElement) {
+    const dur = audio.duration;
+    if (!dur || !isFinite(dur)) return;
+    const per = this.verses().map(v => { const w = generateTiming(v); return w.length ? w[w.length - 1].e + 700 : 0; });
+    const total = per.reduce((a, b) => a + b, 0);
+    let at = (audio.currentTime / dur) * total, vi = 0;
+    while (vi < per.length - 1 && at >= per[vi]) { at -= per[vi]; vi++; }
+    if (vi !== this.vi()) { this.vi.set(vi); this.words.set(generateTiming(this.verses()[vi] ?? '')); }
+    const idx = this.words().findIndex(w => at >= w.s && at < w.e + 120);
+    if (idx >= 0) this.current.set(idx);
+  }
+
+  onAudioEnded() {
+    cancelAnimationFrame(this.raf);
+    this.playing.set(false);
+    this.current.set(this.words().length);
     this.count.update(c => c + 1);
   }
 

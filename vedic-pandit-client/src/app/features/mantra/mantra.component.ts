@@ -39,7 +39,7 @@ type Kind = 'all' | 'mantra' | 'stotra' | 'chalisa';
             <span class="nm" [class.sa]="i18n.prefersDevanagari()">{{ i18n.prefersDevanagari() ? m.nameHi : m.name }}</span>
             <span class="d">{{ m.deity }} · {{ kindLabel(m) }}</span>
           </button>
-        } @empty { <p class="muted none">{{ i18n.t('noResults') }}</p> }
+        } @empty { <p class="muted none">{{ i18n.t('nothingFound') }}</p> }
       </nav>
       <vp-mantra-player [mantra]="selected()" />
     </div>

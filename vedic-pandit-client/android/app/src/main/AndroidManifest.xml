@@ -32,6 +32,8 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Ask PanditJi by voice -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <!-- Dakshina: let the app find UPI apps (GPay, PhonePe, Paytm, BHIM) on Android 11+ -->
     <queries>
@@ -42,6 +44,10 @@
         <!-- Lets the app use the phone's Hindi text-to-speech voice for mantras (Android 11+) -->
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+        <!-- ...and its speech recognizer, for voice questions -->
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
 </manifest>

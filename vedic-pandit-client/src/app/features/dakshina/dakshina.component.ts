@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import QRCode from 'qrcode';
 import { I18nService } from '../../core/services/i18n.service';
 import { NativeService } from '../../core/services/native.service';
@@ -14,7 +15,10 @@ const AMOUNTS = [11, 21, 51, 101, 251, 501, 1100];
   imports: [FormsModule],
   template: `
   <div class="wrap page">
-    <header class="page-head">
+    <header class="page-head dh">
+      <button type="button" class="close" (click)="close()" [attr.aria-label]="i18n.t('closeChat')" [title]="i18n.t('closeChat')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
       <h1><span class="sa">दक्षिणा</span>@if (i18n.lang() !== 'hi' && i18n.lang() !== 'mr') {&ngsp;<span class="en">Dakshina</span>}</h1>
       <p>{{ i18n.t('dakIntro') }}</p>
     </header>
@@ -63,6 +67,10 @@ const AMOUNTS = [11, 21, 51, 101, 251, 501, 1100];
     <p class="safe faint">{{ i18n.t('dakSafe') }}</p>
   </div>`,
   styles: [`
+    .dh { position: relative; padding-right: 56px; }
+    .close { position: absolute; top: 0; right: 0; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; display: grid; place-items: center; }
+    .close:hover { border-color: var(--ink); }
+    .close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
     h1 .en { font-weight: 600; }
     h1 .sa { font-weight: 400; }
     .grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 32px; align-items: start; }
@@ -103,6 +111,9 @@ const AMOUNTS = [11, 21, 51, 101, 251, 501, 1100];
 export class DakshinaComponent {
   readonly i18n = inject(I18nService);
   readonly native = inject(NativeService);
+  private router = inject(Router);
+  /** Back to where the reader came from, or home if they opened Dakshina directly. */
+  close() { history.length > 1 ? history.back() : this.router.navigate(['/']); }
   readonly amounts = AMOUNTS;
   readonly upiId = UPI_ID;
   readonly upiName = UPI_NAME;

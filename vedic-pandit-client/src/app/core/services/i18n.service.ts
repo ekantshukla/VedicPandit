@@ -17,6 +17,12 @@ export const LANGS: Lang[] = [
 type Dict = Record<string, string>;
 
 const en: Dict = {
+  guruVoice: 'In Guru ji\'s voice', textComing: 'Full text coming soon. Listen to Guru ji and sing along.',
+  'nav.learn': 'Learn', 'nav.samagri': 'Samagri', learnTitle: 'Learn mantras', learnIntro: 'Every mantra, stotra, chalisa and aarti: the daily puja in order, then by deity. Tap one to chant along.',
+  dailyPuja: 'Daily puja, step by step', dailyPujaSub: 'The mantras of a simple home puja, from waking to sleep.', nothingFound: 'Nothing found.',
+  samagriTitle: 'Puja samagri', samagriIntro: 'What to keep ready for each puja. Tick items off while shopping and share the list.',
+  shareWhatsApp: 'Share on WhatsApp', copyList: 'Copy list', clearTicks: 'Clear ticks', samagriNote: 'Common practice; your family purohit may add or change items. Ticks are saved on this device.',
+  listenSpeak: 'Speak now… PanditJi is listening', micDenied: 'Microphone permission is off. Allow it in Settings → Apps → Vedic Pandit → Permissions.', micError: 'Could not hear you. Tap the mic and try again.',
   rightNow: 'Right now', pakshaDay: 'Day {n} of 15, {p}', endsAt: 'ends', nowCaption: 'The bars show how much of each limb has passed. Tithi changes every 12° the Moon gains on the Sun; nakshatra and yoga every 13°20′.',
   tradition: 'Sampradaya', botHello: 'Namaste! Ask me anything 🙏', botOnline: 'Online · answers any question', botBuiltIn: 'Built-in answers (server not connected)',
   fullScreen: 'Open full screen', pickLocation: 'Choose your location', inIndia: 'India', outsideIndia: 'Outside India', state: 'State / UT', district: 'District',
@@ -91,6 +97,12 @@ const en: Dict = {
 };
 
 const hi: Dict = {
+  guruVoice: 'गुरु जी की वाणी में', textComing: 'पूरा पाठ जल्द ही। गुरु जी को सुनें और साथ में गाएँ।',
+  'nav.learn': 'मंत्र सीखें', 'nav.samagri': 'सामग्री', learnTitle: 'मंत्र सीखें', learnIntro: 'सभी मंत्र, स्तोत्र, चालीसा और आरती: पहले क्रम से नित्य पूजा, फिर देवता के अनुसार। किसी पर दबाएँ और साथ में जप करें।',
+  dailyPuja: 'नित्य पूजा, क्रम से', dailyPujaSub: 'घर की सरल पूजा के मंत्र, जागने से सोने तक।', nothingFound: 'कुछ नहीं मिला।',
+  samagriTitle: 'पूजा सामग्री', samagriIntro: 'हर पूजा के लिए क्या तैयार रखें। ख़रीदते समय टिक करें और सूची भेजें।',
+  shareWhatsApp: 'WhatsApp पर भेजें', copyList: 'सूची कॉपी करें', clearTicks: 'टिक हटाएँ', samagriNote: 'सामान्य परंपरा; आपके कुल पुरोहित कुछ बदल या जोड़ सकते हैं। टिक इसी फ़ोन में सहेजे जाते हैं।',
+  listenSpeak: 'बोलिए… पंडित जी सुन रहे हैं', micDenied: 'माइक्रोफ़ोन की अनुमति बंद है। Settings → Apps → Vedic Pandit → Permissions में चालू करें।', micError: 'आवाज़ सुनाई नहीं दी। माइक दबाकर फिर बोलें।',
   rightNow: 'इस समय', pakshaDay: '{p}, दिन {n} / 15', endsAt: 'समाप्ति', nowCaption: 'पट्टियाँ दिखाती हैं कि हर अंग कितना बीत चुका है। चंद्रमा सूर्य से हर 12° आगे बढ़ने पर तिथि बदलती है; नक्षत्र और योग हर 13°20′ पर।',
   tradition: 'संप्रदाय', botHello: 'नमस्ते! कुछ भी पूछिए 🙏', botOnline: 'ऑनलाइन · हर प्रश्न का उत्तर', botBuiltIn: 'अंतर्निहित उत्तर (सर्वर जुड़ा नहीं)',
   fullScreen: 'पूरी स्क्रीन पर खोलें', pickLocation: 'अपना स्थान चुनें', inIndia: 'भारत', outsideIndia: 'भारत के बाहर', state: 'राज्य / केंद्रशासित प्रदेश', district: 'ज़िला',

@@ -60,6 +60,10 @@ public class Mantra
     public string Kind { get; set; } = "mantra";
     /// <summary>Where the digital text comes from, e.g. "sanskritdocuments.org".</summary>
     public string Credit { get; set; } = string.Empty;
+    /// <summary>Who is chanting in the recording at <see cref="AudioUrl"/>.</summary>
+    public string? AudioCredit { get; set; }
+    /// <summary>False while only the title of a recorded text is known: no word highlighting.</summary>
+    public bool SyncText { get; set; } = true;
 }
 
 public class ChatTurn

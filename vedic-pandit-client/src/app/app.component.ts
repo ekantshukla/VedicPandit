@@ -24,8 +24,9 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       <nav class="desk" aria-label="Main">
         <a routerLink="/panchang" routerLinkActive="on">{{ i18n.t('nav.panchang') }}</a>
         <a routerLink="/muhurat" routerLinkActive="on">{{ i18n.t('nav.muhurat') }}</a>
-        <a routerLink="/mantra" routerLinkActive="on">{{ i18n.t('nav.mantra') }}</a>
+        <a routerLink="/learn" [class.on]="inMantra()">{{ i18n.t('nav.mantra') }}</a>
         <a routerLink="/granth" routerLinkActive="on">{{ i18n.t('nav.granth') }}</a>
+        <a routerLink="/samagri" routerLinkActive="on">{{ i18n.t('nav.samagri') }}</a>
       </nav>
       <div class="prefs">
         <label class="sr-only" for="lang">Language</label>
@@ -88,13 +89,17 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
       <span>{{ i18n.t('nav.muhurat') }}</span>
     </a>
-    <a routerLink="/mantra" routerLinkActive="on">
+    <a routerLink="/learn" [class.on]="inMantra()">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>
-      <span>{{ i18n.t('nav.mantra') }}</span>
+      <span>{{ i18n.t('nav.learn') }}</span>
     </a>
     <a routerLink="/granth" routerLinkActive="on">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>
       <span>{{ i18n.t('nav.granth') }}</span>
+    </a>
+    <a routerLink="/samagri" routerLinkActive="on">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h16l-1.6 8.2A2 2 0 0 1 16.4 21H7.6a2 2 0 0 1-2-1.8z"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><path d="M12 3.5c.8 1 1.2 1.8 1.2 2.4a1.2 1.2 0 0 1-2.4 0c0-.6.4-1.4 1.2-2.4z"/></svg>
+      <span>{{ i18n.t('nav.samagri') }}</span>
     </a>
   </nav>
 
@@ -231,7 +236,7 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       .foot { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
 
       .tabbar {
-        display: grid; grid-template-columns: repeat(5, 1fr);
+        display: grid; grid-template-columns: repeat(6, 1fr);
         position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
         background: var(--card); border-top: 1px solid var(--line);
         padding: 6px max(4px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(4px, env(safe-area-inset-left, 0px));
@@ -265,6 +270,8 @@ export class AppComponent {
   readonly year = new Date().getFullYear();
   readonly drawer = signal(false);
   readonly onAsk = signal(false);
+  readonly url = signal('');
+  inMantra() { const u = this.url(); return u.startsWith('/learn') || u.startsWith('/mantra'); }
   readonly getApp = signal(false);
   readonly stripClosed = signal(this.readStrip());
   private readStrip(): boolean { try { return localStorage.getItem('vp.appStrip') === 'closed'; } catch { return false; } }
@@ -286,6 +293,7 @@ export class AppComponent {
     });
     router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(e => {
       this.onAsk.set((e as NavigationEnd).urlAfterRedirects.startsWith('/ask'));
+      this.url.set((e as NavigationEnd).urlAfterRedirects);
       this.drawer.set(false);
       window.scrollTo({ top: 0 });
     });

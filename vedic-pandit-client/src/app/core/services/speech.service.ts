@@ -1,5 +1,6 @@
 import { Injectable, NgZone, inject, signal } from '@angular/core';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import { SpeechRecognition } from '@capacitor-community/speech-recognition';
 import { NativeService } from './native.service';
 
 /** Which engine reads Sanskrit aloud: the phone's own TTS (in the app), a browser voice, or none. */
@@ -37,11 +38,33 @@ export class SpeechService {
 
   get canListen(): boolean {
     const w = window as any;
-    return !this.native.isApp && !!(w.SpeechRecognition || w.webkitSpeechRecognition);
+    return this.native.isApp || !!(w.SpeechRecognition || w.webkitSpeechRecognition);
   }
   get canSpeak(): boolean { return this.native.isApp || typeof speechSynthesis !== 'undefined'; }
 
-  listen(lang: string, onFinal: (text: string) => void, onInterim?: (text: string) => void) {
+  /** In the Android app: the phone's own speech recognizer (asks for the microphone once). */
+  private async listenNative(lang: string, onFinal: (text: string) => void, onInterim?: (text: string) => void, onError?: (msg: string) => void) {
+    try {
+      const { available } = await SpeechRecognition.available();
+      if (!available) { onError?.('unavailable'); return; }
+      const perm = await SpeechRecognition.requestPermissions();
+      if (perm.speechRecognition !== 'granted') { onError?.('denied'); return; }
+      await SpeechRecognition.removeAllListeners();
+      let last = '';
+      await SpeechRecognition.addListener('partialResults', d => this.zone.run(() => { last = d.matches?.[0] ?? last; if (last) onInterim?.(last); }));
+      await SpeechRecognition.addListener('listeningState', d => this.zone.run(() => {
+        if (d.status === 'stopped') { this.listening.set(false); if (last) { onFinal(last); last = ''; } }
+      }));
+      this.zone.run(() => this.listening.set(true));
+      await SpeechRecognition.start({ language: lang, maxResults: 1, partialResults: true, popup: false });
+    } catch {
+      this.zone.run(() => this.listening.set(false));
+      onError?.('error');
+    }
+  }
+
+  listen(lang: string, onFinal: (text: string) => void, onInterim?: (text: string) => void, onError?: (msg: string) => void) {
+    if (this.native.isApp) { this.listenNative(lang, onFinal, onInterim, onError); return; }
     const w = window as any;
     const Rec = w.SpeechRecognition || w.webkitSpeechRecognition;
     if (!Rec) return;
@@ -60,12 +83,13 @@ export class SpeechService {
       if (finalText) onFinal(finalText);
     });
     this.rec.onend = () => this.zone.run(() => this.listening.set(false));
-    this.rec.onerror = () => this.zone.run(() => this.listening.set(false));
+    this.rec.onerror = (e: any) => this.zone.run(() => { this.listening.set(false); onError?.(e?.error === 'not-allowed' ? 'denied' : 'error'); });
     this.listening.set(true);
     this.rec.start();
   }
 
   stopListening() {
+    if (this.native.isApp) SpeechRecognition.stop().catch(() => undefined);
     try { this.rec?.stop(); } catch { /* ignore */ }
     this.listening.set(false);
   }

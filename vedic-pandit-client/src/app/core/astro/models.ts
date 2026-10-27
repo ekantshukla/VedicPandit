@@ -27,6 +27,10 @@ export interface Mantra {
   recommendedRepetitions: number; audioUrl?: string | null; timingJson?: string; tags: string;
   /** mantra | stotra | chalisa | aarti. Stotra verses are separated by a blank line. */
   kind?: 'mantra' | 'stotra' | 'chalisa' | 'aarti'; credit?: string;
+  /** Who is chanting in the recording at audioUrl, e.g. "Voice: Pt. ... (recorded with permission)". */
+  audioCredit?: string;
+  /** false while only the title of a recorded text is known: the recording plays without word highlighting. */
+  syncText?: boolean;
 }
 
 export interface Verse { citation?: string; scripture?: string; chapter: number; verse: string; sanskrit: string; translationEn: string; translationHi: string; keywords?: string; }

@@ -59,16 +59,26 @@ import { BotAvatarComponent } from './bot-avatar.component';
 
     @if (api.online() === false && showOffline) { <p class="offline">{{ i18n.t('offline') }}</p> }
 
+    @if (speech.listening()) {
+      <div class="listen" role="status">
+        <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <span>{{ draft() || i18n.t('listenSpeak') }}</span>
+      </div>
+    }
+    @if (micNote()) { <p class="micnote">{{ micNote() }}</p> }
     <form class="ask" (ngSubmit)="send(draft())">
       <label class="sr-only" for="ask-{{ uid }}">{{ i18n.t('askPlaceholder') }}</label>
       <input id="ask-{{ uid }}" class="input" [ngModel]="draft()" (ngModelChange)="draft.set($event)" name="q"
              [placeholder]="speech.listening() ? i18n.t('listening') : i18n.t('askPlaceholder')" autocomplete="off" [disabled]="bot.busy()">
-      @if (speech.canListen) {
-        <button type="button" class="mic" [class.on]="speech.listening()" (click)="mic()" [attr.aria-label]="speech.listening() ? i18n.t('listening') : i18n.t('speak')">
-          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg>
+      @if (speech.canListen && (!draft().trim() || speech.listening())) {
+        <!-- Empty box: the main button is the microphone (tap, speak, it sends by itself) -->
+        <button type="button" class="mic big" [class.on]="speech.listening()" (click)="mic()" [disabled]="bot.busy()"
+                [attr.aria-label]="speech.listening() ? i18n.t('listening') : i18n.t('speak')" [title]="i18n.t('speak')">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2Z"/></svg>
         </button>
+      } @else {
+        <button class="btn send" type="submit" [disabled]="bot.busy() || !draft().trim()">{{ i18n.t('ask') }}</button>
       }
-      <button class="btn" type="submit" [disabled]="bot.busy() || !draft().trim()">{{ i18n.t('ask') }}</button>
     </form>
   </div>`,
   styles: [`
@@ -99,7 +109,16 @@ import { BotAvatarComponent } from './bot-avatar.component';
     .ask { display: flex; gap: 8px; align-items: center; padding-top: 8px; border-top: 1px solid var(--line); }
     .ask .input { flex: 1; border-radius: 999px; padding-left: 16px; }
     .mic { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; display: grid; place-items: center; flex: none; }
+    .mic.big { width: 48px; height: 48px; background: var(--sindoor); color: #fff; border-color: var(--sindoor); }
     .mic.on { background: var(--sindoor); color: #fff; border-color: var(--sindoor); animation: pulse 1.4s infinite; }
+    .mic:disabled { opacity: .5; }
+    .send { min-height: 48px; }
+    .listen { display: flex; align-items: center; gap: 12px; background: var(--ink); color: #fff; border-radius: 16px; padding: 12px 16px; margin-bottom: 8px; font-size: 1rem; }
+    .wave { display: inline-flex; gap: 3px; align-items: center; height: 22px; flex: none; }
+    .wave i { width: 4px; border-radius: 2px; background: var(--haldi); animation: wv 1s ease-in-out infinite; height: 8px; }
+    .wave i:nth-child(2) { animation-delay: .1s; } .wave i:nth-child(3) { animation-delay: .2s; } .wave i:nth-child(4) { animation-delay: .3s; } .wave i:nth-child(5) { animation-delay: .4s; }
+    @keyframes wv { 0%, 100% { height: 6px; } 50% { height: 22px; } }
+    .micnote { font-size: var(--s-1); color: var(--sindoor); margin: 0 0 8px; max-width: none; }
     @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(179,18,46,.35); } 50% { box-shadow: 0 0 0 10px rgba(179,18,46,0); } }
   `],
 })
@@ -132,10 +151,16 @@ export class ChatPanelComponent implements AfterViewChecked {
     this.bot.ask(text);
   }
 
+  readonly micNote = signal('');
   mic() {
     if (this.speech.listening()) { this.speech.stopListening(); return; }
-    this.speech.listen(this.i18n.current().speech, final => { this.draft.set(''); this.send(final); }, interim => this.draft.set(interim));
+    this.micNote.set('');
+    this.speech.listen(this.i18n.current().speech,
+      final => { this.draft.set(''); this.send(final); },
+      interim => this.draft.set(interim),
+      err => this.micNote.set(this.i18n.t(err === 'denied' ? 'micDenied' : 'micError')));
   }
+
 
   read(text: string) {
     if (this.speech.speaking()) { this.speech.stopSpeaking(); return; }
