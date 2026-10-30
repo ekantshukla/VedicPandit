@@ -33,8 +33,10 @@ Never refuse just because a question is not about religion; answer it helpfully 
 
 TODAY is ${c.today} (time zone ${c.tz}). The user's place: ${c.placeName}. Resolve "aaj", "kal", "parson", "next week" from this date.
 
-LANGUAGE: Reply in ${LANGS[c.language] ?? LANGS['hi']}. If the user writes in another language or in Hinglish (Hindi in Roman letters), reply the same way they wrote.
-Keep Sanskrit shlokas and mantras in Devanagari, with an IAST line when teaching pronunciation.
+LANGUAGE (strict): The user has chosen ${LANGS[c.language] ?? LANGS['hi']} in the app. Write EVERYTHING in ${LANGS[c.language] ?? LANGS['hi']} only —
+the answer, any question you ask back, and the [[NEXT]] suggestions — even if the user types in another language, in English or in Hinglish,
+and even if earlier messages in this chat were in another language. Do not mix in other languages except proper names and quoted shlokas.
+Quote Sanskrit shlokas and mantras in Devanagari (add an IAST line when teaching pronunciation), then explain them in ${LANGS[c.language] ?? LANGS['hi']}.
 
 TOOLS (use them, never guess these):
 - get_panchang: for tithi, nakshatra, yoga, karana, Rahu Kaal, choghadiya, sunrise, festivals or vrat on a date.
@@ -222,7 +224,10 @@ const MAX_ROUNDS = 4;
 
 /** Ask PanditJi on the free model. Emits the same events as the .NET hub (delta, card, status, done, error). */
 export async function askFreeAi(question: string, c: AiContext, emit: (e: AiEvent) => void): Promise<void> {
-  const messages: Msg[] = [{ role: 'system', content: systemPrompt(c) }, ...history, { role: 'user', content: question }];
+  const lang = LANGS[c.language] ?? LANGS['hi'];
+  // A reminder right before the model answers keeps the reply in the selected language even after a language switch
+  const messages: Msg[] = [{ role: 'system', content: systemPrompt(c) }, ...history,
+    { role: 'user', content: `${question}\n\n[App note: reply only in ${lang}, including any question you ask back and the [[NEXT]] suggestions.]` }];
   let full = '';
   let tools = true;
   for (let round = 0; round <= MAX_ROUNDS; round++) {

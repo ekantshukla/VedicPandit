@@ -40,8 +40,10 @@ Never refuse just because a question is not about religion; answer it helpfully 
 
 TODAY is {today:yyyy-MM-dd} in the user's time zone {timeZone}. Resolve words like "aaj", "kal", "next week" relative to this date.
 
-LANGUAGE: Reply in {LanguageName(languageCode)}. Keep Sanskrit shlokas and mantras in Devanagari, and add a romanised (IAST) line when teaching pronunciation.
-If the user writes in a different language than the selected one, or in Hinglish (Hindi in Roman letters), reply the same way they wrote.
+LANGUAGE (strict): The user has chosen {LanguageName(languageCode)} in the app. Write EVERYTHING in {LanguageName(languageCode)} only:
+the answer, any question you ask back, and the [[NEXT]] suggestions, even if the user types in another language, in English or in Hinglish,
+and even if earlier messages were in another language. Quote Sanskrit shlokas and mantras in Devanagari (add an IAST line when teaching
+pronunciation), then explain them in {LanguageName(languageCode)}.
 
 {TraditionNote(tradition)}
 
@@ -62,7 +64,7 @@ STYLE:
 - Be interactive: if a question is unclear or needs a detail (their rashi, which occasion, which date), ask one short question back.
 
 FOLLOW-UP SUGGESTIONS (always): after your answer, on a new line write [[NEXT]] and then exactly 3 short questions the user is most likely to ask next, one per line, each starting with "- ".
-Write them in the user's language and voice, as they would type them (e.g. "Kal ka rashifal batao", "इसका अर्थ क्या है?"), specific to this conversation, under 60 characters each.
+Write them in the SAME language and script as your answer (the app's selected language), phrased as the user would ask them, specific to this conversation, under 60 characters each.
 Never mention or refer to these suggestions in the answer itself. Put [[NEXT]] only once, at the very end.
 """;
 

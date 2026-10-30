@@ -10,6 +10,7 @@ import { TraditionService } from './tradition.service';
 import { freeAiConfigured } from './ai-config';
 import { askFreeAi, clearAiHistory } from './free-ai';
 import { builtInFollowups, parseFollowups, visibleText } from './followups';
+import { SCRIPT_FOR_LANG, toScript } from './transliterate';
 import { dailyRashifal, findRashiInText, RASHIS, stars } from '../astro/rashifal';
 
 export interface ChatCard { type: 'panchang' | 'muhurat' | 'mantra' | 'verses' | 'rashifal' | 'granth'; payload: any; }
@@ -23,9 +24,10 @@ export interface ChatMessage {
 
 interface BotEvent { type: string; text?: string; cardType?: string; payload?: unknown; tool?: string; status?: string; message?: string; }
 
+/** Status line while a tool runs: i18n keys. */
 const TOOL_LABEL: Record<string, string> = {
-  get_panchang: 'Calculating panchang…', find_muhurat: 'Scanning dates for muhurat…', get_mantra: 'Opening the mantra…', search_scriptures: 'Searching the granth…',
-  get_rashifal: 'Reading the Moon\'s transit…', read_granth: 'Opening the granth…',
+  get_panchang: 'stPanchang', find_muhurat: 'stMuhurat', get_mantra: 'stMantra', search_scriptures: 'stGranth',
+  get_rashifal: 'stRashifal', read_granth: 'stRead',
 };
 /** Models sometimes add markdown; the chat bubble is plain text that may be read aloud. */
 const plain = (s: string) => s.replace(/\*\*/g, '').replace(/^#{1,6}\s*/gm, '').replace(/^(\s*)[*-]\s+/gm, '$1• ');
@@ -78,7 +80,7 @@ export class PanditJiService {
       switch (ev.type) {
         case 'delta': patch(m => { const raw = (m.raw ?? '') + (ev.text ?? ''); return { ...m, raw, text: plain(visibleText(raw)), status: undefined }; }); break;
         case 'card': patch(m => ({ ...m, cards: [...m.cards, { type: ev.cardType as ChatCard['type'], payload: ev.payload }] })); break;
-        case 'status': patch(m => ({ ...m, status: TOOL_LABEL[ev.tool ?? ''] ?? '…' })); break;
+        case 'status': patch(m => ({ ...m, status: TOOL_LABEL[ev.tool ?? ''] ? this.i18n.t(TOOL_LABEL[ev.tool ?? '']) : '…' })); break;
         case 'done': patch(m => ({ ...m, text: plain(visibleText(m.raw ?? m.text)), next: this.followups(m), pending: false, status: undefined })); resolve(); break;
         case 'error': patch(m => ({ ...m, pending: false, error: true, text: m.text || (ev.message ?? 'Error') })); resolve(); break;
       }
@@ -98,8 +100,7 @@ export class PanditJiService {
       } catch (e) {
         console.warn('Free AI failed, using built-in answer', e);
         const reply = await this.localAnswer(q);
-        const hi = ['hi', 'mr'].includes(this.i18n.lang());
-        const note = hi ? '\n\n(AI अभी व्यस्त है, इसलिए यह अंतर्निहित उत्तर है। थोड़ी देर बाद फिर पूछें।)' : '\n\n(The AI is busy right now, so this is a built-in answer. Please ask again in a minute.)';
+        const note = '\n\n' + this.i18n.t('aiBusy');
         // keep whatever the AI already streamed (cards, text), then add the built-in answer
         patch(m => ({ ...m, text: (m.text ? m.text + '\n\n' : '') + reply.text + note, cards: [...m.cards, ...reply.cards], next: reply.next, pending: false, status: undefined }));
         this.busy.set(false);
@@ -132,14 +133,29 @@ export class PanditJiService {
   private followups(m: ChatMessage): string[] {
     const fromAi = parseFollowups(m.raw ?? '');
     if (fromAi.length) return fromAi;
-    const hi = ['hi', 'mr'].includes(this.i18n.lang());
+    const lang = this.i18n.lang();
     const card = m.cards[m.cards.length - 1];
-    if (card?.type === 'rashifal') return builtInFollowups('rashifal', hi, RASHIS[card.payload?.rashi ?? 0]);
-    return builtInFollowups(card ? (card.type === 'granth' ? 'verses' : card.type) : 'general', hi);
+    if (card?.type === 'rashifal') return builtInFollowups('rashifal', lang, this.rashiName(card.payload?.rashi ?? 0));
+    return builtInFollowups(card ? (card.type === 'granth' ? 'verses' : card.type) : 'general', lang);
+  }
+
+  /** A rashi's name as the reader's language writes it. */
+  private rashiName(i: number): string {
+    const R = RASHIS[i], lang = this.i18n.lang();
+    if (lang === 'en') return R.en;
+    const sc = SCRIPT_FOR_LANG[lang];
+    return sc && sc !== 'deva' && sc !== 'iast' ? toScript(R.hi, sc) : R.hi;
   }
 
   /** Rule-based answers used in demo mode (no API). Mirrors PanditJiOrchestrator.OfflineAnswerAsync. */
+  /** Built-in answers have Hindi and English sentences; other languages get a short line in their language and the cards. */
   private async localAnswer(q: string): Promise<Pick<ChatMessage, 'text' | 'cards' | 'next'>> {
+    const r = await this.localAnswerRaw(q);
+    if (['hi', 'en'].includes(this.i18n.lang())) return r;
+    return { ...r, text: this.i18n.t(r.cards.length ? 'fallbackHere' : 'fallbackNone') };
+  }
+
+  private async localAnswerRaw(q: string): Promise<Pick<ChatMessage, 'text' | 'cards' | 'next'>> {
     const t = q.toLowerCase();
     const hi = ['hi', 'mr'].includes(this.i18n.lang());
     const p = this.loc.place();
@@ -151,14 +167,14 @@ export class PanditJiService {
     if (has('rashifal', 'राशिफल', 'horoscope', 'rashiphal', 'rashi bhavishya') || (namedRashi !== null && has('rashi', 'राशि', 'aaj', 'आज', 'today', 'kal', 'कल', 'din', 'दिन'))) {
       const ri = namedRashi;
       if (ri === null) {
-        return { next: builtInFollowups('general', hi), text: hi ? 'अपनी राशि बताइए (जैसे "मेष राशिफल"), या ऊपर "राशिफल" पेज पर अपने नाम के पहले अक्षर से राशि जानें।'
+        return { next: builtInFollowups('general', this.i18n.lang()), text: hi ? 'अपनी राशि बताइए (जैसे "मेष राशिफल"), या ऊपर "राशिफल" पेज पर अपने नाम के पहले अक्षर से राशि जानें।'
                           : 'Tell me your rashi (for example "Mesha rashifal"), or open the Rashifal page and find it from the first letter of your name.', cards: [] };
       }
       const d = has('kal', 'कल', 'tomorrow') ? addDays(today, 1) : today;
       const r = dailyRashifal(ri, d, p.tz);
       const R = RASHIS[ri];
       const L = (x: { en: string; hi: string }) => hi ? x.hi : x.en;
-      return { next: builtInFollowups('rashifal', hi, R), text: `${hi ? R.hi : R.en} ${stars(r.score)}\n${L(r.text.overall)} ${L(r.text.work)}`, cards: [{ type: 'rashifal', payload: { rashi: ri, date: d, period: 'day' } }] };
+      return { next: builtInFollowups('rashifal', this.i18n.lang(), this.rashiName(ri)), text: `${hi ? R.hi : R.en} ${stars(r.score)}\n${L(r.text.overall)} ${L(r.text.work)}`, cards: [{ type: 'rashifal', payload: { rashi: ri, date: d, period: 'day' } }] };
     }
 
     if (has('muhurat', 'मुहूर्त', 'shubh', 'शुभ', 'good for', 'auspicious')) {
@@ -173,7 +189,7 @@ export class PanditJiService {
         ? (hi ? `${r.eventName} के लिए ${r.windows.length} शुभ समय मिले। सबसे पहला: ${r.windows[0].date}, ${r.windows[0].start.slice(11, 16)}–${r.windows[0].end.slice(11, 16)} (${r.windows[0].nakshatra} नक्षत्र)।`
               : `Found ${r.windows.length} windows for ${r.eventName}. The first is ${r.windows[0].date}, ${r.windows[0].start.slice(11, 16)}–${r.windows[0].end.slice(11, 16)} in ${r.windows[0].nakshatra} nakshatra.`)
         : (hi ? `इस अवधि में ${r.eventName} के लिए कोई उपयुक्त समय नहीं मिला।` : `No suitable window for ${r.eventName} in that period.`);
-      return { next: builtInFollowups('muhurat', hi), text: text + note, cards: [{ type: 'muhurat', payload: r }] };
+      return { next: builtInFollowups('muhurat', this.i18n.lang()), text: text + note, cards: [{ type: 'muhurat', payload: r }] };
     }
 
     if (has('panchang', 'पंचांग', 'tithi', 'तिथि', 'rahu', 'राहु', 'nakshatra', 'नक्षत्र', 'choghadiya', 'चौघड़िया', 'ekadashi', 'एकादशी', 'aaj', 'आज', 'today')) {
@@ -186,7 +202,7 @@ export class PanditJiService {
           const ek = pp.observances.find(o => o.startsWith('Ekadashi') && o !== skip);
           if (ek) {
             const rule = ek === 'Ekadashi' ? '' : hi ? (ek.includes('Vaishnava') ? ' वैष्णव नियम से (अरुणोदय में दशमी नहीं)।' : ' स्मार्त नियम से (सूर्योदय की तिथि); वैष्णव एकादशी अगले दिन है।') : (ek.includes('Vaishnava') ? ' by the Vaishnava rule (no Dashami at arunodaya).' : ' by the Smarta rule (tithi at sunrise); Vaishnavas fast the next day.');
-            return { next: builtInFollowups('ekadashi', hi), text: (hi ? `अगली एकादशी ${d} को है (${pp.tithis[0].nameSanskrit})।` : `The next Ekadashi is on ${d} (${pp.tithis[0].name}).`) + rule + note, cards: [{ type: 'panchang', payload: pp }] };
+            return { next: builtInFollowups('ekadashi', this.i18n.lang()), text: (hi ? `अगली एकादशी ${d} को है (${pp.tithis[0].nameSanskrit})।` : `The next Ekadashi is on ${d} (${pp.tithis[0].name}).`) + rule + note, cards: [{ type: 'panchang', payload: pp }] };
           }
         }
       }
@@ -196,7 +212,7 @@ export class PanditJiService {
       const text = hi
         ? `${d} को ${tt.nameSanskrit} तिथि ${tt.ends?.slice(11, 16) ?? ''} तक है, नक्षत्र ${nk.nameSanskrit}। राहु काल ${pp.rahuKaal?.start.slice(11, 16)} से ${pp.rahuKaal?.end.slice(11, 16)} तक रहेगा।`
         : `On ${d} the tithi is ${tt.name} until ${tt.ends?.slice(11, 16) ?? ''}, nakshatra ${nk.name}. Rahu Kaal is ${pp.rahuKaal?.start.slice(11, 16)}–${pp.rahuKaal?.end.slice(11, 16)}.`;
-      return { next: builtInFollowups('panchang', hi), text: text + note, cards: [{ type: 'panchang', payload: pp }] };
+      return { next: builtInFollowups('panchang', this.i18n.lang()), text: text + note, cards: [{ type: 'panchang', payload: pp }] };
     }
 
     const mantras = await loadMantras();
@@ -205,14 +221,14 @@ export class PanditJiService {
     const named = findMantra(q, mantras, this.trad.tradition(), asked ? 2 : 6);
     if (named || asked) {
       const m = named ?? mantras[0];
-      return { next: builtInFollowups('mantra', hi), text: (hi ? `यह रहा ${m.nameHi}। नीचे के प्लेयर के साथ धीरे-धीरे जप करें। ${m.meaningHi}` : `Here is the ${m.name}. Chant slowly along with the player. ${m.meaningEn}`) + note, cards: [{ type: 'mantra', payload: m }] };
+      return { next: builtInFollowups('mantra', this.i18n.lang()), text: (hi ? `यह रहा ${m.nameHi}। नीचे के प्लेयर के साथ धीरे-धीरे जप करें। ${m.meaningHi}` : `Here is the ${m.name}. Chant slowly along with the player. ${m.meaningEn}`) + note, cards: [{ type: 'mantra', payload: m }] };
     }
 
     const hits = await localSearch(q, 3);
     if (hits.length) {
       const v = hits[0];
-      return { next: builtInFollowups('verses', hi), text: (hi ? `${v.citation} में कहा गया है — ${v.translationHi}` : `${v.citation} says: ${v.translationEn}`) + note, cards: [{ type: 'verses', payload: hits }] };
+      return { next: builtInFollowups('verses', this.i18n.lang()), text: (hi ? `${v.citation} में कहा गया है — ${v.translationHi}` : `${v.citation} says: ${v.translationEn}`) + note, cards: [{ type: 'verses', payload: hits }] };
     }
-    return { next: builtInFollowups('general', hi), text: (hi ? 'क्षमा करें, इस विषय पर अभी श्लोक-संग्रह में कुछ नहीं मिला।' : 'The verse library has nothing on that yet.') + note, cards: [] };
+    return { next: builtInFollowups('general', this.i18n.lang()), text: (hi ? 'क्षमा करें, इस विषय पर अभी श्लोक-संग्रह में कुछ नहीं मिला।' : 'The verse library has nothing on that yet.') + note, cards: [] };
   }
 }

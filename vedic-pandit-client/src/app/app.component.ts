@@ -18,8 +18,8 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
   <header class="top">
     <div class="wrap bar">
       <a routerLink="/" class="brand" aria-label="Vedic Pandit home">
-        <span class="mark sa">वैदिक पंडित</span>
-        <span class="latin">Vedic Pandit<span class="by">&nbsp;by&nbsp;</span><span class="sig">Ekant Shukla</span></span>
+        <img class="logo" src="logo.svg" alt="" width="46" height="46">
+        <span class="names"><span class="mark sa">वैदिक पंडित</span><span class="latin">Vedic Pandit</span></span>
       </a>
       <nav class="desk" aria-label="Main">
         <a routerLink="/panchang" routerLinkActive="on">{{ i18n.t('nav.panchang') }}</a>
@@ -53,7 +53,7 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
 
   @if (showStrip()) {
     <aside class="strip" aria-label="App">
-      <span class="sicon sa" aria-hidden="true">ॐ</span>
+      <img class="sicon" src="logo.svg" alt="" width="40" height="40">
       <span class="stext"><b>{{ i18n.t('appTitle') }}</b><small>{{ i18n.t('appSub') }}</small></span>
       <button type="button" class="btn sget" (click)="getApp.set(true)">{{ i18n.t('getApp') }}</button>
       <button type="button" class="sx" (click)="dismissStrip()" [attr.aria-label]="i18n.t('closeChat')">✕</button>
@@ -162,11 +162,12 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
     .skip:focus { left: 8px; }
     .top { background: var(--ink); color: #F6F4FA; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 45; }
     .bar { display: flex; align-items: center; gap: 24px; min-height: 64px; }
-    .brand { display: flex; flex-direction: column; text-decoration: none; color: inherit; line-height: 1.05; flex: none; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; line-height: 1.05; flex: none; }
+    .brand .logo { width: 46px; height: 46px; flex: none; }
+    .brand .names { display: flex; flex-direction: column; }
     .mark { font-size: 1.45rem; color: #fff; }
     .latin { font-size: .74rem; letter-spacing: .02em; color: rgba(246,244,250,.62); white-space: nowrap; }
-    .latin .by { opacity: .8; }
-    .latin .sig { font-family: 'Tiro Devanagari Sanskrit', Georgia, serif; font-style: italic; font-size: .9rem; color: var(--haldi); letter-spacing: 0; }
+    .latin { color: var(--haldi); font-weight: 600; letter-spacing: .06em; }
     .desk { display: flex; gap: 4px; flex: 1; }
     .desk a { color: rgba(246,244,250,.82); text-decoration: none; padding: 8px 12px; border-radius: 999px; font-weight: 500; white-space: nowrap; }
     .desk a:hover { color: #fff; background: rgba(255,255,255,.07); }
@@ -186,7 +187,7 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
     @media (max-width: 1024px) {
       .strip { display: flex; align-items: center; gap: 10px; background: var(--card); border-bottom: 1px solid var(--line);
         padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); }
-      .sicon { width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--ink); color: var(--haldi); display: grid; place-items: center; font-size: 1.3rem; }
+      .sicon { width: 40px; height: 40px; flex: none; border-radius: 10px; background: var(--ink); padding: 2px; }
       .stext { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
       .stext b { color: var(--ink); font-size: .92rem; }
       .stext small { color: var(--muted); font-size: .78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -274,6 +275,7 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       .get { padding: 5px 9px; }
       .get span { display: none; }
       .mark { font-size: 1.3rem; }
+      .brand .logo { width: 40px; height: 40px; }
       .prefs { flex: 1 1 100%; order: 2; display: flex; gap: 6px; }
       .prefs > * { min-width: 0; }
       .prefs vp-place-picker { flex: 0 1 auto; min-width: 0; max-width: 46%; }
@@ -305,7 +307,8 @@ import { BotAvatarComponent } from './shared/bot-avatar.component';
       .bar { gap: 8px; }
       .mark { font-size: 1.15rem; }
       .latin { font-size: .64rem; }
-      .latin .sig { font-size: .78rem; }
+      .brand .logo { width: 34px; height: 34px; }
+      .brand { gap: 8px; }
       .acts { gap: 6px; }
       .acts a, .acts button { min-height: 36px; font-size: .8rem; }
       .dak { padding: 4px 10px 4px 8px; }

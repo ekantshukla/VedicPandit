@@ -76,7 +76,8 @@ public sealed class PanditJiOrchestrator : IPanditJiOrchestrator
         var messages = new JsonArray();
         foreach (var (role, t) in _store.Get(req.SessionId))
             messages.Add(new JsonObject { ["role"] = role, ["content"] = t });
-        messages.Add(new JsonObject { ["role"] = "user", ["content"] = text });
+        // Reminder on the latest turn keeps the reply in the selected language even after the user switches language
+        messages.Add(new JsonObject { ["role"] = "user", ["content"] = $"{text}\n\n[App note: reply only in {PromptLibrary.LanguageName(req.Language)}, including any question you ask back and the [[NEXT]] suggestions.]" });
 
         var system = PromptLibrary.System(req.Language, today, req.TimeZone, req.Tradition);
         var tools = PromptLibrary.Tools(_muhurat.SupportedEvents.Select(e => e.Event.ToString()));

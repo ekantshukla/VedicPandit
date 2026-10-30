@@ -12,7 +12,7 @@ import { NativeService } from '../core/services/native.service';
   <div class="scrim" (click)="close.emit()"></div>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="ga-h" (keydown.escape)="close.emit()" tabindex="-1">
     <header>
-      <span class="icon sa" aria-hidden="true">ॐ</span>
+      <img class="icon" src="logo.svg" alt="" width="56" height="56">
       <div>
         <h2 id="ga-h">{{ i18n.t('appTitle') }}</h2>
         <p class="muted">{{ i18n.t('appSub') }}</p>
@@ -59,7 +59,7 @@ import { NativeService } from '../core/services/native.service';
              max-height: calc(100dvh - 32px); overflow: auto; background: var(--paper); border-radius: var(--r-lg); padding: 22px;
              box-shadow: 0 24px 60px rgba(29,23,54,.35); animation: pop .18s ease-out; }
     header { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; margin-bottom: 16px; }
-    .icon { width: 56px; height: 56px; border-radius: 14px; background: var(--ink); color: var(--haldi); display: grid; place-items: center; font-size: 1.9rem; }
+    .icon { width: 56px; height: 56px; border-radius: 14px; background: var(--ink); padding: 3px; }
     h2 { margin: 0; font-size: var(--s1); }
     header p { margin: 2px 0 0; font-size: var(--s-1); }
     .x { width: 40px; height: 40px; border-radius: 50%; border: 0; background: #EAE6F2; cursor: pointer; color: var(--ink); align-self: start; }
